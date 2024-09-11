@@ -1,5 +1,3 @@
 #!/bin/sh
-
 ./simulateur -mess 30
-
 ./simulateur -mess 010101010101
