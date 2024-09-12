@@ -140,6 +140,21 @@ public class Simulateur {
                         throw new ArgumentsException("Valeur du parametre -mess invalide : " + nbBitsMess);
                 } else
                     throw new ArgumentsException("Valeur du parametre -mess invalide : " + args[i]);
+            } else if (args[i].matches("-form")){
+                i++;
+                if (args[i].matches("NRZ")){
+                    //appel fonction associée
+
+                } 
+                
+                else if (args[i].matches("NRZT")) {
+                    //appel fonction associée
+
+                } else if (args[i].matches("RZ")) {
+                    //Appel fonction associée
+                    
+                }
+
             }
 
             //TODO : ajouter ci-après le traitement des nouvelles options

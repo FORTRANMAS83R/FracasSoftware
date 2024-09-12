@@ -1,2 +1,5 @@
-package sources;public class SourceAnalogiqueTest {
+package sources;
+
+public class SourceAnalogiqueTest {
+
 }

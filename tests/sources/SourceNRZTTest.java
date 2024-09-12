@@ -1,2 +1,4 @@
-package sources;public class SourceNRZTTest {
+package sources;
+
+public class SourceNRZTTest {
 }
