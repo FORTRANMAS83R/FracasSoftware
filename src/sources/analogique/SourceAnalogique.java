@@ -16,6 +16,7 @@ public abstract class SourceAnalogique extends Source<Float> {
 	protected float amp_max;
 
 	protected Information<Boolean> informationBinaire;
+	protected Information<Float> informationEchantillon;
 
 	/**
 	 * Le constructeur par défaut des sources analogique prenant les paramètres
@@ -53,11 +54,11 @@ public abstract class SourceAnalogique extends Source<Float> {
 	}
 
 	private void echantillonnage() {
-		this.informationGeneree = new Information<>();
+		this.informationEchantillon = new Information<>();
 		for (int i = 0; i < informationBinaire.nbElements(); i++) {
-			final Float element = informationBinaire.iemeElement(i) ? 1f : 0f;
+			final Float element = informationBinaire.iemeElement(i) ? amp_max : amp_min;
 			for (int j = 0; j < nbEchantillon; j++)
-				this.informationGeneree.add(element);
+				this.informationEchantillon.add(element);
 		}
 	}
 
