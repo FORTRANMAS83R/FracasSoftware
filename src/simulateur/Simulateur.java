@@ -143,18 +143,48 @@ public class Simulateur {
             } else if (args[i].matches("-form")){
                 i++;
                 if (args[i].matches("NRZ")){
-                    //appel fonction associée
+                    //TODO appel fonction associée
 
                 } 
                 
                 else if (args[i].matches("NRZT")) {
-                    //appel fonction associée
+                    //TODO appel fonction associée
 
                 } else if (args[i].matches("RZ")) {
-                    //Appel fonction associée
+                    //TODO Appel fonction associée
                     
+                } else throw new ArgumentsException("Valeur du parametre -form invalide : " + args[i]); {
+
                 }
 
+            } else if (args[i].matches("-nbEch")){
+                i++;
+                if (args[i].matches("[0-9]{1,}")) {
+                    //TODO appel fonction associée
+                }
+                else throw new ArgumentsException("Valeur du parametre -nbEch invalide : " + args[i]);
+            } else if (args[i].matches("-ampl")) {
+                i++;
+                if (args[i].matches("[0-9]{1,}.[0-9]{1,}")) {
+                    i++;
+                    if (args[i].matches("[0-9]{1,}.[0-9]{1,}")) {
+                        //TODO appel fonction associée
+                        //
+                        //
+                    } else throw new ArgumentsException("Valeur du parametre amplitude min invalide : " + args[i]);
+                } else throw new ArgumentsException("Valeur du parametre amplitude max invalide : " + args[i]);
+
+            } else if (args[i].matches("-snrpb")) {
+                i++;
+                if (args[i].matches("[0-9]{1,}.[0-9]{1,}")) {
+                    //TODO appel fonction associée
+                } else throw new ArgumentsException("Valeur du parametre signal a bruit invalide : " + args[i]);
+                
+            } else if (args[i].matches("-ti")) {
+                int count = 0;
+                //TODO vérifie les deux valeurs suivantes de args et les stocks dans des variables
+                //TODO faire en sorte de vérifier la présence de jusqu'à 5 couples de valeurs
+                //TODO appel fonction associée
             }
 
             //TODO : ajouter ci-après le traitement des nouvelles options
