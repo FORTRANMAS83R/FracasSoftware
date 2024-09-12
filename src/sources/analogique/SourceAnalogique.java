@@ -65,4 +65,6 @@ public abstract class SourceAnalogique extends Source<Float> {
 	 * Cette methode permet la mise en forme du signal selon le code choisis
 	 */
 	protected abstract void filtreMiseEnForme();
+
+	public int getNbEch() {return nbEchantillon;}
 }
