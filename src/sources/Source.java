@@ -89,10 +89,6 @@ public abstract class Source<T> implements SourceInterface<T> {
 		this.informationEmise = informationGeneree;
 	}
 
-	protected Information<Boolean> genInformationAleatoire(int nBits) {
-		return genInformationAleatoire(nBits, null);
-	}
-
 	protected Information<Boolean> genInformationAleatoire(int nBits, Integer seed) {
 		final Information<Boolean> info = new Information<>();
 		Random rdm = seed == null ? new Random() : new Random(seed);
