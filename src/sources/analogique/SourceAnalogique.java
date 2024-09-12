@@ -12,8 +12,8 @@ import sources.Source;
 public abstract class SourceAnalogique extends Source<Float> {
 	protected String message;
 	protected int nbEchantillon;
-	protected int amp_min;
-	protected int amp_max;
+	protected float amp_min;
+	protected float amp_max;
 
 	protected Information<Boolean> informationBinaire;
 
@@ -29,24 +29,35 @@ public abstract class SourceAnalogique extends Source<Float> {
 	 * @param amp_max       Amplitude minimum du signal, c'est à dire l'amplitude
 	 *                      d'un bit à l'état 0
 	 */
-	public SourceAnalogique(String message, int nbEchantillon, int amp_min, int amp_max) {
+	public SourceAnalogique(String message, int nbEchantillon, float amp_min, float amp_max) {
 		super();
 		this.message = message;
 		this.nbEchantillon = nbEchantillon;
 		this.amp_min = amp_min;
 		this.amp_max = amp_max;
 
-		informationBinaire = genInformation(message);
+		this.informationBinaire = genInformation(message);
+		echantillonnage();
+		filtreMiseEnForme();
+	}
+
+	public SourceAnalogique(int nbEchantillon, float amp_min, float amp_max, int nbBits, Integer seed) {
+		super();
+		this.informationBinaire = genInformationAleatoire(nbBits, seed);
+		this.nbEchantillon = nbEchantillon;
+		this.amp_min = amp_min;
+		this.amp_max = amp_max;
+
 		echantillonnage();
 		filtreMiseEnForme();
 	}
 
 	private void echantillonnage() {
-		informationGeneree = new Information<Float>();
+		this.informationGeneree = new Information<>();
 		for (int i = 0; i < informationBinaire.nbElements(); i++) {
 			final Float element = informationBinaire.iemeElement(i) ? 1f : 0f;
 			for (int j = 0; j < nbEchantillon; j++)
-				informationGeneree.add(element);
+				this.informationGeneree.add(element);
 		}
 	}
 

@@ -2,12 +2,19 @@ package simulateur;
 
 import destinations.Destination;
 import destinations.DestinationFinale;
+import destinations.DestinationInterface;
 import information.Information;
+import information.InformationNonConformeException;
 import sources.Source;
 import sources.SourceAleatoire;
 import sources.SourceFixe;
+import sources.analogique.SourceAnalogiqueType;
+import sources.analogique.SourceNRZ;
+import sources.analogique.SourceNRZT;
+import sources.analogique.SourceRZ;
 import transmetteurs.Transmetteur;
 import transmetteurs.TransmetteurParfait;
+import visualisations.SondeAnalogique;
 import visualisations.SondeLogique;
 
 
@@ -55,17 +62,23 @@ public class Simulateur {
     /**
      * le  composant Source de la chaine de transmission
      */
-    private Source<Boolean> source = null;
+    private Source<Float> source = null;
 
     /**
      * le  composant Transmetteur parfait logique de la chaine de transmission
      */
-    private Transmetteur<Boolean, Boolean> transmetteurLogique = null;
+    private Transmetteur<Float, Float> transmetteurLogique = null;
 
     /**
      * le  composant Destination de la chaine de transmission
      */
-    private Destination<Boolean> destination = null;
+    private Destination<Float> destination = null;
+
+    private SourceAnalogiqueType formatSignal = SourceAnalogiqueType.RZ;
+
+    private int nbEch = 30;
+
+    private float ampl_min = 0.0f, ampl_max = 1.0f;
 
 
     /**
@@ -82,15 +95,42 @@ public class Simulateur {
     public Simulateur(String[] args) throws ArgumentsException {
         // analyser et récupérer les arguments
         analyseArguments(args);
-        source = messageAleatoire ? new SourceAleatoire(nbBitsMess, seed) : new SourceFixe(messageString);
-        transmetteurLogique = new TransmetteurParfait<Boolean>();
+//        source = messageAleatoire ? new SourceAleatoire(nbBitsMess, seed) : new SourceFixe(messageString);
+//        transmetteurLogique = new TransmetteurParfait<Float>();
+//        source.connecter(transmetteurLogique);
+
+        if (!messageAleatoire) {
+            switch (formatSignal) {
+                case RZ -> source = new SourceRZ(messageString, nbEch, ampl_min, ampl_max);
+                case NRZ -> source = new SourceNRZ(messageString, nbEch, ampl_min, ampl_max);
+                case NRZT -> source = new SourceNRZT(messageString, nbEch, ampl_min, ampl_max);
+            }
+        } else {
+            switch (formatSignal) {
+                case RZ -> source = new SourceRZ(nbEch, ampl_min, ampl_max, nbBitsMess, seed);
+                case NRZ -> source = new SourceNRZ(nbEch, ampl_min, ampl_max, nbBitsMess, seed);
+                case NRZT -> source = new SourceNRZT(nbEch, ampl_min, ampl_max, nbBitsMess, seed);
+            }
+        }
+
+        transmetteurLogique = new TransmetteurParfait<>();
         source.connecter(transmetteurLogique);
-        if (affichage)
-            source.connecter(new SondeLogique("Entrée", 720));
-        destination = new DestinationFinale<Boolean>();
+
+        destination = new DestinationFinale<>();
         transmetteurLogique.connecter(destination);
-        if (affichage)
-            transmetteurLogique.connecter(new SondeLogique("Sortie", 720));
+
+        if (affichage) {
+            source.connecter(new SondeAnalogique("Entrée"));
+            transmetteurLogique.connecter(new SondeAnalogique("Transmetteur"));
+        }
+
+//
+//        if (affichage)
+//            source.connecter(new SondeLogique("Entrée", 720));
+//        destination = new DestinationFinale<Boolean>();
+//        transmetteurLogique.connecter(destination);
+//        if (affichage)
+//            transmetteurLogique.connecter(new SondeLogique("Sortie", 720));
     }
 
 
@@ -120,7 +160,6 @@ public class Simulateur {
             } else if (args[i].matches("-seed")) {
                 aleatoireAvecGerme = true;
                 i++;
-                // traiter la valeur associee
                 try {
                     seed = Integer.valueOf(args[i]);
                 } catch (Exception e) {
@@ -135,58 +174,49 @@ public class Simulateur {
                     nbBitsMess = args[i].length();
                 } else if (args[i].matches("[0-9]{1,6}")) { // de 1 à 6 chiffres
                     messageAleatoire = true;
-                    nbBitsMess = Integer.valueOf(args[i]);
+                    nbBitsMess = Integer.parseInt(args[i]);
                     if (nbBitsMess < 1)
                         throw new ArgumentsException("Valeur du parametre -mess invalide : " + nbBitsMess);
                 } else
                     throw new ArgumentsException("Valeur du parametre -mess invalide : " + args[i]);
-            } else if (args[i].matches("-form")){
+            } else if (args[i].matches("-form")) {
                 i++;
-                if (args[i].matches("NRZ")){
-                    //appel fonction associée
-
-                } 
-                
-                else if (args[i].matches("NRZT")) {
-                    //appel fonction associée
-
-                } else if (args[i].matches("RZ")) {
-                    //Appel fonction associée
-                    
+                if (args[i].matches("NRZ")) {
+                    formatSignal = SourceAnalogiqueType.NRZ;
+                } else if (args[i].matches("NRZT")) {
+                    formatSignal = SourceAnalogiqueType.NRZT;
                 }
+            } else if (args[i].matches("-nbEch")) {
+                i++;
+                if (args[i].matches("[0-9]+")) {
+                    nbEch = Integer.parseInt(args[i]);
+                } else throw new ArgumentsException("Valeur du parametre -nbEch invalide : " + args[i]);
+            } else if (args[i].matches("-ampl")) {
+                i++;
+                if (args[i].matches("[0-9]+[.,][0-9]+")) {
+                    ampl_min = Float.parseFloat(args[i]);
+                    i++;
+                    if (args[i].matches("[0-9]+[.,][0-9]+")) {
+                        ampl_max = Float.parseFloat(args[i]);
+                        i++;
+                    } else throw new ArgumentsException("Valeur du parametre amplitude min invalide : " + args[i]);
+                } else throw new ArgumentsException("Valeur du parametre amplitude max invalide : " + args[i]);
 
-            }else if (args[i].matches("-nbEch")){
-            i++;
-            if (args[i].matches("[0-9]{1,}")) {
+            } else if (args[i].matches("-snrpb")) {
+                i++;
+                if (args[i].matches("[0-9]+.[0-9]+")) {
+                    //TODO appel fonction associée
+                } else throw new ArgumentsException("Valeur du parametre signal a bruit invalide : " + args[i]);
+
+            } else if (args[i].matches("-ti")) {
+                int count = 0;
+                //TODO vérifie les deux valeurs suivantes de args et les stocks dans des variables
+                //TODO faire en sorte de vérifier la présence de jusqu'à 5 couples de valeurs
                 //TODO appel fonction associée
             }
-            else throw new ArgumentsException("Valeur du parametre -nbEch invalide : " + args[i]);
-        } else if (args[i].matches("-ampl")) {
-            i++;
-            if (args[i].matches("[0-9]{1,}.[0-9]{1,}")) {
-                i++;
-                if (args[i].matches("[0-9]{1,}.[0-9]{1,}")) {
-                    //TODO appel fonction associée
-                    //
-                    //
-                } else throw new ArgumentsException("Valeur du parametre amplitude min invalide : " + args[i]);
-            } else throw new ArgumentsException("Valeur du parametre amplitude max invalide : " + args[i]);
-
-        } else if (args[i].matches("-snrpb")) {
-            i++;
-            if (args[i].matches("[0-9]{1,}.[0-9]{1,}")) {
-                //TODO appel fonction associée
-            } else throw new ArgumentsException("Valeur du parametre signal a bruit invalide : " + args[i]);
-
-        } else if (args[i].matches("-ti")) {
-            int count = 0;
-            //TODO vérifie les deux valeurs suivantes de args et les stocks dans des variables
-            //TODO faire en sorte de vérifier la présence de jusqu'à 5 couples de valeurs
-            //TODO appel fonction associée
-        }
 
 
-        //TODO : ajouter ci-après le traitement des nouvelles options
+            //TODO : ajouter ci-après le traitement des nouvelles options
 
             else throw new ArgumentsException("Option invalide :" + args[i]);
         }
