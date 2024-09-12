@@ -193,10 +193,10 @@ public class Simulateur {
                 } else throw new ArgumentsException("Valeur du parametre -nbEch invalide : " + args[i]);
             } else if (args[i].matches("-ampl")) {
                 i++;
-                if (args[i].matches("[0-9]+[.,][0-9]+")) {
+                if (args[i].matches("-?[0-9]+([.,][0-9]+)?")) {
                     ampl_min = Float.parseFloat(args[i]);
                     i++;
-                    if (args[i].matches("[0-9]+[.,][0-9]+")) {
+                    if (args[i].matches("-?[0-9]+([.,][0-9]+)?")) {
                         ampl_max = Float.parseFloat(args[i]);
                         i++;
                     } else throw new ArgumentsException("Valeur du parametre amplitude min invalide : " + args[i]);
