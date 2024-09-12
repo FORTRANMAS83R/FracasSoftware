@@ -12,6 +12,7 @@ public class SourceNRZ extends SourceAnalogique {
 
 	@Override
 	protected void filtreMiseEnForme() {
-	} // Nothing to do here
+		informationGeneree = informationEchantillon;
+	}
 
 }
