@@ -9,10 +9,10 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({ SourceTest.class,
-        SourceTestAleatoire.class,
-        SourceTestFixe.class,
+        SourceAleatoireTest.class,
+        SourceFixeTest.class,
         SourceRZTest.class,
         SourceNRZTest.class,
         SourceNRZTTest.class,
         SourceAnalogiqueTest.class })
-public class SourceTestAll {}
+public class AllSourceTests {}

@@ -15,7 +15,7 @@ import destinations.DestinationFinale;
 import information.Information;
 import information.InformationNonConformeException;
 
-public class SourceTestAleatoire {
+public class SourceAleatoireTest {
     private DestinationFinale<Boolean> mockDestinationFinale = EasyMock.createMock(DestinationFinale.class);
 
     Information<Boolean> info;

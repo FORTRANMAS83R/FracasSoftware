@@ -4,8 +4,6 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.replay;
 
-import java.util.Random;
-
 import org.easymock.EasyMock;
 import org.junit.Rule;
 import org.junit.Test;
@@ -15,7 +13,7 @@ import destinations.DestinationFinale;
 import information.Information;
 import information.InformationNonConformeException;
 
-public class SourceTestFixe {
+public class SourceFixeTest {
     private DestinationFinale<Boolean> mockDestinationFinale = EasyMock.createMock(DestinationFinale.class);
 
     Information<Boolean> info;

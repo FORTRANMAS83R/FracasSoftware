@@ -1,11 +1,14 @@
 package sources;
 
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Suite;
-import org.junit.runners.Suite.SuiteClasses;
+
+import static org.junit.Assert.fail;
 
 public class SourceTest {
+    @Test
+    public void test() {
+        fail("SourceTest not yet implemented");
+    }
 	//Test genInformationAletoire(nb_bits)
 		//verifier taille mess gen
 	//Test genInformationAletoire(seed, nb_bits)
