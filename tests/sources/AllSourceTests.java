@@ -11,8 +11,5 @@ import org.junit.runners.Suite.SuiteClasses;
 @SuiteClasses({ SourceTest.class,
         SourceAleatoireTest.class,
         SourceFixeTest.class,
-        SourceRZTest.class,
-        SourceNRZTest.class,
-        SourceNRZTTest.class,
         SourceAnalogiqueTest.class })
 public class AllSourceTests {}

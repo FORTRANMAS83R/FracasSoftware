@@ -3,6 +3,10 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 import sources.analogique.*;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+
 import static org.hamcrest.CoreMatchers.is;
 
 import static org.junit.Assert.fail;
@@ -41,5 +45,19 @@ public class SourceNRZTTest {
                 collector.addError(new AssertionError("Les valeurs générées ne sont pas dans l'intervalle d'amplitude"));
             }
         }
+    }
+
+    @Test
+    public void testInformationGeneree() {
+        SourceNRZT test = new SourceNRZT("010011", 10, -5, 5);
+        /*
+        LinkedList<Float> expected = new LinkedList<>(Arrays.asList("" Les valeurs attendues ""));
+        for (int i = 0; i < test.getInformationGeneree().nbElements(); i++) {
+            if (test.getInformationGeneree().iemeElement(i) != expected.get(i)) {
+                fail("Erreur de génération de la source NRZT");
+            }
+        }
+        */
+        collector.addError(new Error("Test non implemente"));
     }
 }

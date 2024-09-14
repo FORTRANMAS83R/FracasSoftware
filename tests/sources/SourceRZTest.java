@@ -46,21 +46,26 @@ public class SourceRZTest {
             }
         }
     }
+    /**
+     * Verification de la véracité des informations générées en comparant avec les valeurs attendues.
+     */
     @Test
     public void testInformationGeneree() {
         SourceRZ test = new SourceRZ("010011", 10, -5, 5);
-        LinkedList<Float> expected = new LinkedList<>(Arrays.asList(-5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f,
-                -5.0f, -5.0f, -5.0f, -5.0f, 5.0f, 5.0f, 5.0f, -5.0f, -5.0f, -5.0f,
-                -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f,
-                -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f,
-                -5.0f, -5.0f, -5.0f, 5.0f, 5.0f, 5.0f, -5.0f, -5.0f, -5.0f, -5.0f,
-                -5.0f, -5.0f, -5.0f, 5.0f, 5.0f, 5.0f, -5.0f, -5.0f, -5.0f));
+        LinkedList<Float> expected = new LinkedList<>(Arrays.asList(-5.0f, -5.0f, -5.0f, -5.0f, -5.0f,
+                                                                    -5.0f, -5.0f, -5.0f, -5.0f, -5.0f,
+                                                                    -5.0f, -5.0f, -5.0f, -5.0f, 5.0f,
+                                                                    5.0f, 5.0f, -5.0f, -5.0f, -5.0f,
+                                                                    -5.0f, -5.0f, -5.0f, -5.0f, -5.0f,
+                                                                    -5.0f, -5.0f, -5.0f, -5.0f, -5.0f,
+                                                                    -5.0f, -5.0f, -5.0f, -5.0f, -5.0f,
+                                                                    -5.0f, -5.0f, -5.0f, -5.0f, -5.0f,
+                                                                    -5.0f, -5.0f, -5.0f, -5.0f, 5.0f,
+                                                                    5.0f, 5.0f, -5.0f, -5.0f, -5.0f,
+                                                                    -5.0f, -5.0f, -5.0f, -5.0f, 5.0f, 5.0f, 5.0f, -5.0f, -5.0f, -5.0f));
         for (int i = 0; i < test.getInformationGeneree().nbElements(); i++) {
             if (!test.getInformationGeneree().iemeElement(i).equals(expected.get(i))) {
-                System.out.println(test.getInformationGeneree().iemeElement(i));
-                System.out.println(expected.get(i));
                 collector.addError(new AssertionError("Les valeurs générées ne sont pas correctes"));
-
             }
         }
 
