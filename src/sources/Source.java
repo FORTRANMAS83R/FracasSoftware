@@ -31,6 +31,11 @@ public abstract class Source<T> implements SourceInterface<T> {
     protected Information<T> informationEmise;
 
     /**
+     * format binaire de l'information émise par la source.
+     */
+    protected Information<Boolean> informationBinaire;
+
+    /**
      * un constructeur factorisant les initialisations communes aux réalisations de
      * la classe abstraite Source
      */
@@ -38,6 +43,7 @@ public abstract class Source<T> implements SourceInterface<T> {
         destinationsConnectees = new LinkedList<DestinationInterface<T>>();
         informationGeneree = null;
         informationEmise = null;
+        informationBinaire = null;
     }
 
     /**
@@ -48,6 +54,13 @@ public abstract class Source<T> implements SourceInterface<T> {
     public Information<T> getInformationEmise() {
         return this.informationEmise;
     }
+
+    /**
+     * retourne la forme binaire du message émis par la source
+     *
+     * @return une information
+     */
+    public Information<Boolean> getInformationBinaire() {return this.informationBinaire;}
 
     public LinkedList<DestinationInterface<T>> getDestinationsConnectees() {
         return this.destinationsConnectees;

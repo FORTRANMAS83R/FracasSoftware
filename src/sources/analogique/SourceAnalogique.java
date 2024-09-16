@@ -15,7 +15,6 @@ public abstract class SourceAnalogique extends Source<Float> {
     protected float amp_min;
     protected float amp_max;
 
-    protected Information<Boolean> informationBinaire;
     protected Information<Float> informationEchantillon;
 
     /**

@@ -115,8 +115,8 @@ public class Simulateur {
         transmetteurAnalogique.connecter(destinationAnalogique);
 
         if (affichage) {
-            source.connecter(new SondeAnalogique("Source analogique"));
-            transmetteurAnalogique.connecter(new SondeAnalogique("Transmetteur"));
+            source.connecter(new SondeAnalogique("Information émise par la source"));
+            transmetteurAnalogique.connecter(new SondeAnalogique("Sonde transmetteur"));
         }
 
     }
@@ -266,6 +266,15 @@ public class Simulateur {
 
         try {
             simulateur.execute();
+
+            // Condition temporaire nécessaire pour l'affichage de courbe utile au rapport mais non prévu dans la programmation des sondes
+            if (simulateur.affichage){
+                SondeLogique sondeEmise = new SondeLogique("Message binaire", 1080);
+                sondeEmise.recevoir(simulateur.source.getInformationBinaire());
+
+                SondeAnalogique sondeDest= new SondeAnalogique("Information reçue par la destination");
+                sondeDest.recevoir(simulateur.destinationAnalogique.getInformationRecue());
+            }
             String s = "java  Simulateur  ";
             for (int i = 0; i < args.length; i++) { //copier tous les paramètres de simulation
                 s += args[i] + "  ";
