@@ -11,10 +11,16 @@ import static org.hamcrest.CoreMatchers.is;
 
 import static org.junit.Assert.fail;
 
+/**
+ * Vérifie la véracité des informations générées en comparant avec les valeurs attendues.
+ */
 public class SourceTest {
     @Rule
     public ErrorCollector collector = new ErrorCollector();
-
+    /**
+     * Teste la génération d'information aléatoire sans graine.
+     * Vérifie que la taille du message généré est correcte.
+     */
     @Test
     public void testGenInformationAletoireSansSeed() {
         //Appel de la méthode genInformationAletoire avec seed == null
@@ -22,7 +28,10 @@ public class SourceTest {
         //Vérification de la taille du message généré
         collector.checkThat("Test genInformation aléatoire sans seed", src.getInformationGeneree().nbElements(), is(10));
     }
-
+    /**
+     * Teste la génération d'information aléatoire avec graine.
+     * Vérifie que la taille du message généré est correcte et que les valeurs générées sont correctes.
+     */
     @Test
     public void testGenInformationAletoireAvecSeed() {
         //Appel de la méthode genInformationAletoire avec seed != null
@@ -37,7 +46,10 @@ public class SourceTest {
             }
         }
     }
-
+    /**
+     * Teste la génération d'information fixe.
+     * Vérifie que la génération de la source fixe à partir d'un message donné est correcte.
+     */
     @Test
     public void testgenInformation() {
         String message = "0101010101";

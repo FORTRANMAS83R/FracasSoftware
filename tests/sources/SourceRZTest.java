@@ -8,11 +8,17 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 import static org.hamcrest.CoreMatchers.is;
-
+/**
+ * Classe de test pour SourceRZ.
+ * Utilise JUnit pour les assertions et ErrorCollector pour collecter les erreurs.
+ */
 public class SourceRZTest {
     @Rule
     public ErrorCollector collector = new ErrorCollector();
-
+    /**
+     * Teste la génération de la source RZ avec un message fixe.
+     * Vérifie que le nombre d'éléments générés est correct et que les valeurs sont dans l'intervalle d'amplitude.
+     */
     @Test
     public void testSourceRZRFixe() {
         SourceRZ src = new SourceRZ("10100110", 10, -5, 5);
@@ -24,7 +30,10 @@ public class SourceRZTest {
         }
 
     }
-
+    /**
+     * Teste la génération de la source RZ avec des valeurs aléatoires et une graine.
+     * Vérifie que le nombre d'éléments générés est correct et que les valeurs sont dans l'intervalle d'amplitude.
+     */
     @Test
     public void testSourceRZRandomAvecSeed() {
         SourceRZ src = new SourceRZ(10, -5, 5, 8, 10);
@@ -35,7 +44,10 @@ public class SourceRZTest {
             }
         }
     }
-
+    /**
+     * Teste la génération de la source RZ avec des valeurs aléatoires sans graine.
+     * Vérifie que le nombre d'éléments générés est correct et que les valeurs sont dans l'intervalle d'amplitude.
+     */
     @Test
     public void testSourceRZRandomSansSeed() {
         SourceRZ src = new SourceRZ(10, -5, 5, 8, null);

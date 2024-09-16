@@ -12,7 +12,10 @@ import org.junit.rules.ErrorCollector;
 import destinations.DestinationFinale;
 import information.Information;
 import information.InformationNonConformeException;
-
+/**
+ * Classe de test pour SourceFixe.
+ * Utilise EasyMock pour simuler les destinations et JUnit pour les assertions.
+ */
 public class SourceFixeTest {
     private DestinationFinale<Boolean> mockDestinationFinale = EasyMock.createMock(DestinationFinale.class);
 
@@ -22,10 +25,15 @@ public class SourceFixeTest {
     public ErrorCollector collector = new ErrorCollector();
 
     /**
+     *
      * Test de la classe SourceAleatoire Rq: On ne peut tester que la génération de
      * la source aléatoire avec un seed donné.
      */
-
+    /*
+     *
+     * Teste le constructeur de SourceFixe.
+     * Vérifie que la génération de la source fixe à partir d'un message donné est correcte.
+     */
     @Test
     public void testConstructorSourceFixe() {
         String message = "0101010101";
@@ -45,7 +53,10 @@ public class SourceFixeTest {
             }
         }
     }
-
+    /**
+     * Teste la méthode connecter de SourceFixe.
+     * Vérifie que la source est correctement connectée à la destination.
+     */
     @Test
     public void testConnecterSourceFixe() {
         String message = "0101010101";
@@ -56,6 +67,12 @@ public class SourceFixeTest {
         }
     }
 
+    /**
+     * Teste la méthode emettre de SourceFixe.
+     * Vérifie que l'information émise est identique à l'information reçue par la destination.
+     *
+     * @throws InformationNonConformeException si l'information est non conforme.
+     */
     @Test
     public void emettreTest() throws InformationNonConformeException {
         info = new Information<>(new Boolean[] { true, false, true, false, true, false, true, false });

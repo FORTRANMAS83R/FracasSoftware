@@ -6,10 +6,17 @@ import sources.analogique.*;
 import static org.hamcrest.CoreMatchers.is;
 
 import static org.junit.Assert.*;
-
+/**
+ * Classe de test pour SourceNRZ.
+ * Utilise JUnit pour les assertions et ErrorCollector pour collecter les erreurs.
+ */
 public class SourceNRZTest {
     @Rule
     public ErrorCollector collector = new ErrorCollector();
+    /**
+     * Teste la génération de la source NRZ avec un message fixe.
+     * Vérifie que le nombre d'éléments générés est correct et que les valeurs sont dans l'intervalle d'amplitude.
+     */
 
     @Test
     public void testSourceNRZRFixe(){
@@ -23,6 +30,11 @@ public class SourceNRZTest {
 
     }
 
+    /**
+     * Teste la génération de la source NRZ avec des valeurs aléatoires et une graine.
+     * Vérifie que le nombre d'éléments générés est correct et que les valeurs sont dans l'intervalle d'amplitude.
+     */
+
     @Test
     public void testSourceNRZRandomAvecSeed() {
         SourceNRZ src = new SourceNRZ(10, -5, 5, 8, 10);
@@ -33,6 +45,10 @@ public class SourceNRZTest {
             }
         }
     }
+    /**
+     * Teste la génération de la source NRZ avec des valeurs aléatoires sans graine.
+     * Vérifie que le nombre d'éléments générés est correct et que les valeurs sont dans l'intervalle d'amplitude.
+     */
     @Test
     public void testSourceNRZRandomSansSeed() {
         SourceNRZ src = new SourceNRZ(10, -5, 5, 8, null);

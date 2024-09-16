@@ -10,11 +10,17 @@ import java.util.LinkedList;
 import static org.hamcrest.CoreMatchers.is;
 
 import static org.junit.Assert.fail;
-
+/**
+ * Classe de test pour SourceNRZT.
+ * Utilise JUnit pour les assertions et ErrorCollector pour collecter les erreurs.
+ */
 public class SourceNRZTTest {
     @Rule
     public ErrorCollector collector = new ErrorCollector();
-
+    /**
+     * Teste la génération de la source NRZT avec un message fixe.
+     * Vérifie que le nombre d'éléments générés est correct et que les valeurs sont dans l'intervalle d'amplitude.
+     */
     @Test
     public void testNRZTFixe(){
         SourceNRZT src = new SourceNRZT("10100110", 10, -5, 5);
@@ -25,6 +31,11 @@ public class SourceNRZTTest {
             }
         }
     }
+
+    /**
+     * Teste la génération de la source NRZT avec des valeurs aléatoires et une graine.
+     * Vérifie que le nombre d'éléments générés est correct et que les valeurs sont dans l'intervalle d'amplitude.
+     */
     @Test
     public void testNRZTRandomAvecSeed() {
         SourceNRZT src = new SourceNRZT(10, -5, 5, 8, 10);
@@ -35,7 +46,10 @@ public class SourceNRZTTest {
             }
         }
     }
-
+    /**
+     * Teste la génération de la source NRZT avec des valeurs aléatoires sans graine.
+     * Vérifie que le nombre d'éléments générés est correct et que les valeurs sont dans l'intervalle d'amplitude.
+     */
     @Test
     public void testNRZTRandomSansSeed() {
         SourceNRZT src = new SourceNRZT(10, -5, 5, 8, null);
@@ -46,7 +60,10 @@ public class SourceNRZTTest {
             }
         }
     }
-
+    /**
+     * Vérifie la véracité des informations générées en comparant avec les valeurs attendues.
+     * Actuellement, ce test n'est pas implémenté et génère une erreur.
+     */
     @Test
     public void testInformationGeneree() {
         SourceNRZT test = new SourceNRZT("010011", 10, -5, 5);
