@@ -1,2 +1,7 @@
 #!/bin/sh
 cd src && javac -d ../bin simulateur/Simulateur.java
+cd ../
+
+#TODO Find a way to compile the tests in CLI
+#cd tests && javac -d ../bin -cp "../lib/*" simulateur/AllTests.java
+

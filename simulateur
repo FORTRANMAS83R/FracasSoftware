@@ -3,3 +3,4 @@
 ./cleanAll
 ./compile
 cd bin && java simulateur/Simulateur "$@"
+cd ../

@@ -1,3 +1,4 @@
 #!/bin/sh
 ./simulateur -mess 30
 ./simulateur -mess 010101010101
+#TODO Once ./compile is done compiling tests we have to implements them here.
