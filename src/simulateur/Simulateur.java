@@ -11,6 +11,7 @@ import sources.analogique.SourceRZ;
 import transmetteurs.Transmetteur;
 import transmetteurs.TransmetteurParfait;
 import visualisations.SondeAnalogique;
+import visualisations.SondeLogique;
 
 
 /**
@@ -62,12 +63,14 @@ public class Simulateur {
     /**
      * le  composant Transmetteur parfait logique de la chaine de transmission
      */
-    private Transmetteur<Float, Float> transmetteurLogique = null;
+    private Transmetteur<Boolean, Boolean> transmetteurLogique = null;
+    private Transmetteur<Float, Float> transmetteurAnalogique = null;
 
     /**
      * le  composant Destination de la chaine de transmission
      */
-    private Destination<Float> destination = null;
+    private Destination<Boolean> destinationLogique = null;
+    private Destination<Float> destinationAnalogique = null;
 
     private SourceAnalogiqueType formatSignal = SourceAnalogiqueType.RZ;
 
@@ -90,9 +93,6 @@ public class Simulateur {
     public Simulateur(String[] args) throws ArgumentsException {
         // analyser et récupérer les arguments
         analyseArguments(args);
-//        source = messageAleatoire ? new SourceAleatoire(nbBitsMess, seed) : new SourceFixe(messageString);
-//        transmetteurLogique = new TransmetteurParfait<Float>();
-//        source.connecter(transmetteurLogique);
 
         if (!messageAleatoire) {
             switch (formatSignal) {
@@ -108,24 +108,17 @@ public class Simulateur {
             }
         }
 
-        transmetteurLogique = new TransmetteurParfait<>();
-        source.connecter(transmetteurLogique);
+        transmetteurAnalogique = new TransmetteurParfait<>();
+        source.connecter(transmetteurAnalogique);
 
-        destination = new DestinationFinale<>();
-        transmetteurLogique.connecter(destination);
+        destinationAnalogique = new DestinationFinale<>();
+        transmetteurAnalogique.connecter(destinationAnalogique);
 
         if (affichage) {
-            source.connecter(new SondeAnalogique("Entrée"));
-            transmetteurLogique.connecter(new SondeAnalogique("Transmetteur"));
+            source.connecter(new SondeAnalogique("Source analogique"));
+            transmetteurAnalogique.connecter(new SondeAnalogique("Transmetteur"));
         }
 
-//
-//        if (affichage)
-//            source.connecter(new SondeLogique("Entrée", 720));
-//        destination = new DestinationFinale<Boolean>();
-//        transmetteurLogique.connecter(destination);
-//        if (affichage)
-//            transmetteurLogique.connecter(new SondeLogique("Sortie", 720));
     }
 
 
@@ -243,7 +236,7 @@ public class Simulateur {
     public float calculTauxErreurBinaire() {
         int nbBitEronnes = 0;
         Information<?> src = source.getInformationEmise();
-        Information<?> dst = destination.getInformationRecue();
+        Information<?> dst = destinationAnalogique.getInformationRecue();
         for (int i = 0; i < nbBitsMess; i++) {
             if (src.iemeElement(i) != dst.iemeElement(i)) {
                 nbBitEronnes++;
