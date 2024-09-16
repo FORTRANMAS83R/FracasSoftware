@@ -1,8 +1,9 @@
 package sources;
+
 import information.InformationNonConformeException;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
-import sources.*;
+
 /**
  * Teste la méthode emettre de SourceAleatoire.
  * Vérifie que l'information émise est identique à l'information reçue par la destination.
@@ -14,7 +15,8 @@ import sources.*;
         SourceRZTest.class,// Teste la classe SourceRZ
         SourceNRZTest.class,// Teste la classe SourceNRZT
         SourceNRZTTest.class})// Teste la classe SourceNRZ
-public class SourceAnalogiqueTest {}
+public class SourceAnalogiqueTest {
+}
 
 
 

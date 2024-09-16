@@ -1,19 +1,16 @@
 package sources;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.EasyMock.expectLastCall;
-import static org.easymock.EasyMock.replay;
-
-import java.util.Random;
-
+import destinations.DestinationFinale;
+import information.Information;
+import information.InformationNonConformeException;
 import org.easymock.EasyMock;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 
-import destinations.DestinationFinale;
-import information.Information;
-import information.InformationNonConformeException;
+import java.util.Random;
+
+import static org.easymock.EasyMock.*;
 
 /**
  * Classe de test pour SourceAleatoire.
@@ -64,7 +61,7 @@ public class SourceAleatoireTest {
      */
     @Test
     public void emettreTest() throws InformationNonConformeException {
-        info = new Information<>(new Boolean[] { true, false, true, false, true, false, true, false });
+        info = new Information<>(new Boolean[]{true, false, true, false, true, false, true, false});
         String message = "10101010";
         Source<Boolean> src = new SourceFixe(message);
         mockDestinationFinale = EasyMock.createMock(DestinationFinale.class);

@@ -1,11 +1,11 @@
 package transmetteurs;
 
-import java.util.LinkedList;
-
 import destinations.DestinationInterface;
 import information.Information;
 import information.InformationNonConformeException;
 import sources.SourceInterface;
+
+import java.util.LinkedList;
 
 /**
  * Classe Abstraite d'un composant transmetteur d'informations dont les éléments

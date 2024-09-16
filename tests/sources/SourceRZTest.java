@@ -1,13 +1,15 @@
 package sources;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
-import sources.analogique.*;
+import sources.analogique.SourceRZ;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 
 import static org.hamcrest.CoreMatchers.is;
+
 /**
  * Classe de test pour SourceRZ.
  * Utilise JUnit pour les assertions et ErrorCollector pour collecter les erreurs.
@@ -15,6 +17,7 @@ import static org.hamcrest.CoreMatchers.is;
 public class SourceRZTest {
     @Rule
     public ErrorCollector collector = new ErrorCollector();
+
     /**
      * Teste la génération de la source RZ avec un message fixe.
      * Vérifie que le nombre d'éléments générés est correct et que les valeurs sont dans l'intervalle d'amplitude.
@@ -30,6 +33,7 @@ public class SourceRZTest {
         }
 
     }
+
     /**
      * Teste la génération de la source RZ avec des valeurs aléatoires et une graine.
      * Vérifie que le nombre d'éléments générés est correct et que les valeurs sont dans l'intervalle d'amplitude.
@@ -44,6 +48,7 @@ public class SourceRZTest {
             }
         }
     }
+
     /**
      * Teste la génération de la source RZ avec des valeurs aléatoires sans graine.
      * Vérifie que le nombre d'éléments générés est correct et que les valeurs sont dans l'intervalle d'amplitude.
@@ -58,6 +63,7 @@ public class SourceRZTest {
             }
         }
     }
+
     /**
      * Verification de la véracité des informations générées en comparant avec les valeurs attendues.
      */

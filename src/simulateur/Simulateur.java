@@ -2,12 +2,8 @@ package simulateur;
 
 import destinations.Destination;
 import destinations.DestinationFinale;
-import destinations.DestinationInterface;
 import information.Information;
-import information.InformationNonConformeException;
 import sources.Source;
-import sources.SourceAleatoire;
-import sources.SourceFixe;
 import sources.analogique.SourceAnalogiqueType;
 import sources.analogique.SourceNRZ;
 import sources.analogique.SourceNRZT;
@@ -15,7 +11,6 @@ import sources.analogique.SourceRZ;
 import transmetteurs.Transmetteur;
 import transmetteurs.TransmetteurParfait;
 import visualisations.SondeAnalogique;
-import visualisations.SondeLogique;
 
 
 /**
@@ -190,8 +185,8 @@ public class Simulateur {
                 i++;
                 if (args[i].matches("[0-9]+")) {
                     nbEch = Integer.parseInt(args[i]);
-                    if (nbEch % 3 != 0){
-                        nbEch = nbEch - nbEch%3 +3;
+                    if (nbEch % 3 != 0) {
+                        nbEch = nbEch - nbEch % 3 + 3;
                         System.out.println("\tAttention: Le nombre d'échantillons a été ajusté à " + nbEch);
                     }
                 } else throw new ArgumentsException("Valeur du parametre -nbEch invalide : " + args[i]);

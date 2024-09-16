@@ -11,6 +11,7 @@ import java.util.Objects;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.fail;
+
 /**
  * Classe de test pour SourceNRZT.
  * Utilise JUnit pour les assertions et ErrorCollector pour collecter les erreurs.
@@ -18,6 +19,7 @@ import static org.junit.Assert.fail;
 public class SourceNRZTTest {
     @Rule
     public ErrorCollector collector = new ErrorCollector();
+
     /**
      * Teste la génération de la source NRZT avec un message fixe.
      * Vérifie que le nombre d'éléments générés est correct et que les valeurs sont dans l'intervalle d'amplitude.
@@ -48,6 +50,7 @@ public class SourceNRZTTest {
             }
         }
     }
+
     /**
      * Teste la génération de la source NRZT avec des valeurs aléatoires sans graine.
      * Vérifie que le nombre d'éléments générés est correct et que les valeurs sont dans l'intervalle d'amplitude.
@@ -62,6 +65,7 @@ public class SourceNRZTTest {
             }
         }
     }
+
     /**
      * Vérifie la véracité des informations générées en comparant avec les valeurs attendues.
      * Actuellement, ce test n'est pas implémenté et génère une erreur.

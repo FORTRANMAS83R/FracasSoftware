@@ -1,13 +1,14 @@
 package information;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * @author prou
  */
 public class Information<T> implements Iterable<T> {
 
-    private LinkedList<T> content;
+    private final LinkedList<T> content;
 
     /**
      * pour construire une information vide

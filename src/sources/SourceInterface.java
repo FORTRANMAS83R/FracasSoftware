@@ -1,7 +1,8 @@
 package sources;
 
 import destinations.DestinationInterface;
-import information.*;
+import information.Information;
+import information.InformationNonConformeException;
 
 /**
  * Interface d'un composant ayant le comportement d'une source
@@ -16,19 +17,19 @@ public interface SourceInterface<T> {
      *
      * @return une information
      */
-    public Information<T> getInformationEmise();
+    Information<T> getInformationEmise();
 
     /**
      * pour connecter une destination à la source
      *
      * @param destination la destination à connecter
      */
-    public void connecter(DestinationInterface<T> destination);
+    void connecter(DestinationInterface<T> destination);
 
     /**
      * pour émettre l'information contenue dans une source
      *
      * @throws InformationNonConformeException si l'Information comporte une anomalie
      */
-    public void emettre() throws InformationNonConformeException;
+    void emettre() throws InformationNonConformeException;
 }
