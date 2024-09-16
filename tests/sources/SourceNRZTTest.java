@@ -1,14 +1,15 @@
 package sources;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
-import sources.analogique.*;
+import sources.analogique.SourceNRZT;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Objects;
 
 import static org.hamcrest.CoreMatchers.is;
-
 import static org.junit.Assert.fail;
 /**
  * Classe de test pour SourceNRZT.
@@ -22,15 +23,16 @@ public class SourceNRZTTest {
      * Vérifie que le nombre d'éléments générés est correct et que les valeurs sont dans l'intervalle d'amplitude.
      */
     @Test
-    public void testNRZTFixe(){
+    public void testNRZTFixe() {
         SourceNRZT src = new SourceNRZT("10100110", 10, -5, 5);
-        collector.checkThat(src.getInformationGeneree().nbElements(),is(10*8));
+        collector.checkThat(src.getInformationGeneree().nbElements(), is(10 * 8));
         for (int i = 0; i < src.getInformationGeneree().nbElements(); i++) {
             if (src.getInformationGeneree().iemeElement(i) < -5 || src.getInformationGeneree().iemeElement(i) > 5) {
                 collector.addError(new AssertionError("Les valeurs générées ne sont pas dans l'intervalle d'amplitude"));
             }
         }
     }
+
 
     /**
      * Teste la génération de la source NRZT avec des valeurs aléatoires et une graine.
@@ -66,15 +68,15 @@ public class SourceNRZTTest {
      */
     @Test
     public void testInformationGeneree() {
-        SourceNRZT test = new SourceNRZT("010011", 10, -5, 5);
-        /*
-        LinkedList<Float> expected = new LinkedList<>(Arrays.asList("" Les valeurs attendues ""));
+        SourceNRZT test = new SourceNRZT("010011", 10, -2.5f, 5);
+
+        LinkedList<Float> expected = new LinkedList<>(Arrays.asList(0.0f, -0.75f, -1.5f, -2.5f, -2.5f, -2.5f, -2.5f, -1.375f, -0.25f, -2.5f, 1.25f, 2.375f, 3.5f, 5.0f, 5.0f, 5.0f, 5.0f, 3.875f, 2.75f, 5.0f, 1.25f, 0.125f, -1.0f, -2.5f, -2.5f, -2.5f, -2.5f, -2.5f, -2.5f, -2.5f, -2.5f, -2.5f, -2.5f, -2.5f, -2.5f, -2.5f, -2.5f, -1.375f, -0.25f, -2.5f, 1.25f, 2.375f, 3.5f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 2.8571427f, 0.7142854f, 5.0f));
         for (int i = 0; i < test.getInformationGeneree().nbElements(); i++) {
-            if (test.getInformationGeneree().iemeElement(i) != expected.get(i)) {
+            if (!Objects.equals(test.getInformationGeneree().iemeElement(i), expected.get(i))) {
                 fail("Erreur de génération de la source NRZT");
             }
         }
-        */
-        collector.addError(new Error("Test non implemente"));
+
+//        collector.addError(new Error("Test non implemente"));
     }
 }

@@ -89,6 +89,19 @@ public class Information<T> implements Iterable<T> {
     }
 
     /**
+     * Effectue une copie en dur de l'information.
+     *
+     * @return une copie de l'information
+     */
+    public Information<T> clone() {
+        Information<T> clone = new Information<T>();
+        for (int i = 0; i < this.nbElements(); i++) {
+            clone.add(this.iemeElement(i));
+        }
+        return clone;
+    }
+
+    /**
      * pour afficher une information
      *
      * @return representation de l'information sous forme de String

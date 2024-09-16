@@ -38,18 +38,20 @@ public class SourceRZ extends SourceAnalogique {
 	protected void filtreMiseEnForme() {
 		int premierTiers = this.nbEchantillon/3;
 		int deuxiemeTiers = this.nbEchantillon/3;
-		informationGeneree = informationEchantillon;
+		informationGeneree = informationEchantillon.clone();
 
 		for (int i = 0; i < informationEchantillon.nbElements(); i+=nbEchantillon) {
 			for (int j = 0; j < nbEchantillon; j++) {
 				if ((j <= premierTiers)) {
-					informationGeneree.setIemeElement(i+j,amp_min);
+					informationGeneree.setIemeElement(i+j,0.0f);
 				} else if (j <= premierTiers+deuxiemeTiers) {
-					if (informationGeneree.iemeElement(i+j) == amp_max) {
+					if (informationEchantillon.iemeElement(i+j) == amp_max) {
 						informationGeneree.setIemeElement(i+j,amp_max);
+					} else {
+						informationGeneree.setIemeElement(i+j,amp_min);
 					}
 				} else {
-					informationGeneree.setIemeElement(i+j,amp_min);
+					informationGeneree.setIemeElement(i+j,0.0f);
 				}
 			}
 		}
