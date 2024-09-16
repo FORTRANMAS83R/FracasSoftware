@@ -190,6 +190,10 @@ public class Simulateur {
                 i++;
                 if (args[i].matches("[0-9]+")) {
                     nbEch = Integer.parseInt(args[i]);
+                    if (nbEch % 3 != 0){
+                        nbEch = nbEch - nbEch%3 +3;
+                        System.out.println("\tAttention: Le nombre d'échantillons a été ajusté à " + nbEch);
+                    }
                 } else throw new ArgumentsException("Valeur du parametre -nbEch invalide : " + args[i]);
             } else if (args[i].matches("-ampl")) {
                 i++;
