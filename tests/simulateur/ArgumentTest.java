@@ -4,20 +4,23 @@ import org.junit.Test;
 
 public class ArgumentTest {
 	@Test(expected = ArgumentsException.class)
-	public void testFormeInvalide() {
+	public void testFormeInvalide() throws ArgumentsException {
 		final String[] args = { "-form", "TEST_INVALIDE" };
-		Simulateur.main(args);
+		new Simulateur(args);
 	}
 
 	@Test(expected = ArgumentsException.class)
-	public void testAmplitudeMinSuperieurAMax() {
+	public void testAmplitudeMinSuperieurAMax() throws ArgumentsException {
 		final String[] args = { "-form", "RZ", "-ampl", "3", "1" };
-		Simulateur.main(args);
+		new Simulateur(args);
 	}
 
 	@Test(expected = ArgumentsException.class)
-	public void testAmplitudeMinEgaleAMax() {
+	public void testAmplitudeMinEgaleAMax() throws ArgumentsException {
 		final String[] args = { "-form", "RZ", "-ampl", "3", "3" };
-		Simulateur.main(args);
+
+		System.out.println("Début du test...");
+		new Simulateur(args);
+		System.out.println("Fin du test...");
 	}
 }
