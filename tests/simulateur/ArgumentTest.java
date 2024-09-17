@@ -19,8 +19,6 @@ public class ArgumentTest {
 	public void testAmplitudeMinEgaleAMax() throws ArgumentsException {
 		final String[] args = { "-form", "RZ", "-ampl", "3", "3" };
 
-		System.out.println("Début du test...");
 		new Simulateur(args);
-		System.out.println("Fin du test...");
 	}
 }
