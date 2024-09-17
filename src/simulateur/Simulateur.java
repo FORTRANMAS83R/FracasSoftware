@@ -223,16 +223,15 @@ public class Simulateur {
 
 		// Vérification de la cohérence des arguments passés
 
+		if (formatSignal == SourceAnalogiqueType.RZ && ampl_min != 0) {
+			throw new ArgumentsException(
+					"Attention : Pour une forme d'onde impulsionnelle (RZ), l'amplitude min est forcément égale à 0");
+		}
+
 		if (ampl_max <= ampl_min)
 			throw new ArgumentsException(
 					"L'amplitude min ne peut pas être supérieure ou égale à l'amplitude max, valeurs renseignées :\nmin : "
 							+ ampl_min + ", max : " + ampl_max);
-
-		if (formatSignal == SourceAnalogiqueType.RZ && ampl_min != 0) {
-			ampl_min = 0;
-			System.out.println(
-					"Attention : Pour une forme d'onde impulsionnelle (RZ), l'amplitude min est forcément égale à 0");
-		}
 
 		if (formatSignal == SourceAnalogiqueType.NRZ || formatSignal == SourceAnalogiqueType.NRZT) {
 			if (ampl_max < 0)
