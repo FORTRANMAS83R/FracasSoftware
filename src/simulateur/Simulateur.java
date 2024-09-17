@@ -190,7 +190,6 @@ public class Simulateur {
                     i++;
                     if (args[i].matches("-?[0-9]+([.,][0-9]+)?")) {
                         ampl_max = Float.parseFloat(args[i]);
-                        i++;
                     } else throw new ArgumentsException("Valeur du parametre amplitude min invalide : " + args[i]);
                 } else throw new ArgumentsException("Valeur du parametre amplitude max invalide : " + args[i]);
 
