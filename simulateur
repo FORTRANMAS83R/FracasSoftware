@@ -1,6 +1,8 @@
 #!/bin/sh
-
+echo "Nettoyage du projet..."
 ./cleanAll
+echo "Compilation du projet.."
 ./compile
+echo "Lancement du Simulateur..."
 cd bin && java simulateur/Simulateur "$@"
 cd ../
