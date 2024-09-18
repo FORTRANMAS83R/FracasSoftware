@@ -10,3 +10,4 @@ else
 fi
 
 java -cp $SOURCES org.junit.runner.JUnitCore simulateur.AllTests
+echo "Tests terminés."
