@@ -1,4 +1,12 @@
 #!/bin/sh
-./simulateur -mess 30
-./simulateur -mess 010101010101
-#TODO Once ./compile is done compiling tests we have to implements them here.
+./compile
+
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+    # Système Windows (Git Bash ou Cygwin)
+    SOURCES="bin;lib/*"
+else
+    # Autre système (Linux, macOS, etc.)
+    SOURCES="bin:lib/*"
+fi
+
+java -cp $SOURCES org.junit.runner.JUnitCore simulateur.AllTests

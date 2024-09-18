@@ -1,7 +1,11 @@
 #!/bin/sh
-cd src && javac -d ../bin simulateur/Simulateur.java
-cd ../
+if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+    # Système Windows (Git Bash ou Cygwin)
+    SOURCES="src;tests"
+else
+    # Autre système (Linux, macOS, etc.)
+    SOURCES="src:tests"
+fi
 
-#TODO Find a way to compile the tests in CLI
-#cd tests && javac -d ../bin -cp "../lib/*" simulateur/AllTests.java
+javac -d bin -cp "lib/*" -sourcepath $SOURCES src/simulateur/Simulateur.java tests/simulateur/AllTests.java
 
