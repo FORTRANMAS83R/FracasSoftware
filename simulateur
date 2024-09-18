@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 echo "Nettoyage du projet..."
 ./cleanAll
 echo "Compilation du projet.."
