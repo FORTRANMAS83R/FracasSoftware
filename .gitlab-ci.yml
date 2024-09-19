@@ -24,3 +24,15 @@ livrable:
         name: livrable
         paths:
             - "*.tar.gz"
+    only:
+        - main
+
+pages:
+    script:
+        - ./genDoc
+        - mv docs public
+    artifacts:
+        paths:
+            - public
+    only:
+        - main
