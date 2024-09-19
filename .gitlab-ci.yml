@@ -1,0 +1,26 @@
+image: openjdk:latest
+
+stages:
+    - test
+    - release
+
+test:
+    stage: test
+    script:
+        - env
+        - chmod u+x ./runTests
+        - chmod u+x ./compile
+        - chmod u+x ./cleanAll
+        - sh ./runTests
+
+livrable:
+    image: alpine:latest
+    stage: release
+    script:
+        - mkdir bin
+        - mkdir docs
+        - tar -czvf A4.COLOMER.COURBET.FRANCO.HUET.TRONET.SIT213.EtapeX.tar.gz ./
+    artifacts:
+        name: livrable
+        paths:
+            - "*.tar.gz"

@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/sh
+./cleanAll
 
-if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
+if [ "$OSTYPE" == "msys" ] || [ "$OSTYPE" == "cygwin" ]; then
     # Système Windows (Git Bash ou Cygwin)
     SOURCES="src;tests"
 else
