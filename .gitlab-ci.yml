@@ -19,7 +19,7 @@ livrable:
     script:
         - mkdir bin
         - mkdir docs
-        - tar -czvf A4.COLOMER.COURBET.FRANCO.HUET.TRONET.SIT213.EtapeX.tar.gz ./
+        - tar -czvf A4.COLOMER.COURBET.FRANCO.HUET.TRONET.logiciel.etapeX.tar.gz ./
     artifacts:
         name: livrable
         paths:
