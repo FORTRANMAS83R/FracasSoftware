@@ -28,7 +28,9 @@ livrable:
         - main
 
 pages:
+    stage: release
     script:
+        - chmod u+x ./genDoc
         - ./genDoc
         - mv docs public
     artifacts:
