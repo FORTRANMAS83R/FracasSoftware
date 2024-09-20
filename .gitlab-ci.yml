@@ -18,7 +18,7 @@ test:
         - covered_lines=$(xmllint --xpath 'string(//report/counter[@type="LINE"]/@covered)' report.xml)
         - coverage=$(awk "BEGIN {print ($covered_lines/$total_lines)*100}")
         - 'echo "Total Line Coverage: $coverage%"'
-    coverage: '/Total Line Coverage: \d+(?:\.\d+)?/'
+    coverage: '/Total Line Coverage: \d+(?:\.\d+)?%/'
     artifacts:
         reports:
             coverage_report:
