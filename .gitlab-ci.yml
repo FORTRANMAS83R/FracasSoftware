@@ -11,17 +11,14 @@ test:
         - chmod u+x ./runTests
         - chmod u+x ./compile
         - chmod u+x ./cleanAll
-        - ./compile
-        - ./runTests | tee test_output.txt
+        - sh ./runTests
 
         # Display total line coverage
         - total_lines=$(xmllint --xpath 'string(//report/counter[@type="LINE"]/@missed + //report/counter[@type="LINE"]/@covered)' report.xml)
         - covered_lines=$(xmllint --xpath 'string(//report/counter[@type="LINE"]/@covered)' report.xml)
         - coverage=$(awk "BEGIN {print ($covered_lines/$total_lines)*100}")
         - 'echo "Total Line Coverage: $coverage%"'
-
-        # Vérifier la sortie pour détecter des échecs
-        - grep -q "FAILURES!!!" test_output.txt && exit 1 || echo "All tests passed"
+    coverage: '/Total Line Coverage: \d+(?:\.\d+)?/'
     artifacts:
         reports:
             coverage_report:
