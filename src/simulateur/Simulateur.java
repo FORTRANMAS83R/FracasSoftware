@@ -206,8 +206,10 @@ public class Simulateur {
 
 			} else if (args[i].matches("-snrpb")) {
 				i++;
-				if (args[i].matches("[0-9]+.[0-9]+")) {
+				//match regex d'un float
+				if (args[i].matches("-?[0-9]+([.,][0-9]+)?")) {
 					// TODO appel fonction associée
+
 				} else
 					throw new ArgumentsException("Valeur du parametre signal a bruit invalide : " + args[i]);
 
