@@ -9,5 +9,7 @@ else
     SOURCES="bin:lib/*"
 fi
 
-java -cp $SOURCES org.junit.runner.JUnitCore simulateur.AllTests
+java -javaagent:lib/jacocoagent.jar=destfile=jacoco.exec -cp $SOURCES org.junit.runner.JUnitCore simulateur.AllTests
+java -jar lib/jacococli.jar report jacoco.exec --classfiles bin --sourcefiles src --xml report.xml
+
 echo "Tests terminés."

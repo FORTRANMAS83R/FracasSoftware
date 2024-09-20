@@ -1,7 +1,6 @@
-/bin/*
-/docs/*
-/.idea
+bin/
+docs/
+.idea/
 
-
-
-/bin/
+jacoco.exec
+report.xml

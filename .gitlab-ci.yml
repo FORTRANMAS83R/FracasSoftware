@@ -12,6 +12,11 @@ test:
         - chmod u+x ./compile
         - chmod u+x ./cleanAll
         - sh ./runTests
+    artifacts:
+        reports:
+            cobertura: report.xml
+        paths:
+            - report.xml
 
 livrable:
     image: alpine:latest
