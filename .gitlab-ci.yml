@@ -14,6 +14,7 @@ test:
         - sh ./runTests
 
         # Display total line coverage
+        - apt install bc
         - total_lines=$(xmllint --xpath 'string(//report/counter[@type="LINE"]/@missed + //report/counter[@type="LINE"]/@covered)' report.xml)
         - covered_lines=$(xmllint --xpath 'string(//report/counter[@type="LINE"]/@covered)' report.xml)
         - coverage=$(echo "scale=2; $covered_lines/$total_lines*100" | bc)
