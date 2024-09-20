@@ -14,9 +14,9 @@ test:
         - sh ./runTests
     artifacts:
         reports:
-            cobertura: report.xml
-        paths:
-            - report.xml
+            coverage_report:
+                coverage_format: cobertura
+                path: report.xml
 
 livrable:
     image: alpine:latest
