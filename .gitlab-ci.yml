@@ -15,7 +15,7 @@ test:
     artifacts:
         reports:
             coverage_report:
-                coverage_format: cobertura
+                coverage_format: jacoco
                 path: report.xml
 
 livrable:
