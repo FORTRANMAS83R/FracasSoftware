@@ -17,7 +17,7 @@ test:
         - apt install bc
         - total_lines=$(xmllint --xpath 'string(//report/counter[@type="LINE"]/@missed + //report/counter[@type="LINE"]/@covered)' report.xml)
         - covered_lines=$(xmllint --xpath 'string(//report/counter[@type="LINE"]/@covered)' report.xml)
-        - coverage=$(echo "scale=2; $covered_lines/$total_lines*100" | bc)
+        - coverage=$(awk "BEGIN {print ($covered_lines/$total_lines)*100}")
         - "echo \"Total Line Coverage: $coverage%\""
     artifacts:
         reports:
