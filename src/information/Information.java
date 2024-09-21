@@ -39,6 +39,21 @@ public class Information<T> implements Iterable<T> {
     }
 
     /**
+     * pour obtenir une sous-information
+     *
+     * @param start le rang du premier élément de la sous-information (à partir de 0)
+     * @param end   le rang du dernier élément de la sous-information
+     * @return la sous-information de rang start à end-1
+     */
+    public Information<T> sousInformation(int start, int end) {
+        Information<T> sub = new Information<>();
+        for (int i = start; i < end; i++) {
+            sub.add(this.iemeElement(i));
+        }
+        return sub;
+    }
+
+    /**
      * pour renvoyer un élément d'une information
      *
      * @param i le rang de l'information à renvoyer (à partir de 0)
@@ -65,6 +80,14 @@ public class Information<T> implements Iterable<T> {
      */
     public void add(T valeur) {
         this.content.add(valeur);
+    }
+
+
+    public Information<T> add(Information<T> information) {
+        for (int i = 0; i < this.nbElements(); i++) {
+            this.setIemeElement(i, information.iemeElement(i));
+        }
+        return this;
     }
 
 
