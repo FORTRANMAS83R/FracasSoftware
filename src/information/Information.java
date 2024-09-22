@@ -9,12 +9,14 @@ import java.util.LinkedList;
 public class Information<T> implements Iterable<T> {
 
     private final LinkedList<T> content;
+    private Integer nbEchantillons;
 
     /**
      * pour construire une information vide
      */
     public Information() {
         this.content = new LinkedList<T>();
+        this.nbEchantillons = 0;
     }
 
     /**
@@ -24,9 +26,30 @@ public class Information<T> implements Iterable<T> {
      */
     public Information(T[] content) {
         this.content = new LinkedList<T>();
+        this.nbEchantillons = content.length;
         for (int i = 0; i < content.length; i++) {
             this.content.addLast(content[i]);
         }
+    }
+    public Information(T[] content, Integer nbEchantillons) {
+        this.content = new LinkedList<T>();
+        this.nbEchantillons = nbEchantillons;
+        for (int i = 0; i < content.length; i++) {
+            this.content.addLast(content[i]);
+        }
+    }
+    /*
+        @return le nombre d'échantillons
+     */
+    public Integer getNbEchantillons() {
+        return this.nbEchantillons;
+    }
+
+    /*
+        @param nbEchantillons: le nombre d'échantillons
+     */
+    public void setNbEchantillons(Integer nbEchantillons) {
+        this.nbEchantillons = nbEchantillons;
     }
 
     /**

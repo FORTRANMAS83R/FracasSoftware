@@ -32,11 +32,11 @@ public abstract class SourceAnalogique extends Source<Float> {
     public SourceAnalogique(String message, int nbEchantillon, float amp_min, float amp_max) {
         super();
         this.message = message;
-        this.nbEchantillon = nbEchantillon;
         this.amp_min = amp_min;
         this.amp_max = amp_max;
 
         this.informationBinaire = genInformation(message);
+        this.informationBinaire.setNbEchantillons(nbEchantillon);
         echantillonnage();
         filtreMiseEnForme();
     }
@@ -44,7 +44,7 @@ public abstract class SourceAnalogique extends Source<Float> {
     public SourceAnalogique(int nbEchantillon, float amp_min, float amp_max, int nbBits, Integer seed) {
         super();
         this.informationBinaire = genInformationAleatoire(nbBits, seed);
-        this.nbEchantillon = nbEchantillon;
+        this.informationBinaire.setNbEchantillons(nbEchantillon);
         this.amp_min = amp_min;
         this.amp_max = amp_max;
 
