@@ -15,10 +15,11 @@ import java.util.Random;
  */
 public class BBG {
     private Float SNRpb;
-    private Information<Float> bruit;
-    private LinkedList<Float> variances;
+    private Float variance;
+    private Float SNR;
     private Random a1; // générateur de nombres aléatoires suivant une loi uniforme entre 0 et 1
     private Random a2; // générateur de nombres aléatoires suivant une loi uniforme entre 0 et 1
+    private Float puissanceSignal;
 
     /*
         Constructeur de la classe BBG (sans graine)
@@ -27,8 +28,9 @@ public class BBG {
         @param nbEch: le nombre d'échantillons par symbole
      */
     public BBG(Float SNRpb){
-        this.bruit = new Information<>();
-        this.variances = new LinkedList<>();
+        this.variance = 0.0f;
+        this.SNR = 0.0f;
+        this.puissanceSignal = 0.0f;
         this.a1 = new Random();
         this.a2 = new Random();
         this.SNRpb = SNRpb;
@@ -43,27 +45,13 @@ public class BBG {
         @param seed2: la graine pour le générateur de nombres aléatoires a2
      */
     public BBG(Float SNRpb, Integer seed){
-        this.bruit = new Information<>();
-        this.variances = new LinkedList<>();
+        this.variance = 0.0f;
+        this.SNR = 0.0f;
+        this.puissanceSignal = 0.0f;
         this.a1 = new Random(seed); // générateur de nombres aléatoires suivant une loi uniforme entre 0 et 1
         this.a2 = new Random(seed);
         this.SNRpb = SNRpb;
     }
-
-    private Information<Float> getBruit() {
-        return this.bruit;
-    }
-    /*
-        Méthode permettant de calculer le bruit généré avec un SNRpb donné pour un signal donné
-        @param signal: le signal à bruiter
-        @param SNRpb: le rapport signal sur bruit en dB
-        @param nbEch: le nombre d'échantillons par symbole
-        @return le bruit généré
-     */
-    private void appliquerBruit(Information<Float> signal){
-
-    }
-
 
     /*
         Méthode permettant d'ajouter la valeur du bruit à un signal'
@@ -71,15 +59,27 @@ public class BBG {
         @return le bruit généré
      */
     public Information<Float> bruitage(Information<Float> signal){
-        Float SNR = calculSNR(SNRpb, signal.getNbEchantillons());
-        Float puissanceSignal = calculPuissanceSignal(signal);
-        Float variance = calculVariance(puissanceSignal, SNRpb, signal.getNbEchantillons());
+        this.SNR = calculSNR(SNRpb, signal.getNbEchantillons());
+        this.puissanceSignal = calculPuissanceSignal(signal);
+        this.variance = calculVariance(puissanceSignal, SNRpb, signal.getNbEchantillons());
 
         for (int i=0; i<signal.nbElements(); i++){
-            signal.setIemeElement(i, signal.iemeElement(i) + (float)Math.sqrt(variance)*(float)Math.sqrt(-2*Math.log(1 - a1.nextFloat()))*(float)Math.cos(2*Math.PI*a2.nextFloat()));
+            signal.setIemeElement(i, signal.iemeElement(i) + (float)Math.sqrt(this.variance)*(float)Math.sqrt(-2*Math.log(1 - a1.nextFloat()))*(float)Math.cos(2*Math.PI*a2.nextFloat()));
         }
 
         return signal;
+    }
+
+    /*
+        Méthode renvoyant une description de l'objet sous forme de chaîne de caractères
+        @return la description de l'objet
+     */
+    public String toString() {
+        return "BBG{" +
+                "SNRpb=" + SNRpb +
+                ", variance=" + variance +
+                ", SNR=" + SNR +
+                '}';
     }
 
     /*
@@ -106,7 +106,14 @@ public class BBG {
         return (nbEch*puissanceSignal)/((float)(2*Math.pow(10, snrPb/10)));
     }
 
+    /*
+        Méthode permettant de calculer le rapport signal sur bruit à partir du rapport signal sur bruit par bit en dB
+        @param snrPB: le rapport signal sur bruit en dB
+        @param nbEch: le nombre d'échantillons par symbole
+        @return le rapport signal sur bruit
+     */
     private static Float calculSNR(Float snrPB, Integer nbEch){
         return (float)(snrPB-10*Math.log10(nbEch));
     }
+
 }
