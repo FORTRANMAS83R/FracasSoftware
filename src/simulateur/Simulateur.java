@@ -173,22 +173,22 @@ public class Simulateur {
 				try {
 					seed = Integer.valueOf(getArgumentOrThrows(args, i, "Pas de valeur du parametre -seed"));
 				} catch (Exception e) {
-					throw new ArgumentsException("Pas de valeur du parametre -seed :" + args[i]);
+					throw new ArgumentsException("Valeur du paramètre -seed invalide : " + args[i]);
 				}
 			} else if (args[i].matches("-mess")) {
 				i++;
 				// traiter la valeur associee
 				messageString = getArgumentOrThrows(args, i, "Pas de valeur du parametre -mess ");
-				if (args[i].matches("[0,1]{7,}")) { // au moins 7 digits
+				if (messageString.matches("[0,1]{7,}")) { // au moins 7 digits
 					messageAleatoire = false;
 					nbBitsMess = args[i].length();
-				} else if (args[i].matches("[0-9]{1,6}")) { // de 1 à 6 chiffres
+				} else if (messageString.matches("[0-9]{1,6}")) { // de 1 à 6 chiffres
 					messageAleatoire = true;
 					nbBitsMess = Integer.parseInt(args[i]);
 					if (nbBitsMess < 1)
-						throw new ArgumentsException("Pas de valeur du parametre -mess : " + nbBitsMess);
+						throw new ArgumentsException("Valeur du paramètre -mess invalide : " + nbBitsMess);
 				} else
-					throw new ArgumentsException("Pas de valeur du parametre -mess : " + args[i]);
+					throw new ArgumentsException("Valeur du paramètre -mess invalide : " + messageString);
 			} else if (args[i].matches("-form")) {
 				i++;
 				if (args[i].matches("NRZ")) {
@@ -307,12 +307,11 @@ public class Simulateur {
 				if (moy_dst > moy_ampl) {
 					nbBitEronnes++;
 				}
- 			} else { // si c'est un 1 à la source
+			} else { // si c'est un 1 à la source
 				if (moy_dst < moy_ampl) {
 					nbBitEronnes++;
 				}
 			}
-
 
 //			if (moy_src - moy_dst > delta || moy_src - moy_dst < -delta) {
 //				nbBitEronnes++;
@@ -341,6 +340,8 @@ public class Simulateur {
 
 		Simulateur simulateur = null;
 
+		final long start = System.nanoTime();
+
 		try {
 			simulateur = new Simulateur(args);
 		} catch (Exception e) {
@@ -350,6 +351,12 @@ public class Simulateur {
 
 		try {
 			simulateur.execute();
+
+			final long end = System.nanoTime();
+			final long time = end - start;
+			final Float ms = (time * 1f) / 1000000;
+
+			System.out.println("Time : " + ms + "ms");
 
 			// Condition temporaire nécessaire pour l'affichage de courbe utile au rapport
 			// mais non prévu dans la programmation des sondes

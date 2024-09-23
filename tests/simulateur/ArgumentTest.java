@@ -1,5 +1,10 @@
 package simulateur;
 
+import static org.junit.Assert.assertTrue;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -268,19 +273,19 @@ public class ArgumentTest {
 		new Simulateur(args);
 	}
 
-	@Test()
 	/**
 	 * Test de l'argument snrpb valide
 	 */
+	@Test()
 	public void testSNRPBValide() throws ArgumentsException {
 		final String[] args = { "-snrpb", "10" };
 		new Simulateur(args);
 	}
 
-	@Test()
 	/**
 	 * Test de l'argument snrpb invalide
 	 */
+	@Test()
 	public void testSNRPBInvalide() throws ArgumentsException {
 		final String[] args = { "-snrpb", "10@" };
 		thrown.expect(ArgumentsException.class);
@@ -288,28 +293,28 @@ public class ArgumentTest {
 		new Simulateur(args);
 	}
 
-	@Test()
 	/**
 	 * Test de l'argument snrpb avec SNR négatif
 	 */
+	@Test()
 	public void testSNRPBNegatif() throws ArgumentsException {
 		final String[] args = { "-snrpb", "-10" };
 		new Simulateur(args);
 	}
 
-	@Test()
 	/**
 	 * Test de l'argument snrpb avec SNR négatif et float
 	 */
+	@Test()
 	public void testSNRPBNegatifFloat() throws ArgumentsException {
 		final String[] args = { "-snrpb", "-10.5" };
 		new Simulateur(args);
 	}
 
-	@Test()
 	/**
 	 * Test de l'argument snrpb avec SNR négatif et float mais invalide
 	 */
+	@Test()
 	public void testSNRPBNegatifFloatInvalide() throws ArgumentsException {
 		final String[] args = { "-snrpb", "-10.5@" };
 		thrown.expect(ArgumentsException.class);
@@ -317,10 +322,143 @@ public class ArgumentTest {
 		new Simulateur(args);
 	}
 
+	/**
+	 * Test de l'argument nbEch inférieur à 3
+	 */
 	@Test()
+	public void testNbEchInferieurA0() throws ArgumentsException {
+		final String[] args = { "-nbEch", "-2" };
+
+		thrown.expect(ArgumentsException.class);
+		thrown.expectMessage("Valeur du parametre -nbEch invalide : -2");
+
+		new Simulateur(args);
+	}
+
+	/**
+	 * Test de l'argument nbEch valide
+	 */
+	@Test()
+	public void testNbEchNonMultipleDe3() throws ArgumentsException {
+		final String[] args = { "-nbEch", "31" };
+
+		// Capture output
+		final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+		final PrintStream originalOut = System.out;
+		System.setOut(new PrintStream(outContent));
+
+		try {
+			new Simulateur(args);
+			assertTrue(outContent.toString().contains("\tAttention: Le nombre d'échantillons a été ajusté à 33"));
+		} finally {
+			// Restore output in a safe way (even in there is an exception
+			System.setOut(originalOut);
+		}
+
+	}
+
+	/**
+	 * Test de l'argument nbEch valide
+	 */
+	@Test()
+	public void testNbEchValide() throws ArgumentsException {
+		final String[] args = { "-nbEch", "30" };
+
+		new Simulateur(args);
+	}
+
+	/**
+	 * Test de l'argument mess chaine binaire valide
+	 */
+	@Test()
+	public void testMessBinaireValide() throws ArgumentsException {
+		final String[] args = { "-mess", "0110001" };
+
+		new Simulateur(args);
+	}
+
+	/**
+	 * Test de l'argument mess nombre valide
+	 */
+	@Test()
+	public void testMessNombreValide() throws ArgumentsException {
+		final String[] args = { "-mess", "100000" };
+
+		new Simulateur(args);
+	}
+
+	/**
+	 * Test de l'argument mess chiffre trop long
+	 */
+	@Test()
+	public void testMessNombreTropLong() throws ArgumentsException {
+		final String[] args = { "-mess", "2000000" };
+
+		thrown.expect(ArgumentsException.class);
+		thrown.expectMessage("Valeur du paramètre -mess invalide : 2000000");
+
+		new Simulateur(args);
+	}
+
+	/**
+	 * Test de l'argument mess chiffre trop long
+	 */
+	@Test()
+	public void testMessNombreEgalA0() throws ArgumentsException {
+		final String[] args = { "-mess", "0" };
+
+		thrown.expect(ArgumentsException.class);
+		thrown.expectMessage("Valeur du paramètre -mess invalide : 0");
+
+		new Simulateur(args);
+	}
+
+	/**
+	 * Test de l'argument mess nombre negatif
+	 */
+	@Test()
+	public void testMessNombreNegatif() throws ArgumentsException {
+		final String[] args = { "-mess", "-500" };
+
+		thrown.expect(ArgumentsException.class);
+		thrown.expectMessage("Valeur du paramètre -mess invalide : -500");
+
+		new Simulateur(args);
+	}
+
+	/**
+	 * Test de l'argument seed valide
+	 */
+	@Test()
+	public void testSeedValide() throws ArgumentsException {
+		final String[] args = { "-seed", "-500" };
+
+		new Simulateur(args);
+	}
+
+	/**
+	 * Test de l'argument seed avec un nombre invalide
+	 */
+	@Test()
+	public void testSeedNombreInvalide() throws ArgumentsException {
+		final String[] args = { "-seed", "INVALIDE" };
+
+		thrown.expect(ArgumentsException.class);
+		thrown.expectMessage("Valeur du paramètre -seed invalide : INVALIDE");
+
+		new Simulateur(args);
+	}
+
+	/**
+	 * 
+	 * ARGUMENT VIDE
+	 * 
+	 */
+
 	/**
 	 * Test de l'argument snrpb avec SNR vide
 	 */
+	@Test()
 	public void testSNRPBVide() throws ArgumentsException {
 		final String[] args = { "-snrpb" };
 		thrown.expect(ArgumentsException.class);
