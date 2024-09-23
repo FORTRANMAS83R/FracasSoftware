@@ -145,6 +145,7 @@ public class Information<T> implements Iterable<T> {
         for (int i = 0; i < this.nbElements(); i++) {
             clone.add(this.iemeElement(i));
         }
+        clone.setNbEchantillons(this.getNbEchantillons());
         return clone;
     }
 

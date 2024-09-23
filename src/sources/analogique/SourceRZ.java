@@ -36,23 +36,13 @@ public class SourceRZ extends SourceAnalogique {
      */
     @Override
     protected void filtreMiseEnForme() {
-        int premierTiers = this.nbEchantillon / 3;
-        int deuxiemeTiers = this.nbEchantillon / 3;
+        final int nbEchantillon = this.informationEchantillon.getNbEchantillons();
         informationGeneree = informationEchantillon.clone();
 
         for (int i = 0; i < informationEchantillon.nbElements(); i += nbEchantillon) {
-            for (int j = 0; j < nbEchantillon; j++) {
-                if ((j <= premierTiers)) {
-                    informationGeneree.setIemeElement(i + j, 0.0f);
-                } else if (j <= premierTiers + deuxiemeTiers) {
-                    if (informationEchantillon.iemeElement(i + j) == amp_max) {
-                        informationGeneree.setIemeElement(i + j, amp_max);
-                    } else {
-                        informationGeneree.setIemeElement(i + j, amp_min);
-                    }
-                } else {
-                    informationGeneree.setIemeElement(i + j, 0.0f);
-                }
+            for (int j = 0; j < nbEchantillon / 3; j++) {
+                this.informationGeneree.setIemeElement(i + j, 0f);
+                this.informationGeneree.setIemeElement(i + nbEchantillon - 1 - j, 0f);
             }
         }
 
