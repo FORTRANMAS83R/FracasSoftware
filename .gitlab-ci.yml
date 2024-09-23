@@ -11,7 +11,8 @@ test:
         - chmod u+x ./runTests
         - chmod u+x ./compile
         - chmod u+x ./cleanAll
-        - sh ./runTests
+        - ./compile
+        - ./runTests
 
         # Display total line coverage
         - total_lines=$(xmllint --xpath 'string(//report/counter[@type="LINE"]/@missed + //report/counter[@type="LINE"]/@covered)' report.xml)
