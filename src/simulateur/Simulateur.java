@@ -9,6 +9,7 @@ import sources.analogique.SourceNRZ;
 import sources.analogique.SourceNRZT;
 import sources.analogique.SourceRZ;
 import transmetteurs.Transmetteur;
+import transmetteurs.TransmetteurBruite;
 import transmetteurs.TransmetteurParfait;
 import visualisations.SondeAnalogique;
 import visualisations.SondeLogique;
@@ -39,6 +40,16 @@ public class Simulateur {
 	 * aléatoires
 	 */
 	private boolean aleatoireAvecGerme = false;
+
+	/**
+	 * indique si le Simulateur utilise un bruit blanc gaussien
+	 */
+	private boolean messageBruitee = false;
+
+	/**
+	 * indique si le Simulateur utilise un bruit blanc gaussien
+	 */
+	private Float snrpb = 0.0f;
 
 	/**
 	 * la valeur de la semence utilisée pour les générateurs aléatoires
@@ -106,8 +117,17 @@ public class Simulateur {
 			case NRZT -> source = new SourceNRZT(nbEch, ampl_min, ampl_max, nbBitsMess, seed);
 			}
 		}
-		transmetteurAnalogique = new TransmetteurParfait<>();
-		source.connecter(transmetteurAnalogique);
+		if (messageBruitee) {
+			transmetteurAnalogique = new TransmetteurBruite(this.snrpb);
+			source.connecter(transmetteurAnalogique);
+
+		}
+		else{
+			transmetteurAnalogique = new TransmetteurParfait<>();
+			source.connecter(transmetteurAnalogique);
+
+		}
+
 
 		destinationAnalogique = new DestinationFinale<>();
 		transmetteurAnalogique.connecter(destinationAnalogique);
@@ -142,7 +162,7 @@ public class Simulateur {
 	 * @throws ArgumentsException si un des arguments est incorrect.
 	 */
 	private void analyseArguments(String[] args) throws ArgumentsException {
-		//TODO vérif sortie de tableau args vide
+
 		for (int i = 0; i < args.length; i++) { // traiter les arguments 1 par 1
 
 			if (args[i].matches("-s")) {
@@ -205,13 +225,10 @@ public class Simulateur {
 
 			} else if (args[i].matches("-snrpb")) {
 				i++;
-				//Vérification de la présence d'arguments après l'option -snrpb
-				if(i>=args.length) {
-					throw new ArgumentsException("Pas de valeur du paramètre de signal à bruit renseignée");
-				}
-				//match regex d'un float ou d'un int
+				//match regex d'un float
 				if (args[i].matches("-?[0-9]+([.,][0-9]+)?")) {
-					// TODO appel fonction associée
+					messageBruitee = true;
+					snrpb = Float.parseFloat(args[i].replace(',', '.'));
 
 				} else
 					throw new ArgumentsException("Valeur du parametre signal a bruit invalide : " + args[i]);

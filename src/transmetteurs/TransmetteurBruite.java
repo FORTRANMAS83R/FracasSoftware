@@ -17,7 +17,7 @@ public class TransmetteurBruite extends Transmetteur<Float,Float> {
     @Override
     public void recevoir(Information information) throws InformationNonConformeException {
         this.informationRecue = information;
-        BBG bruit = new BBG(10f, (Information<Float>) information);
+        BBG bruit = new BBG(this.SNRpb, (Information<Float>) information);
         informationEmise = bruit.bruitage(this.informationRecue);
         emettre();
     }

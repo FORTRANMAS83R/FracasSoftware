@@ -37,26 +37,26 @@ public abstract class SourceAnalogique extends Source<Float> {
 
         this.informationBinaire = genInformation(message);
         this.informationBinaire.setNbEchantillons(nbEchantillon);
-        echantillonnage();
+        echantillonnage(nbEchantillon);
         filtreMiseEnForme();
     }
 
     public SourceAnalogique(int nbEchantillon, float amp_min, float amp_max, int nbBits, Integer seed) {
         super();
         this.informationBinaire = genInformationAleatoire(nbBits, seed);
-        this.informationBinaire.setNbEchantillons(nbEchantillon);
         this.amp_min = amp_min;
         this.amp_max = amp_max;
 
-        echantillonnage();
+        echantillonnage(nbEchantillon);
         filtreMiseEnForme();
     }
 
-    private void echantillonnage() {
+    private void echantillonnage(Integer nbEch) {
         this.informationEchantillon = new Information<>();
+        this.informationEchantillon.setNbEchantillons(nbEch);
         for (int i = 0; i < informationBinaire.nbElements(); i++) {
             final Float element = informationBinaire.iemeElement(i) ? amp_max : amp_min;
-            for (int j = 0; j < nbEchantillon; j++)
+            for (int j = 0; j < this.informationEchantillon.getNbEchantillons(); j++)
                 this.informationEchantillon.add(element);
         }
     }

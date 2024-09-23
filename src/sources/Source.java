@@ -104,6 +104,7 @@ public abstract class Source<T> implements SourceInterface<T> {
 
     protected Information<Boolean> genInformationAleatoire(int nBits, Integer seed) {
         final Information<Boolean> info = new Information<>();
+        info.setNbEchantillons(1);
         Random rdm = seed == null ? new Random() : new Random(seed);
         for (int i = 0; i < nBits; i++) {
             info.add(rdm.nextBoolean());
@@ -113,6 +114,7 @@ public abstract class Source<T> implements SourceInterface<T> {
 
     protected Information<Boolean> genInformation(String message) {
         final Information<Boolean> info = new Information<>();
+        info.setNbEchantillons(1);
         for (int i = 0; i < message.length(); i++) {
             if (message.charAt(i) == '0')
                 info.add(false);
