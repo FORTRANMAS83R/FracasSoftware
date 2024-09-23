@@ -297,7 +297,7 @@ public class Simulateur {
 			}
 			moy_src = (float) Math.round((somme_src / (float) nbEch) * 100) /100;
 			moy_dst = (float) Math.round((somme_dst / (float) nbEch) * 100) /100;
-			if (moy_src-moy_dst > delta) {
+			if ( moy_src-moy_dst >= delta || moy_src-moy_dst <= -delta) {
 				nbBitEronnes++;
 			}
 		}
