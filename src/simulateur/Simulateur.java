@@ -143,7 +143,7 @@ public class Simulateur {
 	 * @throws ArgumentsException si un des arguments est incorrect.
 	 */
 	private void analyseArguments(String[] args) throws ArgumentsException {
-
+		//TODO vérif sortie de tableau args vide
 		for (int i = 0; i < args.length; i++) { // traiter les arguments 1 par 1
 
 			if (args[i].matches("-s")) {
@@ -206,7 +206,11 @@ public class Simulateur {
 
 			} else if (args[i].matches("-snrpb")) {
 				i++;
-				//match regex d'un float
+				//Vérification de la présence d'arguments après l'option -snrpb
+				if(i>=args.length) {
+					throw new ArgumentsException("Pas de valeur du paramètre de signal à bruit renseignée");
+				}
+				//match regex d'un float ou d'un int
 				if (args[i].matches("-?[0-9]+([.,][0-9]+)?")) {
 					// TODO appel fonction associée
 

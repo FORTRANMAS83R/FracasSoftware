@@ -180,4 +180,61 @@ public class ArgumentTest {
 
 		new Simulateur(args);
 	}
+	@Test()
+	/**
+	 *Test de l'argument snrpb valide
+	 */
+	public void testSNRPBValide() throws ArgumentsException {
+		final String[] args = { "-snrpb", "10" };
+		new Simulateur(args);
+	}
+	@Test()
+	/**
+	 *Test de l'argument snrpb invalide
+	 */
+	public void testSNRPBInvalide() throws ArgumentsException {
+		final String[] args = { "-snrpb", "10@" };
+		thrown.expect(ArgumentsException.class);
+		thrown.expectMessage("Valeur du parametre signal a bruit invalide : 10@");
+		new Simulateur(args);
+	}
+	@Test()
+	/**
+	 *Test de l'argument snrpb avec SNR négatif
+	 */
+	public void testSNRPBNegatif() throws ArgumentsException {
+		final String[] args = { "-snrpb", "-10" };
+		new Simulateur(args);
+	}
+	@Test()
+	/**
+	 *Test de l'argument snrpb avec SNR négatif et float
+	 */
+	public void testSNRPBNegatifFloat() throws ArgumentsException {
+		final String[] args = { "-snrpb", "-10.5" };
+		new Simulateur(args);
+	}
+	@Test()
+	/**
+	 *Test de l'argument snrpb avec SNR négatif et float mais invalide
+	 */
+	public void testSNRPBNegatifFloatInvalide() throws ArgumentsException {
+		final String[] args = { "-snrpb", "-10.5@" };
+		thrown.expect(ArgumentsException.class);
+		thrown.expectMessage("Valeur du parametre signal a bruit invalide : -10.5@");
+		new Simulateur(args);
+	}
+	@Test()
+	/**
+	 *Test de l'argument snrpb avec SNR vide
+	 */
+	public void testSNRPBVide() throws ArgumentsException {
+		final String[] args = { "-snrpb" };
+		thrown.expect(ArgumentsException.class);
+		thrown.expectMessage("Pas de valeur du paramètre de signal à bruit renseignée");
+		new Simulateur(args);
+	}
+//TODO : Ajouter des tests pour les autres arguments
+
 }
+
