@@ -288,7 +288,8 @@ public class Simulateur {
 	public float calculTauxErreurBinaire() {
 		int nbBitEronnes = 0;
 		float moy_src, moy_dst, somme_src, somme_dst;
-		float delta = ((ampl_max + ampl_min) / 2.0f) / 5.0f;
+		float delta = ((ampl_max + ampl_min) / 2.0f);
+		float moy_ampl = (ampl_max + ampl_min) / 2.0f;
 		Information<?> src = source.getInformationEmise();
 		Information<?> dst = destinationAnalogique.getInformationRecue();
 		for (int i = 0; i < nbBitsMess; i++) {
@@ -300,9 +301,22 @@ public class Simulateur {
 			}
 			moy_src = (float) Math.round((somme_src / (float) nbEch) * 100) / 100;
 			moy_dst = (float) Math.round((somme_dst / (float) nbEch) * 100) / 100;
-			if (moy_src - moy_dst >= delta || moy_src - moy_dst <= -delta) {
-				nbBitEronnes++;
+
+			// si c'est un 0 à la source
+			if (moy_src < moy_ampl) {
+				if (moy_dst > moy_ampl) {
+					nbBitEronnes++;
+				}
+ 			} else { // si c'est un 1 à la source
+				if (moy_dst < moy_ampl) {
+					nbBitEronnes++;
+				}
 			}
+
+
+//			if (moy_src - moy_dst > delta || moy_src - moy_dst < -delta) {
+//				nbBitEronnes++;
+//			}
 		}
 		TEB = (float) nbBitEronnes / (float) nbBitsMess;
 		return TEB;
