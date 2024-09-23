@@ -123,7 +123,7 @@ public class Simulateur {
 			transmetteurAnalogique = new TransmetteurBruite(this.snrpb);
 			source.connecter(transmetteurAnalogique);
 
-		} else{
+		} else {
 			transmetteurAnalogique = new TransmetteurParfait<>();
 			source.connecter(transmetteurAnalogique);
 
@@ -225,9 +225,10 @@ public class Simulateur {
 
 			} else if (args[i].matches("-snrpb")) {
 				i++;
-				//match regex d'un float
+				// match regex d'un float
 
-				if (getArgumentOrThrows(args, i, "Pas de valeur du paramètre de signal à bruit renseignée").matches("-?[0-9]+([.,][0-9]+)?")) {
+				if (getArgumentOrThrows(args, i, "Pas de valeur du paramètre de signal à bruit renseignée")
+						.matches("-?[0-9]+([.,][0-9]+)?")) {
 					messageBruitee = true;
 					snrpb = Float.parseFloat(args[i].replace(',', '.'));
 
@@ -259,11 +260,11 @@ public class Simulateur {
 		if (formatSignal == SourceAnalogiqueType.NRZ || formatSignal == SourceAnalogiqueType.NRZT) {
 			if (ampl_max < 0)
 				throw new ArgumentsException(
-						"Pour une forme d'onde rectangulaire ou trapézoïdale (NRZ/NRZT), la valeur de l'amplitude max doit être supérieur ou égale à 0, valeur renseignée : "
+						"Pour une forme d'onde rectangulaire ou trapézoïdale (NRZ/NRZT), la valeur de l'amplitude max doit être supérieure ou égale à 0, valeur renseignée : "
 								+ ampl_max);
 			if (ampl_min > 0)
 				throw new ArgumentsException(
-						"Pour une forme d'onde rectangulaire ou trapézoïdale (NRZ/NRZT), la valeur de l'amplitude min doit être inférieur ou égale à 0, valeur renseignée : "
+						"Pour une forme d'onde rectangulaire ou trapézoïdale (NRZ/NRZT), la valeur de l'amplitude min doit être inférieure ou égale à 0, valeur renseignée : "
 								+ ampl_min);
 		}
 	}
@@ -287,7 +288,7 @@ public class Simulateur {
 	public float calculTauxErreurBinaire() {
 		int nbBitEronnes = 0;
 		float moy_src, moy_dst, somme_src, somme_dst;
-		float delta = ((ampl_max+ampl_min)/2.0f)/5.0f;
+		float delta = ((ampl_max + ampl_min) / 2.0f) / 5.0f;
 		Information<?> src = source.getInformationEmise();
 		Information<?> dst = destinationAnalogique.getInformationRecue();
 		for (int i = 0; i < nbBitsMess; i++) {
@@ -297,21 +298,23 @@ public class Simulateur {
 				somme_src += (float) src.iemeElement(i * nbEch + j);
 				somme_dst += (float) dst.iemeElement(i * nbEch + j);
 			}
-			moy_src = (float) Math.round((somme_src / (float) nbEch) * 100) /100;
-			moy_dst = (float) Math.round((somme_dst / (float) nbEch) * 100) /100;
-			if ( moy_src-moy_dst >= delta || moy_src-moy_dst <= -delta) {
+			moy_src = (float) Math.round((somme_src / (float) nbEch) * 100) / 100;
+			moy_dst = (float) Math.round((somme_dst / (float) nbEch) * 100) / 100;
+			if (moy_src - moy_dst >= delta || moy_src - moy_dst <= -delta) {
 				nbBitEronnes++;
 			}
 		}
 		TEB = (float) nbBitEronnes / (float) nbBitsMess;
 		return TEB;
 	}
-	public static String getArgumentOrThrows(String [] args, int index, String error) throws ArgumentsException {
+
+	public static String getArgumentOrThrows(String[] args, int index, String error) throws ArgumentsException {
 		if (args.length <= index) {
 			throw new ArgumentsException(error);
 		}
 		return args[index];
 	}
+
 	/**
 	 * La fonction main instancie un Simulateur à l'aide des arguments paramètres et
 	 * affiche le résultat de l'exécution d'une transmission.
@@ -319,7 +322,6 @@ public class Simulateur {
 	 * @param args les différents arguments qui serviront à l'instanciation du
 	 *             Simulateur.
 	 */
-
 
 	public static void main(String[] args) {
 
