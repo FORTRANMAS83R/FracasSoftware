@@ -121,13 +121,11 @@ public class Simulateur {
 			transmetteurAnalogique = new TransmetteurBruite(this.snrpb);
 			source.connecter(transmetteurAnalogique);
 
-		}
-		else{
+		} else{
 			transmetteurAnalogique = new TransmetteurParfait<>();
 			source.connecter(transmetteurAnalogique);
 
 		}
-
 
 		destinationAnalogique = new DestinationFinale<>();
 		transmetteurAnalogique.connecter(destinationAnalogique);
@@ -171,14 +169,14 @@ public class Simulateur {
 				aleatoireAvecGerme = true;
 				i++;
 				try {
-					seed = Integer.valueOf(args[i]);
+					seed = Integer.valueOf(getArgumentOrThrows(args, i, "Pas de valeur du parametre -seed"));
 				} catch (Exception e) {
-					throw new ArgumentsException("Valeur du parametre -seed  invalide :" + args[i]);
+					throw new ArgumentsException("Pas de valeur du parametre -seed :" + args[i]);
 				}
 			} else if (args[i].matches("-mess")) {
 				i++;
 				// traiter la valeur associee
-				messageString = args[i];
+				messageString = getArgumentOrThrows(args, i, "Pas de valeur du parametre -mess ");
 				if (args[i].matches("[0,1]{7,}")) { // au moins 7 digits
 					messageAleatoire = false;
 					nbBitsMess = args[i].length();
@@ -186,9 +184,9 @@ public class Simulateur {
 					messageAleatoire = true;
 					nbBitsMess = Integer.parseInt(args[i]);
 					if (nbBitsMess < 1)
-						throw new ArgumentsException("Valeur du parametre -mess invalide : " + nbBitsMess);
+						throw new ArgumentsException("Pas de valeur du parametre -mess : " + nbBitsMess);
 				} else
-					throw new ArgumentsException("Valeur du parametre -mess invalide : " + args[i]);
+					throw new ArgumentsException("Pas de valeur du parametre -mess : " + args[i]);
 			} else if (args[i].matches("-form")) {
 				i++;
 				if (args[i].matches("NRZ")) {
@@ -226,7 +224,8 @@ public class Simulateur {
 			} else if (args[i].matches("-snrpb")) {
 				i++;
 				//match regex d'un float
-				if (args[i].matches("-?[0-9]+([.,][0-9]+)?")) {
+
+				if (getArgumentOrThrows(args, i, "Pas de valeur du paramètre de signal à bruit renseignée").matches("-?[0-9]+([.,][0-9]+)?")) {
 					messageBruitee = true;
 					snrpb = Float.parseFloat(args[i].replace(',', '.'));
 
@@ -304,7 +303,12 @@ public class Simulateur {
 		}
 		return (float) nbBitEronnes / (float) nbBitsMess;
 	}
-
+	public static String getArgumentOrThrows(String [] args, int index, String error) throws ArgumentsException {
+		if (args.length <= index) {
+			throw new ArgumentsException(error);
+		}
+		return args[index];
+	}
 	/**
 	 * La fonction main instancie un Simulateur à l'aide des arguments paramètres et
 	 * affiche le résultat de l'exécution d'une transmission.
@@ -312,6 +316,8 @@ public class Simulateur {
 	 * @param args les différents arguments qui serviront à l'instanciation du
 	 *             Simulateur.
 	 */
+
+
 	public static void main(String[] args) {
 
 		Simulateur simulateur = null;

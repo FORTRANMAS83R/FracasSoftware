@@ -106,12 +106,7 @@ public class Information<T> implements Iterable<T> {
     }
 
 
-    public Information<T> add(Information<T> information) {
-        for (int i = 0; i < this.nbElements(); i++) {
-            this.setIemeElement(i, information.iemeElement(i));
-        }
-        return this;
-    }
+
 
 
     /**

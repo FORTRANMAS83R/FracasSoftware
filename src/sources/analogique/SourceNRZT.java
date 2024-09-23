@@ -41,6 +41,8 @@ public class SourceNRZT extends SourceAnalogique {
 	protected void filtreMiseEnForme() {
 		informationGeneree = informationEchantillon.clone();
 
+		final int nbEchantillon = this.informationEchantillon.getNbEchantillons();
+
 		for (int i = 0; i < informationEchantillon.nbElements(); i += nbEchantillon) {
 			final float symbole_actuel = informationEchantillon.iemeElement(i);
 			final float val_fin = informationEchantillon.nbElements() > i + nbEchantillon

@@ -14,6 +14,7 @@ import java.util.Random;
     Rq: on pourrait envisager une classe parent ou une interface si l'on venait à avoir plusieurs types de bruits
  */
 public class BBG {
+    private Float SNRpb;
     private Information<Float> bruit;
     private LinkedList<Float> variances;
     private Random a1; // générateur de nombres aléatoires suivant une loi uniforme entre 0 et 1
@@ -25,12 +26,12 @@ public class BBG {
         @param signal: le signal à bruiter
         @param nbEch: le nombre d'échantillons par symbole
      */
-    public BBG(Float SNRpb, Information<Float> signal){
+    public BBG(Float SNRpb){
         this.bruit = new Information<>();
         this.variances = new LinkedList<>();
         this.a1 = new Random();
         this.a2 = new Random();
-        this.appliquerBruit(signal, SNRpb);
+        this.SNRpb = SNRpb;
     }
 
     /*
@@ -41,12 +42,12 @@ public class BBG {
         @param seed1: la graine pour le générateur de nombres aléatoires a1
         @param seed2: la graine pour le générateur de nombres aléatoires a2
      */
-    public BBG(Float SNRpb, Information<Float> signal, Integer seed){
+    public BBG(Float SNRpb, Integer seed){
         this.bruit = new Information<>();
         this.variances = new LinkedList<>();
         this.a1 = new Random(seed); // générateur de nombres aléatoires suivant une loi uniforme entre 0 et 1
         this.a2 = new Random(seed);
-        this.appliquerBruit(signal, SNRpb);
+        this.SNRpb = SNRpb;
     }
 
     private Information<Float> getBruit() {
@@ -59,19 +60,10 @@ public class BBG {
         @param nbEch: le nombre d'échantillons par symbole
         @return le bruit généré
      */
-    private void appliquerBruit(Information<Float> signal, Float SNRpb){
-        Float puissanceSignal = 0f;
-        Float variance = 0f;
+    private void appliquerBruit(Information<Float> signal){
 
-        for (int i=0; i<signal.nbElements()/signal.getNbEchantillons(); i++){
-            puissanceSignal = calculPuissanceSignal(signal.sousInformation(i*signal.getNbEchantillons(), (i+1)*signal.getNbEchantillons()));
-            variance = calculVariance(puissanceSignal, SNRpb, signal.getNbEchantillons());
-            this.variances.add(variance);
-            for (int j=0; j<signal.getNbEchantillons(); j++){
-                this.bruit.add(variance*(float)Math.sqrt(-2*Math.log(a1.nextFloat()))*(float)Math.cos(2*Math.PI*a2.nextFloat()));
-            }
-        }
     }
+
 
     /*
         Méthode permettant d'ajouter la valeur du bruit à un signal'
@@ -79,7 +71,15 @@ public class BBG {
         @return le bruit généré
      */
     public Information<Float> bruitage(Information<Float> signal){
-        return signal.add(this.bruit);
+        Float SNR = calculSNR(SNRpb, signal.getNbEchantillons());
+        Float puissanceSignal = calculPuissanceSignal(signal);
+        Float variance = calculVariance(puissanceSignal, SNRpb, signal.getNbEchantillons());
+
+        for (int i=0; i<signal.nbElements(); i++){
+            signal.setIemeElement(i, signal.iemeElement(i) + (float)Math.sqrt(variance)*(float)Math.sqrt(-2*Math.log(1 - a1.nextFloat()))*(float)Math.cos(2*Math.PI*a2.nextFloat()));
+        }
+
+        return signal;
     }
 
     /*
@@ -103,6 +103,10 @@ public class BBG {
         @return la variance du bruit
      */
     private static Float calculVariance(Float puissanceSignal, Float snrPb, Integer nbEch){
-        return ((float)Math.pow(10, snrPb/10)/(2*nbEch*puissanceSignal));
+        return (nbEch*puissanceSignal)/((float)(2*Math.pow(10, snrPb/10)));
+    }
+
+    private static Float calculSNR(Float snrPB, Integer nbEch){
+        return (float)(snrPB-10*Math.log10(nbEch));
     }
 }
