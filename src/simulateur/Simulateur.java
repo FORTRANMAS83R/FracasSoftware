@@ -89,6 +89,8 @@ public class Simulateur {
 
 	private float ampl_min = 0.0f, ampl_max = 1.0f;
 
+	public static float TEB = 0.0f;
+
 	/**
 	 * Le constructeur de Simulateur construit une chaîne de transmission composée
 	 * d'une Source <Boolean>, d'une Destination <Boolean> et de Transmetteur(s)
@@ -301,7 +303,8 @@ public class Simulateur {
 				nbBitEronnes++;
 			}
 		}
-		return (float) nbBitEronnes / (float) nbBitsMess;
+		TEB = (float) nbBitEronnes / (float) nbBitsMess;
+		return TEB;
 	}
 	public static String getArgumentOrThrows(String [] args, int index, String error) throws ArgumentsException {
 		if (args.length <= index) {
