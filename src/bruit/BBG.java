@@ -41,11 +41,11 @@ public class BBG {
         @param seed1: la graine pour le générateur de nombres aléatoires a1
         @param seed2: la graine pour le générateur de nombres aléatoires a2
      */
-    public BBG(Float SNRpb, Information<Float> signal, Integer seed1, Integer seed2){
+    public BBG(Float SNRpb, Information<Float> signal, Integer seed){
         this.bruit = new Information<>();
         this.variances = new LinkedList<>();
-        this.a1 = new Random(seed1);
-        this.a2 = new Random(seed2);
+        this.a1 = new Random(seed); // générateur de nombres aléatoires suivant une loi uniforme entre 0 et 1
+        this.a2 = new Random(seed);
         this.appliquerBruit(signal, SNRpb);
     }
 
@@ -104,17 +104,5 @@ public class BBG {
      */
     private static Float calculVariance(Float puissanceSignal, Float snrPb, Integer nbEch){
         return ((float)Math.pow(10, snrPb/10)/(2*nbEch*puissanceSignal));
-    }
-
-    public static void main(String[] args) {
-        Information<Float> signal = new Information<>();
-        signal.add(5f);
-        signal.add(5f);
-        signal.add(-5f);
-        signal.add(-5f);
-        signal.add(5f);
-        signal.add(5f);
-        signal.add(5f);
-
     }
 }

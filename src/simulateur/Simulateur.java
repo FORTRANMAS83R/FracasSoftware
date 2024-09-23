@@ -106,7 +106,6 @@ public class Simulateur {
 			case NRZT -> source = new SourceNRZT(nbEch, ampl_min, ampl_max, nbBitsMess, seed);
 			}
 		}
-
 		transmetteurAnalogique = new TransmetteurParfait<>();
 		source.connecter(transmetteurAnalogique);
 
