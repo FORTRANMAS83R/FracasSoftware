@@ -170,15 +170,16 @@ public class Simulateur {
 			} else if (args[i].matches("-seed")) {
 				aleatoireAvecGerme = true;
 				i++;
+				String argSeed= getArgumentOrThrows(args, i, "Pas de valeur du paramètre de seed renseignée");
 				try {
-					seed = Integer.valueOf(getArgumentOrThrows(args, i, "Pas de valeur du parametre -seed"));
+					seed = Integer.valueOf(argSeed);
 				} catch (Exception e) {
-					throw new ArgumentsException("Valeur du paramètre -seed invalide : " + args[i]);
+					throw new ArgumentsException("Valeur du paramètre -seed invalide : " + argSeed);
 				}
 			} else if (args[i].matches("-mess")) {
 				i++;
 				// traiter la valeur associee
-				messageString = getArgumentOrThrows(args, i, "Pas de valeur du parametre -mess ");
+				messageString = getArgumentOrThrows(args, i, "Pas de valeur du paramètre de message renseignée ");
 				if (messageString.matches("[0,1]{7,}")) { // au moins 7 digits
 					messageAleatoire = false;
 					nbBitsMess = args[i].length();
@@ -191,6 +192,7 @@ public class Simulateur {
 					throw new ArgumentsException("Valeur du paramètre -mess invalide : " + messageString);
 			} else if (args[i].matches("-form")) {
 				i++;
+				String argForm = getArgumentOrThrows(args, i, "Pas de valeur du paramètre de forme d'onde renseignée");
 				if (args[i].matches("NRZ")) {
 					formatSignal = SourceAnalogiqueType.NRZ;
 				} else if (args[i].matches("NRZT")) {
@@ -203,6 +205,7 @@ public class Simulateur {
 				}
 			} else if (args[i].matches("-nbEch")) {
 				i++;
+				String argNbEch = getArgumentOrThrows(args, i, "Pas de valeur du paramètre de nombre d'échantillons renseignée");
 				if (args[i].matches("[0-9]+")) {
 					nbEch = Integer.parseInt(args[i]);
 					if (nbEch % 3 != 0) {
@@ -213,6 +216,7 @@ public class Simulateur {
 					throw new ArgumentsException("Valeur du parametre -nbEch invalide : " + args[i]);
 			} else if (args[i].matches("-ampl")) {
 				i++;
+				String argAmpl = getArgumentOrThrows(args, i, "Pas de valeur du paramètre d'amplitude renseignée");
 				if (args[i].matches("-?[0-9]+([.,][0-9]+)?")) {
 					ampl_min = Float.parseFloat(args[i].replace(',', '.'));
 					i++;

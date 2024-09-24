@@ -449,7 +449,7 @@ public class ArgumentTest {
 		new Simulateur(args);
 	}
 
-	/**
+	/*
 	 * 
 	 * ARGUMENT VIDE
 	 * 
@@ -463,6 +463,66 @@ public class ArgumentTest {
 		final String[] args = { "-snrpb" };
 		thrown.expect(ArgumentsException.class);
 		thrown.expectMessage("Pas de valeur du paramètre de signal à bruit renseignée");
+		new Simulateur(args);
+	}
+	/**
+	 * Test de l'argument -mess vide
+	 */
+	@Test()
+	public void testMessVide() throws ArgumentsException {
+		final String[] args = { "-mess" };
+		thrown.expect(ArgumentsException.class);
+		thrown.expectMessage("Pas de valeur du paramètre de message renseignée");
+		new Simulateur(args);
+	}
+	/**
+	 * Test de l'argument -seed vide
+	 */
+	@Test()
+	public void testSeedVide() throws ArgumentsException {
+		final String[] args = { "-seed" };
+		thrown.expect(ArgumentsException.class);
+		thrown.expectMessage("Pas de valeur du paramètre de seed renseignée");
+		new Simulateur(args);
+	}
+	/**
+	 * Test de l'argument -nbEch vide
+	 */
+	@Test()
+	public void testNbEchVide() throws ArgumentsException {
+		final String[] args = { "-nbEch" };
+		thrown.expect(ArgumentsException.class);
+		thrown.expectMessage("Pas de valeur du paramètre de nombre d'échantillons renseignée");
+		new Simulateur(args);
+	}
+	/**
+	 * Test de l'argument -form vide
+	 */
+	@Test()
+	public void testFormVide() throws ArgumentsException {
+		final String[] args = { "-form" };
+		thrown.expect(ArgumentsException.class);
+		thrown.expectMessage("Pas de valeur du paramètre de forme d'onde renseignée");
+		new Simulateur(args);
+	}
+	/**
+	 * Test de l'argument -ampl vide
+	 */
+	@Test()
+	public void testAmplVide() throws ArgumentsException {
+		final String[] args = { "-ampl" };
+		thrown.expect(ArgumentsException.class);
+		thrown.expectMessage("Pas de valeur du paramètre d'amplitude renseignée");
+		new Simulateur(args);
+	}
+	/**
+	 * Test de l'argument -form et -ampl vide
+	 */
+	@Test()
+	public void testFormAmplVide() throws ArgumentsException {
+		final String[] args = { "-form", "-ampl" };
+		thrown.expect(ArgumentsException.class);
+		thrown.expectMessage("Argument invalide pour la forme d'onde, attendu : RZ | NRZ | NRZT, reçu : -ampl");
 		new Simulateur(args);
 	}
 
