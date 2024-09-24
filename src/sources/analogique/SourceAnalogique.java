@@ -34,6 +34,7 @@ public abstract class SourceAnalogique extends Source<Float> {
         this.message = message;
         this.amp_min = amp_min;
         this.amp_max = amp_max;
+        this.nbEchantillon = nbEchantillon;
 
         this.informationBinaire = genInformation(message);
         this.informationBinaire.setNbEchantillons(nbEchantillon);
@@ -46,6 +47,7 @@ public abstract class SourceAnalogique extends Source<Float> {
         this.informationBinaire = genInformationAleatoire(nbBits, seed);
         this.amp_min = amp_min;
         this.amp_max = amp_max;
+        this.nbEchantillon = nbEchantillon;
 
         echantillonnage(nbEchantillon);
         filtreMiseEnForme();

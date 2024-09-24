@@ -124,4 +124,10 @@ public abstract class Source<T> implements SourceInterface<T> {
 
         return info;
     }
+
+    // Méthode uniquement utilisée pour les tests
+    public void setInformationEmise(Information<?> informationEmise) {
+        this.informationEmise = (Information<T>) informationEmise;
+    }
+
 }

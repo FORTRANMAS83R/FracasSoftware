@@ -41,4 +41,10 @@ public abstract class Destination<T> implements DestinationInterface<T> {
      *                                         anomalie
      */
     public abstract void recevoir(Information<T> information) throws InformationNonConformeException;
+
+
+    // Méthode uniquement utilisée pour les tests
+    public void setInformationRecue(Information<?> informationRecue) {
+        this.informationRecue = (Information<T>) informationRecue;
+    }
 }

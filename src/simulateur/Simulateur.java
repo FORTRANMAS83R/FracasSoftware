@@ -317,16 +317,25 @@ public class Simulateur {
 					nbBitEronnes++;
 				}
 			}
-
-//			if (moy_src - moy_dst > delta || moy_src - moy_dst < -delta) {
-//				nbBitEronnes++;
-//			}
 		}
 		TEB = (float) nbBitEronnes / (float) nbBitsMess;
 		return TEB;
 	}
 
-	public static String getArgumentOrThrows(String[] args, int index, String error) throws ArgumentsException {
+	public Source<?> getSource() {
+		return source;
+	}
+
+	public Destination<?> getDestination() {
+		if (destinationAnalogique != null) {
+			return destinationAnalogique;
+		} else {
+			return destinationLogique;
+		}
+	}
+
+
+	public static String getArgumentOrThrows(String [] args, int index, String error) throws ArgumentsException {
 		if (args.length <= index) {
 			throw new ArgumentsException(error);
 		}
@@ -340,6 +349,7 @@ public class Simulateur {
 	 * @param args les différents arguments qui serviront à l'instanciation du
 	 *             Simulateur.
 	 */
+
 
 	public static void main(String[] args) {
 
