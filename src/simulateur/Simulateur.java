@@ -90,7 +90,7 @@ public class Simulateur {
 
 	private float ampl_min = 0.0f, ampl_max = 1.0f;
 
-	public static float TEB = 0.0f;
+	public float TEB = 0.0f;
 
 	/**
 	 * Le constructeur de Simulateur construit une chaîne de transmission composée
@@ -136,6 +136,7 @@ public class Simulateur {
 		if (affichage) {
 			source.connecter(new SondeAnalogique("Sonde en sortie de la source"));
 			transmetteurAnalogique.connecter(new SondeAnalogique("Sonde en sortie du transmetteur"));
+			transmetteurAnalogique.connecter(new SondeHistogramme("Histogramme de l'information reçue"));
 		}
 
 	}

@@ -15,7 +15,7 @@ public class CalculTauxErreurBinaireTest {
 
     @Before
     public void setUp() throws ArgumentsException {
-        simulateur = new Simulateur(new String[]{"-mess", "10101100", "-form", "NRZ"});
+        simulateur = new Simulateur(new String[]{"-mess", "10101100", "-form", "NRZ", "-nbEch", "3"});
         sourceInfo = new Information<>();
         destinationInfo = new Information<>();
 
@@ -41,7 +41,7 @@ public class CalculTauxErreurBinaireTest {
     public void testAvecErreurs() throws Exception {
         for (int i = 0; i < nbEch * nbBitsMessage; i++) {
             sourceInfo.add(1.0f);
-            if (i%4 == 0) {
+            if (i%2 == 0) {
                 destinationInfo.add(0.0f);
             } else {
                 destinationInfo.add(1.0f);

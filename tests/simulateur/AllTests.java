@@ -10,6 +10,6 @@ import transmetteurs.AllTransmetteurTests;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ AllDestinationTests.class, AllTransmetteurTests.class, AllSourceTests.class, ArgumentTest.class,
-		BBGTest.class })
+		BBGTest.class, CalculTauxErreurBinaireTest.class})
 public class AllTests {
 }

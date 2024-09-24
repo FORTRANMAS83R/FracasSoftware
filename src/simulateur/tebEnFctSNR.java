@@ -6,18 +6,19 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 public class tebEnFctSNR {
-    public static void main (String[] args) {
+    public static void main(String[] args) throws Exception {
         int size = 800; // if you modify this value, check that the loop with snr does not throw OutOfBandsException
 
         LinkedList<float[]> tabs = new LinkedList<>();
         float[] finalTab = new float[size];
 
-        for (int j = 0; j <5000; j++) {
+        for (int j = 0; j < 5; j++) {
             float[] tempTab = new float[size];
             int i = 0;
             for (double snr = -50; snr <= 30; snr += 0.1) {
-                Simulateur.main(new String[] {"-mess","100","-form","NRZ","-nbEch","3","-snrpb", String.valueOf(Math.round(snr * 1000)/(float)1000)});
-                tempTab[i] = Simulateur.TEB;
+                Simulateur simulateur = new Simulateur(new String[]{"-mess", "100", "-form", "NRZ", "-nbEch", "3", "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000)});
+                simulateur.execute();
+                tempTab[i] = simulateur.calculTauxErreurBinaire();
                 i++;
             }
             tabs.add(tempTab);
@@ -26,11 +27,10 @@ public class tebEnFctSNR {
         for (int y = 0; y < size; y++) {
             float somme = 0;
             for (float[] tab : tabs) {
-                somme+=tab[y];
+                somme += tab[y];
             }
-            finalTab[y] = somme/(float) tabs.size();
+            finalTab[y] = somme / (float) tabs.size();
         }
-
 
 
         System.out.println(Arrays.toString(finalTab));
