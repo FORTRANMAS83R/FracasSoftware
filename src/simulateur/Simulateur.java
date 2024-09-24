@@ -12,6 +12,7 @@ import transmetteurs.Transmetteur;
 import transmetteurs.TransmetteurBruite;
 import transmetteurs.TransmetteurParfait;
 import visualisations.SondeAnalogique;
+import visualisations.SondeHistogramme;
 import visualisations.SondeLogique;
 
 /**
@@ -131,6 +132,7 @@ public class Simulateur {
 
 		destinationAnalogique = new DestinationFinale<>();
 		transmetteurAnalogique.connecter(destinationAnalogique);
+		transmetteurAnalogique.connecter(new SondeHistogramme("Histogramme de l'information reçue"));
 
 		if (affichage) {
 			source.connecter(new SondeAnalogique("Sonde en sortie de la source"));

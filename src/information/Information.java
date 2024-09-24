@@ -49,6 +49,13 @@ public class Information<T> implements Iterable<T> {
 	}
 
 	/*
+	 * @return le contenu de l'information
+	 */
+	public ArrayList<T> getContent() {
+		return this.content;
+	}
+
+	/*
 	 * @param nbEchantillons: le nombre d'échantillons
 	 */
 	public void setNbEchantillons(Integer nbEchantillons) {
