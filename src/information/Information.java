@@ -29,7 +29,7 @@ public class Information<T> implements Iterable<T> {
 		this.content = new ArrayList<T>();
 		this.nbEchantillons = content.length;
 		for (int i = 0; i < content.length; i++) {
-			this.content.addLast(content[i]);
+			this.content.add(content[i]);
 		}
 	}
 
@@ -37,7 +37,7 @@ public class Information<T> implements Iterable<T> {
 		this.content = new ArrayList<T>();
 		this.nbEchantillons = nbEchantillons;
 		for (int i = 0; i < content.length; i++) {
-			this.content.addLast(content[i]);
+			this.content.add(content[i]);
 		}
 	}
 
