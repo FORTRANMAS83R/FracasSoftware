@@ -90,7 +90,7 @@ public class Simulateur {
 
 	private float ampl_min = 0.0f, ampl_max = 1.0f;
 
-	public float TEB = 0.0f;
+	private float TEB = 0.0f;
 
 	/**
 	 * Le constructeur de Simulateur construit une chaîne de transmission composée
