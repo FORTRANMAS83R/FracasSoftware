@@ -2,45 +2,63 @@ package visualisations;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class VueHistogramme extends Vue{
 
     private static final long serialVersionUID = 1917L;
+    private int[] histogramme;
+    private int yMax = 0;
 
-    public VueHistogramme(int[] histogramme, ArrayList<Float> bords, String nom) {
+
+    public VueHistogramme(int[] histogramme, String nom) {
         super(nom);
         int xPosition = Vue.getXPosition();
         int yPosition = Vue.getYPosition();
+
+        this.histogramme = histogramme;
+        yMax = Collections.max(Arrays.stream(histogramme).boxed().toList());
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocation(xPosition, yPosition);
-        int largeur = 1000;
-        int hauteur = 200;
-        setSize(largeur, hauteur);
+        setSize(histogramme.length * 15, 200);
         setVisible(true);
         repaint();
     }
 
-    protected void paintComponent(Graphics g) {
-        super.paintComponents(g);
-        int[] histogramme = { /* valeurs de l'histogramme */ };
-        int largeur = getWidth();
-        int hauteur = getHeight();
-        int barWidth = largeur / histogramme.length;
+    public void paint(Graphics g){
+        g.setColor(Color.BLACK);
 
-        for (int i = 0; i < histogramme.length; i++) {
-            int barHeight = (int) ((hauteur - 20) * ((double) histogramme[i] / getMaxValue(histogramme)));
-            g.setColor(Color.BLUE);
-            g.fillRect(i * barWidth, hauteur - barHeight, barWidth - 2, barHeight);
-    }
-}
+        if (g == null) {
+            return;
+        }
+        // effacement total
+        g.setColor(Color.white);
+        g.fillRect(0, 0, getWidth(), getHeight());
+        g.setColor(Color.black);
 
-    private int getMaxValue(int[] histogramme) {
-        int max = Integer.MIN_VALUE;
-        for (int value : histogramme) {
-            if (value > max) {
-                max = value;
+
+        int x0Axe = 10;
+
+        int y0Axe = getContentPane().getHeight()-10;
+
+        getContentPane().getGraphics().drawLine(x0Axe, y0Axe, getContentPane().getWidth(), y0Axe);
+        getContentPane().getGraphics().drawLine(getContentPane().getWidth() - 5, y0Axe - 5, getContentPane().getWidth(), y0Axe);
+        getContentPane().getGraphics().drawLine(getContentPane().getWidth() - 5, y0Axe + 5, getContentPane().getWidth(), y0Axe);
+
+        getContentPane().getGraphics().drawLine(x0Axe, y0Axe, x0Axe, 0);
+        getContentPane().getGraphics().drawLine(x0Axe + 5, 5, x0Axe, 0);
+        getContentPane().getGraphics().drawLine(x0Axe - 5, 5, x0Axe, 0);
+
+        if(histogramme.length != 0){
+            float deltaY = y0Axe / (this.yMax * 1f);
+            float deltaX = (getContentPane().getWidth() -x0Axe)/histogramme.length;
+            for(int i =0; i<histogramme.length; i++){
+                getContentPane().getGraphics().drawRect((int)(x0Axe+deltaX*i),(int)(y0Axe-deltaY*histogramme[i]),(int)deltaX,(int)(deltaY*histogramme[i]));
             }
         }
-        return max;
-}
+    }
 
 }

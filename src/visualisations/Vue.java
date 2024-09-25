@@ -17,8 +17,7 @@ public class Vue extends JFrame {
     private static int yDecalage = 200;
 
     public static int getXPosition() {
-        xPosition += 0;
-        return xPosition - 0;
+        return xPosition;
     }
 
     public static int getYPosition() {

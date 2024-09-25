@@ -15,7 +15,7 @@ public class SondeHistogramme extends Sonde<Float> {
     public void recevoir(Information<Float> information) {
         informationRecue = information;
         ArrayList<Float> valeurs = information.getContent();
-        Float k = (float) Math.floor(2*Math.log10(information.nbElements())+1);
+        Float k = (float) Math.floor(2*Math.log(information.nbElements())+1);
         Float max = Collections.max(valeurs);
         Float min = Collections.min(valeurs);
         Float delta = (max - min) / k;
@@ -26,7 +26,7 @@ public class SondeHistogramme extends Sonde<Float> {
         }
 
         // Initialiser l'histogramme (fréquences pour chaque intervalle)
-        float[] histogramme = new float[(bords.size() - 1)];
+        int[] histogramme = new int[(bords.size() - 1)];
 
         // Calculer les fréquences dans chaque intervalle
         for (float valeur : valeurs) {
@@ -37,7 +37,7 @@ public class SondeHistogramme extends Sonde<Float> {
                 }
             }
         }
-        new VueCourbe(histogramme, nom);
+        new VueHistogramme(histogramme, nom);
     }
 
 
