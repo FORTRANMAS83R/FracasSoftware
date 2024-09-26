@@ -6,8 +6,6 @@ import sources.Source;
 /**
  * Une classe abstraite pour effectuer des actions globale aux sources
  * analogiques
- *
- * @param <T> Le type de l'information qui sera transmise
  */
 public abstract class SourceAnalogique extends Source<Float> {
     protected String message;
@@ -24,10 +22,10 @@ public abstract class SourceAnalogique extends Source<Float> {
      * @param message       Le message, une suite de 0 et de 1 qui sera ensuite
      *                      traduit en une liste de Boolean
      * @param nbEchantillon Le nombre d'échantillon par bit
-     * @param amp_min       Amplitude maximum du signal, c'est à dire l'amplitude
-     *                      d'un bit à l'état 1
-     * @param amp_max       Amplitude minimum du signal, c'est à dire l'amplitude
+     * @param amp_min       Amplitude minimum du signal, c'est à dire l'amplitude
      *                      d'un bit à l'état 0
+     * @param amp_max       Amplitude maximum du signal, c'est à dire l'amplitude
+     *                      d'un bit à l'état 1
      */
     public SourceAnalogique(String message, int nbEchantillon, float amp_min, float amp_max) {
         super();
@@ -42,6 +40,15 @@ public abstract class SourceAnalogique extends Source<Float> {
         filtreMiseEnForme();
     }
 
+    /**
+     * Deuxième constructeur permettant de générer un message aléatoire avec une seed afin de pouvoir réaliser
+     * plusieurs fois la même simulation
+     * @param nbEchantillon     Le nombre d'échantillon par bit
+     * @param amp_min           Amplitude minimum du signal, c'est à dire l'amplitude d'un bit à l'état 0
+     * @param amp_max           Amplitude maximum du signal, c'est à dire l'amplitude d'un bit à l'état 1
+     * @param nbBits            La taille du message à générer
+     * @param seed              La graine permettant de générer plusieurs fois le même message aléatoire
+     */
     public SourceAnalogique(int nbEchantillon, float amp_min, float amp_max, int nbBits, Integer seed) {
         super();
         this.informationBinaire = genInformationAleatoire(nbBits, seed);
@@ -53,6 +60,11 @@ public abstract class SourceAnalogique extends Source<Float> {
         filtreMiseEnForme();
     }
 
+    /**
+     * Méthode qui permet d'échantillonner un signal en fonction de son nombre d'échantillon. Cette étape
+     * permet de passer du message binaire à une première forme analogique du signal.
+     * @param nbEch Le nombre d'échantillon qui doit être réalisé sur le signal.
+     */
     private void echantillonnage(Integer nbEch) {
         this.informationEchantillon = new Information<>();
         this.informationEchantillon.setNbEchantillons(nbEch);

@@ -23,11 +23,6 @@ public class SourceFixeTest {
     public ErrorCollector collector = new ErrorCollector();
 
     /**
-     * Test de la classe SourceAleatoire Rq: On ne peut tester que la génération de
-     * la source aléatoire avec un seed donné.
-     */
-    /*
-     *
      * Teste le constructeur de SourceFixe.
      * Vérifie que la génération de la source fixe à partir d'un message donné est correcte.
      */

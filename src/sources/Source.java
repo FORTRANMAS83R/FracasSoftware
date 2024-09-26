@@ -60,7 +60,9 @@ public abstract class Source<T> implements SourceInterface<T> {
      *
      * @return une information
      */
-    public Information<Boolean> getInformationBinaire() {return this.informationBinaire;}
+    public Information<Boolean> getInformationBinaire() {
+        return this.informationBinaire;
+    }
 
     public LinkedList<DestinationInterface<T>> getDestinationsConnectees() {
         return this.destinationsConnectees;

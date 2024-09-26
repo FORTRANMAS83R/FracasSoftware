@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
 /**
  * Teste la génération de bruit par la classe BBG.
  */
@@ -14,6 +15,7 @@ public class CalculTauxErreurBinaireTest {
     private Simulateur simulateur;
     private Information<Float> sourceInfo;
     private Information<Float> destinationInfo;
+
     /**
      * Configuration initiale avant chaque test.
      *
@@ -28,13 +30,14 @@ public class CalculTauxErreurBinaireTest {
         nbEch = 30;
         nbBitsMessage = 10;
     }
+
     /**
      * Teste le calcul du TEB lorsque aucune erreur n'est présente.
      *
      * @throws Exception Si une erreur se produit lors de l'exécution du simulateur.
      */
     @Test
-    public void testAucunErreur() throws Exception {
+    public void testAucuneErreur() throws Exception {
         for (int i = 0; i < nbEch * nbBitsMessage; i++) {
             sourceInfo.add(1.0f);
             destinationInfo.add(1.0f);
@@ -46,6 +49,7 @@ public class CalculTauxErreurBinaireTest {
         float TEB = simulateur.calculTauxErreurBinaire();
         assertEquals(0.0f, TEB, 0.01f);
     }
+
     /**
      * Teste le calcul du TEB lorsque des erreurs sont présentes.
      *
@@ -55,7 +59,7 @@ public class CalculTauxErreurBinaireTest {
     public void testAvecErreurs() throws Exception {
         for (int i = 0; i < nbEch * nbBitsMessage; i++) {
             sourceInfo.add(1.0f);
-            if (i%2 == 0) {
+            if (i % 2 == 0) {
                 destinationInfo.add(0.0f);
             } else {
                 destinationInfo.add(1.0f);
@@ -69,6 +73,7 @@ public class CalculTauxErreurBinaireTest {
         float TEB = simulateur.calculTauxErreurBinaire();
         assertTrue(TEB > 0.0f);
     }
+
     /**
      * Teste le calcul du TEB lorsque toutes les valeurs sont erronées.
      *

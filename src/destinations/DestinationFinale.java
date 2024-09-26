@@ -2,6 +2,7 @@ package destinations;
 
 import information.Information;
 import information.InformationNonConformeException;
+
 /**
  * Classe représentant une destination finale.
  * Cette classe hérite de la classe Destination et implémente la méthode recevoir.
@@ -15,6 +16,7 @@ public class DestinationFinale<T> extends Destination<T> {
     public DestinationFinale() {
         super();
     }
+
     /**
      * Reçoit une information et la stocke.
      *

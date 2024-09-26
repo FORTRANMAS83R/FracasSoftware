@@ -7,6 +7,15 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 public class tebEnFctSNR {
+    /**
+     * Cette méthode et plus généralement cette classe permet de dessiner les courbes du TEB en fonction du SNR
+     * Les courbes concernées sont les courbes observées en pratique et la courbe théorique.
+     * Pour un affichage exploitable des courbes observées via la simulation, nous avons pris la décision de lancer
+     * 5000 fois les 800 simulations et de faire la moyenne des valeurs obtenues
+     *
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
         int size = 800;     // si vous modifiez cette valeur, vérifiez que la boucle avec snr ne lance pas OutOfBandsException
         double snrMin = -50;
@@ -31,9 +40,11 @@ public class tebEnFctSNR {
             System.out.println(j);
             tabs.add(tempTab);
         }
+
+        // Calcul de la courbe théorique en utilisant la fonction d'erreur complémentaire
         int i = 0;
         for (double snr = snrMin; snr <= snrMax; snr += 0.1) {
-            tabTEBTheo[i] = (float) (0.5*Erf.erfc(Math.sqrt(Math.pow(10, snr/10))));
+            tabTEBTheo[i] = (float) (0.5 * Erf.erfc(Math.sqrt(Math.pow(10, snr / 10))));
             i++;
         }
 
@@ -46,7 +57,6 @@ public class tebEnFctSNR {
             finalTab[y] = somme / (float) tabs.size();
         }
         // Affichage des résultats finaux et création de la courbe
-//        System.out.println(Arrays.toString(finalTab));
         System.out.println(Arrays.toString(finalTab));
         System.out.println(Arrays.toString(tabTEBTheo));
         new VueCourbe(finalTab, "TEB en fonction du SNR");
