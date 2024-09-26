@@ -1,4 +1,3 @@
 #!/bin/bash
 
-javadoc -cp "lib/*" -d docs/ simulateur
-cd ../
+javadoc -sourcepath "src:tests" -cp "lib/*" -d docs/ simulateur
