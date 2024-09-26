@@ -1,3 +1,4 @@
 #!/bin/bash
-
-javadoc -sourcepath "src:tests" -cp "lib/*" -d docs/ simulateur
+echo "Generating javadoc..."
+javadoc -cp lib/*:bin/:. -d docs src/*/*.java
+echo "Done!"
