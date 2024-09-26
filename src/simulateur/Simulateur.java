@@ -142,7 +142,7 @@ public class Simulateur {
 			// Logique
 			sourceLogique = messageAleatoire ? new SourceAleatoire(nbBitsMess, seed) : new SourceFixe(messageString);
 			destinationLogique = new DestinationFinale<>();
-			transmetteurLogique = new TransmetteurParfait<Boolean>();
+			transmetteurLogique = new TransmetteurParfait<>();
 
 			sourceLogique.connecter(transmetteurLogique);
 			transmetteurLogique.connecter(destinationLogique);
@@ -403,13 +403,13 @@ public class Simulateur {
 
 			// Condition temporaire nécessaire pour l'affichage de courbe utile au rapport
 			// mais non prévu dans la programmation des sondes
-			if (simulateur.affichage) {
-				SondeLogique sondeEmise = new SondeLogique("Message binaire", 1080);
-				sondeEmise.recevoir(simulateur.getSource().getInformationBinaire());
-
-				SondeAnalogique sondeDest = new SondeAnalogique("Information reçue par la destination");
-				sondeDest.recevoir(simulateur.destinationAnalogique.getInformationRecue());
-			}
+//			if (simulateur.affichage) {
+//				SondeLogique sondeEmise = new SondeLogique("Message binaire", 1080);
+//				sondeEmise.recevoir(simulateur.getSource().getInformationBinaire());
+//
+//				SondeAnalogique sondeDest = new SondeAnalogique("Information reçue par la destination");
+//				sondeDest.recevoir(simulateur.destinationAnalogique.getInformationRecue());
+//			}
 			String s = "java  Simulateur  ";
 			for (int i = 0; i < args.length; i++) { // copier tous les paramètres de simulation
 				s += args[i] + "  ";

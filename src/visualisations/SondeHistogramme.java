@@ -1,14 +1,12 @@
 package visualisations;
 
 import information.Information;
+import org.apache.commons.math3.special.Gamma; // Pour calculer la fonction gamma (CDF du chi-carré)
+import org.apache.commons.math3.stat.descriptive.moment.Kurtosis;
+import org.apache.commons.math3.stat.descriptive.moment.Skewness;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import org.apache.commons.math3.stat.descriptive.moment.Kurtosis;
-import org.apache.commons.math3.stat.descriptive.moment.Skewness;
-import org.apache.commons.math3.special.Gamma;  // Pour calculer la fonction gamma (CDF du chi-carré)
-
-
 
 /**
  * Classe SondeHistogramme

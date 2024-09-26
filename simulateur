@@ -1,4 +1,4 @@
 #!/bin/bash
 echo "Lancement du Simulateur..."
-cd bin && java simulateur/Simulateur "$@"
+cd bin && java -classpath "..\bin;..\lib\*" simulateur.Simulateur "$@"
 cd ../
