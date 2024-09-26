@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd src && javadoc -cp "../lib/*" -d ../docs/ *
+javadoc -cp "lib/*" -d docs/ simulateur
 cd ../
