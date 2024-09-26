@@ -136,7 +136,7 @@ public class Simulateur {
 			if (affichage) {
 				sourceAnalogique.connecter(new SondeAnalogique("Sonde en sortie de la source"));
 				transmetteurAnalogique.connecter(new SondeAnalogique("Sonde en sortie du transmetteur"));
-				transmetteurAnalogique.connecter(new SondeHistogramme("Histogramme de l'information reçue"));
+				transmetteurAnalogique.connecter(new SondeHistogramme("Histogramme de l'information reçue", affichage));
 			}
 		} else {
 			// Logique
