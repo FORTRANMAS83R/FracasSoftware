@@ -1,4 +1,4 @@
 #!/bin/bash
 echo "Generating javadoc..."
-javadoc -cp lib/*:bin/:. -d docs -subpackages sources:analogique src/*/*.java
+javadoc -cp lib/*:bin/:. -d docs $(find src -name "*.java")
 echo "Done!"
