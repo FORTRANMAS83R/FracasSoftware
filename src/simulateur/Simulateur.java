@@ -3,6 +3,7 @@ package simulateur;
 import destinations.Destination;
 import destinations.DestinationFinale;
 import information.Information;
+import information.InformationNonConformeException;
 import sources.Source;
 import sources.SourceAleatoire;
 import sources.SourceFixe;
@@ -125,6 +126,7 @@ public class Simulateur {
 			if (messageBruitee) {
 				transmetteurAnalogique = new TransmetteurBruite(this.snrpb);
 				sourceAnalogique.connecter(transmetteurAnalogique);
+				transmetteurAnalogique.connecter(new SondeHistogramme("Histogramme de l'information reçue", affichage));
 			} else {
 				transmetteurAnalogique = new TransmetteurParfait<>();
 				sourceAnalogique.connecter(transmetteurAnalogique);
@@ -136,7 +138,6 @@ public class Simulateur {
 			if (affichage) {
 				sourceAnalogique.connecter(new SondeAnalogique("Sonde en sortie de la source"));
 				transmetteurAnalogique.connecter(new SondeAnalogique("Sonde en sortie du transmetteur"));
-				transmetteurAnalogique.connecter(new SondeHistogramme("Histogramme de l'information reçue", affichage && messageBruitee));
 			}
 		} else {
 			// Logique
@@ -296,7 +297,7 @@ public class Simulateur {
 	 *
 	 * @throws Exception si un problème survient lors de l'exécution
 	 */
-	public void execute() throws Exception {
+	public void execute() throws InformationNonConformeException {
 		getSource().emettre();
 	}
 
@@ -352,6 +353,15 @@ public class Simulateur {
 			}
 		}
 		return (float) nbBitEronnes / (float) nbBitsMess;
+	}
+
+	/**
+	 * Getter pour transmission analogique
+	 * 
+	 * @return L'état du simulateur, true = analogique, false = logique
+	 */
+	public boolean getTransmissionAnalogique() {
+		return transmissionAnalogique;
 	}
 
 	public Source<?> getSource() {
