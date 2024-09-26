@@ -401,7 +401,7 @@ public class ArgumentTest {
 	}
 
 	/**
-	 * Test de l'argument mess chiffre trop long
+	 * Test de l'argument mess chiffre nul
 	 */
 	@Test()
 	public void testMessNombreEgalA0() throws ArgumentsException {

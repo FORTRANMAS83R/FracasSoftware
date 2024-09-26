@@ -58,7 +58,7 @@ public class BBG {
 	}
 
 	/*
-	 * Méthode permettant d'ajouter la valeur du bruit à un signal'
+	 * Méthode permettant d'ajouter la valeur du bruit à un signal
 	 * 
 	 * @param signal: le signal à bruiter
 	 * 
