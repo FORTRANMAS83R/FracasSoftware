@@ -145,6 +145,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="apache.commons.math3" level="project" />
     <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
