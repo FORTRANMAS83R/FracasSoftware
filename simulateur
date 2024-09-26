@@ -1,4 +1,13 @@
 #!/bin/bash
 echo "Lancement du Simulateur..."
-cd bin && java -classpath "..\bin;..\lib\*" simulateur.Simulateur "$@"
+
+if [ "$OSTYPE" == "msys" ] || [ "$OSTYPE" == "cygwin" ]; then
+    # Système Windows (Git Bash ou Cygwin)
+    CLASSPATH="..\bin;..\lib\*"
+else
+    # Autre système (Linux, macOS, etc.)
+    CLASSPATH="..\bin:..\lib\*"
+fi
+
+cd bin && java -classpath $CLASSPATH simulateur.Simulateur "$@"
 cd ../
