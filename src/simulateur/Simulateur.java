@@ -4,6 +4,8 @@ import destinations.Destination;
 import destinations.DestinationFinale;
 import information.Information;
 import sources.Source;
+import sources.SourceAleatoire;
+import sources.SourceFixe;
 import sources.analogique.SourceAnalogiqueType;
 import sources.analogique.SourceNRZ;
 import sources.analogique.SourceNRZT;
@@ -36,11 +38,7 @@ public class Simulateur {
 	 */
 	private boolean messageAleatoire = true;
 
-	/**
-	 * indique si le Simulateur utilise un germe pour initialiser les générateurs
-	 * aléatoires
-	 */
-	private boolean aleatoireAvecGerme = false;
+	private boolean transmissionAnalogique = false;
 
 	/**
 	 * indique si le Simulateur utilise un bruit blanc gaussien
@@ -70,7 +68,8 @@ public class Simulateur {
 	/**
 	 * le composant Source de la chaine de transmission
 	 */
-	private Source<Float> source = null;
+	private Source<Float> sourceAnalogique = null;
+	private Source<Boolean> sourceLogique = null;
 
 	/**
 	 * le composant Transmetteur parfait logique de la chaine de transmission
@@ -107,36 +106,51 @@ public class Simulateur {
 		// analyser et récupérer les arguments
 		analyseArguments(args);
 
-		if (!messageAleatoire) {
-			switch (formatSignal) {
-			case RZ -> source = new SourceRZ(messageString, nbEch, ampl_min, ampl_max);
-			case NRZ -> source = new SourceNRZ(messageString, nbEch, ampl_min, ampl_max);
-			case NRZT -> source = new SourceNRZT(messageString, nbEch, ampl_min, ampl_max);
+		if (transmissionAnalogique) {
+			// Analogique
+			if (!messageAleatoire) {
+				switch (formatSignal) {
+				case RZ -> sourceAnalogique = new SourceRZ(messageString, nbEch, ampl_min, ampl_max);
+				case NRZ -> sourceAnalogique = new SourceNRZ(messageString, nbEch, ampl_min, ampl_max);
+				case NRZT -> sourceAnalogique = new SourceNRZT(messageString, nbEch, ampl_min, ampl_max);
+				}
+			} else {
+				switch (formatSignal) {
+				case RZ -> sourceAnalogique = new SourceRZ(nbEch, ampl_min, ampl_max, nbBitsMess, seed);
+				case NRZ -> sourceAnalogique = new SourceNRZ(nbEch, ampl_min, ampl_max, nbBitsMess, seed);
+				case NRZT -> sourceAnalogique = new SourceNRZT(nbEch, ampl_min, ampl_max, nbBitsMess, seed);
+				}
+			}
+
+			if (messageBruitee) {
+				transmetteurAnalogique = new TransmetteurBruite(this.snrpb);
+				sourceAnalogique.connecter(transmetteurAnalogique);
+			} else {
+				transmetteurAnalogique = new TransmetteurParfait<>();
+				sourceAnalogique.connecter(transmetteurAnalogique);
+			}
+
+			destinationAnalogique = new DestinationFinale<>();
+			transmetteurAnalogique.connecter(destinationAnalogique);
+
+			if (affichage) {
+				sourceAnalogique.connecter(new SondeAnalogique("Sonde en sortie de la source"));
+				transmetteurAnalogique.connecter(new SondeAnalogique("Sonde en sortie du transmetteur"));
+				transmetteurAnalogique.connecter(new SondeHistogramme("Histogramme de l'information reçue"));
 			}
 		} else {
-			switch (formatSignal) {
-			case RZ -> source = new SourceRZ(nbEch, ampl_min, ampl_max, nbBitsMess, seed);
-			case NRZ -> source = new SourceNRZ(nbEch, ampl_min, ampl_max, nbBitsMess, seed);
-			case NRZT -> source = new SourceNRZT(nbEch, ampl_min, ampl_max, nbBitsMess, seed);
+			// Logique
+			sourceLogique = messageAleatoire ? new SourceAleatoire(nbBitsMess, seed) : new SourceFixe(messageString);
+			destinationLogique = new DestinationFinale<>();
+			transmetteurLogique = new TransmetteurParfait<Boolean>();
+
+			sourceLogique.connecter(transmetteurLogique);
+			transmetteurLogique.connecter(destinationLogique);
+
+			if (affichage) {
+				sourceLogique.connecter(new SondeLogique("Sonde en sortie de la source", 300));
+				transmetteurLogique.connecter(new SondeLogique("Sonde en sortie du transmetteur", 300));
 			}
-		}
-		if (messageBruitee) {
-			transmetteurAnalogique = new TransmetteurBruite(this.snrpb);
-			source.connecter(transmetteurAnalogique);
-
-		} else {
-			transmetteurAnalogique = new TransmetteurParfait<>();
-			source.connecter(transmetteurAnalogique);
-
-		}
-
-		destinationAnalogique = new DestinationFinale<>();
-		transmetteurAnalogique.connecter(destinationAnalogique);
-
-		if (affichage) {
-			source.connecter(new SondeAnalogique("Sonde en sortie de la source"));
-			transmetteurAnalogique.connecter(new SondeAnalogique("Sonde en sortie du transmetteur"));
-			transmetteurAnalogique.connecter(new SondeHistogramme("Histogramme de l'information reçue"));
 		}
 
 	}
@@ -170,9 +184,8 @@ public class Simulateur {
 			if (args[i].matches("-s")) {
 				affichage = true;
 			} else if (args[i].matches("-seed")) {
-				aleatoireAvecGerme = true;
 				i++;
-				String argSeed= getArgumentOrThrows(args, i, "Pas de valeur du paramètre de seed renseignée");
+				String argSeed = getArgumentOrThrows(args, i, "Pas de valeur du paramètre de seed renseignée");
 				try {
 					seed = Integer.valueOf(argSeed);
 				} catch (Exception e) {
@@ -193,6 +206,7 @@ public class Simulateur {
 				} else
 					throw new ArgumentsException("Valeur du paramètre -mess invalide : " + messageString);
 			} else if (args[i].matches("-form")) {
+				transmissionAnalogique = true;
 				i++;
 				String argForm = getArgumentOrThrows(args, i, "Pas de valeur du paramètre de forme d'onde renseignée");
 				if (args[i].matches("NRZ")) {
@@ -207,7 +221,8 @@ public class Simulateur {
 				}
 			} else if (args[i].matches("-nbEch")) {
 				i++;
-				String argNbEch = getArgumentOrThrows(args, i, "Pas de valeur du paramètre de nombre d'échantillons renseignée");
+				String argNbEch = getArgumentOrThrows(args, i,
+						"Pas de valeur du paramètre de nombre d'échantillons renseignée");
 				if (args[i].matches("[0-9]+")) {
 					nbEch = Integer.parseInt(args[i]);
 					if (nbEch % 3 != 0) {
@@ -282,7 +297,7 @@ public class Simulateur {
 	 * @throws Exception si un problème survient lors de l'exécution
 	 */
 	public void execute() throws Exception {
-		source.emettre();
+		getSource().emettre();
 	}
 
 	/**
@@ -292,12 +307,28 @@ public class Simulateur {
 	 * @return La valeur du Taux dErreur Binaire.
 	 */
 	public float calculTauxErreurBinaire() {
+		TEB = transmissionAnalogique ? calculTEBAnalogique() : calculTEBLogique();
+		return TEB;
+	}
+
+	private float calculTEBLogique() {
+		int nbBitEronnes = 0;
+		Information<?> src = getSource().getInformationEmise();
+		Information<?> dst = getDestination().getInformationRecue();
+		for (int i = 0; i < nbBitsMess; i++) {
+			if (src.iemeElement(i) != dst.iemeElement(i)) {
+				nbBitEronnes++;
+			}
+		}
+		return (float) nbBitEronnes / (float) nbBitsMess;
+	}
+
+	private float calculTEBAnalogique() {
 		int nbBitEronnes = 0;
 		float moy_src, moy_dst, somme_src, somme_dst;
 		float moy_ampl = (ampl_max + ampl_min) / 2.0f;
-		Information<?> src = source.getInformationEmise();
-		Information<?> dst = destinationAnalogique.getInformationRecue();
-
+		Information<?> src = getSource().getInformationEmise();
+		Information<?> dst = getDestination().getInformationRecue();
 		for (int i = 0; i < nbBitsMess; i++) {
 			somme_src = 0;
 			somme_dst = 0;
@@ -320,24 +351,18 @@ public class Simulateur {
 				}
 			}
 		}
-		TEB = (float) nbBitEronnes / (float) nbBitsMess;
-		return TEB;
+		return (float) nbBitEronnes / (float) nbBitsMess;
 	}
 
 	public Source<?> getSource() {
-		return source;
+		return transmissionAnalogique ? sourceAnalogique : sourceLogique;
 	}
 
 	public Destination<?> getDestination() {
-		if (destinationAnalogique != null) {
-			return destinationAnalogique;
-		} else {
-			return destinationLogique;
-		}
+		return transmissionAnalogique ? destinationAnalogique : destinationLogique;
 	}
 
-
-	public static String getArgumentOrThrows(String [] args, int index, String error) throws ArgumentsException {
+	public static String getArgumentOrThrows(String[] args, int index, String error) throws ArgumentsException {
 		if (args.length <= index) {
 			throw new ArgumentsException(error);
 		}
@@ -352,7 +377,6 @@ public class Simulateur {
 	 *             Simulateur.
 	 */
 
-
 	public static void main(String[] args) {
 
 		Simulateur simulateur = null;
@@ -366,20 +390,22 @@ public class Simulateur {
 			System.exit(-1);
 		}
 
+		final long executionStart = System.nanoTime();
+
 		try {
 			simulateur.execute();
 
 			final long end = System.nanoTime();
-			final long time = end - start;
-			final Float ms = (time * 1f) / 1000000;
 
-			System.out.println("Time : " + ms + "ms");
+			System.out.printf("Temps construction : %.2fms\nTemps d'execution : %.2fms\nTemps total : %.2fms\n",
+					(executionStart - start) * 1f / 1000000, (end - executionStart) * 1f / 1000000,
+					(end - start) * 1f / 1000000);
 
 			// Condition temporaire nécessaire pour l'affichage de courbe utile au rapport
 			// mais non prévu dans la programmation des sondes
 			if (simulateur.affichage) {
 				SondeLogique sondeEmise = new SondeLogique("Message binaire", 1080);
-				sondeEmise.recevoir(simulateur.source.getInformationBinaire());
+				sondeEmise.recevoir(simulateur.getSource().getInformationBinaire());
 
 				SondeAnalogique sondeDest = new SondeAnalogique("Information reçue par la destination");
 				sondeDest.recevoir(simulateur.destinationAnalogique.getInformationRecue());
