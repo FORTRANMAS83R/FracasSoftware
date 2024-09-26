@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd src && javadoc -d ../docs/ *
+cd src && javadoc -cp "../lib/*" -d ../docs/ *
 cd ../
