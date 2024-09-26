@@ -3,6 +3,7 @@ package simulateur;
 import destinations.Destination;
 import destinations.DestinationFinale;
 import information.Information;
+import information.InformationNonConformeException;
 import sources.Source;
 import sources.SourceAleatoire;
 import sources.SourceFixe;
@@ -295,9 +296,9 @@ public class Simulateur {
      * La méthode execute effectue un envoi de message par la source de la chaîne de
      * transmission du Simulateur.
      *
-     * @throws Exception si un problème survient lors de l'exécution
+     * @throws InformationNonConformeException si un problème survient lors de l'exécution
      */
-    public void execute() throws Exception {
+    public void execute() throws InformationNonConformeException {
         getSource().emettre();
     }
 
