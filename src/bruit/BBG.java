@@ -134,4 +134,12 @@ public class BBG {
 		return (float) (snrPB - 10 * Math.log10(nbEch));
 	}
 
+	/*
+	 * Méthode permettant de récupérer le rapport signal sur bruit
+	 *
+	 * @return snrpb
+	 */
+	public Float getSNRpb() {
+		return this.SNRpb;
+	}
 }
