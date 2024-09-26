@@ -86,4 +86,14 @@ public class SimulateurTest {
 		assertEquals(false, s.getTransmissionAnalogique());
 		s.calculTauxErreurBinaire();
 	}
+
+	/**
+	 * Lancement d'une simulation via la méthode static main
+	 */
+	@Test
+	public void testSimulationViaMain() {
+		final String[] args = { "-mess", "500" };
+
+		Simulateur.main(args);
+	}
 }
