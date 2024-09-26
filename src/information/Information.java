@@ -81,7 +81,7 @@ public class Information<T> implements Iterable<T> {
 	 */
 	public Information<T> sousInformation(int start, int end) {
 		Information<T> sub = new Information<>();
-		for (int i = start; i < end; i++) {
+		for (int i = start; i <= end; i++) {
 			sub.add(this.iemeElement(i));
 		}
 		return sub;
