@@ -97,7 +97,7 @@ public class BBG {
 	 * 
 	 * @return le bruit généré
 	 */
-	private static Float calculPuissanceSignal(Information<Float> signal) {
+	public static Float calculPuissanceSignal(Information<Float> signal) {
 		Float puissance = 0f;
 		for (Float s : signal) {
 			puissance += s * s;
@@ -116,7 +116,7 @@ public class BBG {
 	 * 
 	 * @return la variance du bruit
 	 */
-	private static Float calculVariance(Float puissanceSignal, Float snrPb, Integer nbEch) {
+	public static Float calculVariance(Float puissanceSignal, Float snrPb, Integer nbEch) {
 		return (nbEch * puissanceSignal) / ((float) (2 * Math.pow(10, snrPb / 10)));
 	}
 
