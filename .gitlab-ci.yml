@@ -31,6 +31,7 @@ livrable:
     script:
         - mkdir bin
         - mkdir docs
+        - rm -fr .git/
         - tar -czvf A4.COLOMER.COURBET.FRANCO.HUET.TRONET.logiciel.etapeX.tar.gz ./
     artifacts:
         name: livrable
