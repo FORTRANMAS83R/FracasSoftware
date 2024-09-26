@@ -294,10 +294,10 @@ public class Simulateur {
 	public float calculTauxErreurBinaire() {
 		int nbBitEronnes = 0;
 		float moy_src, moy_dst, somme_src, somme_dst;
-		float delta = ((ampl_max + ampl_min) / 2.0f);
 		float moy_ampl = (ampl_max + ampl_min) / 2.0f;
 		Information<?> src = source.getInformationEmise();
 		Information<?> dst = destinationAnalogique.getInformationRecue();
+
 		for (int i = 0; i < nbBitsMess; i++) {
 			somme_src = 0;
 			somme_dst = 0;
@@ -305,6 +305,7 @@ public class Simulateur {
 				somme_src += (float) src.iemeElement(i * nbEch + j);
 				somme_dst += (float) dst.iemeElement(i * nbEch + j);
 			}
+			// Calcul de la moyenne Source et destination
 			moy_src = (float) Math.round((somme_src / (float) nbEch) * 100) / 100;
 			moy_dst = (float) Math.round((somme_dst / (float) nbEch) * 100) / 100;
 
