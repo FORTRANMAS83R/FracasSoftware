@@ -25,6 +25,23 @@ test:
                 coverage_format: jacoco
                 path: report.xml
 
+test-scripts:
+    stage: test
+    script:
+        - chmod u+x ./runTests
+        - chmod u+x ./compile
+        - chmod u+x ./simulateur
+        - chmod u+x ./cleanAll
+        - chmod u+x ./genDoc
+        - ./compile
+        # Logique
+        - ./simulateur
+        - ./simulateur -mess 100000
+        # Analogique
+        - ./simulateur -mess 100000 -nbEch 1000 -seed 1234
+        - ./genDoc
+        - ./cleanAll
+
 livrable:
     image: alpine:latest
     stage: release
