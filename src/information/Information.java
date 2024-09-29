@@ -117,6 +117,15 @@ public class Information<T> implements Iterable<T> {
     }
 
     /**
+     * pour ajouter une liste d'éléments à la fin de l'information
+     *
+     * @param valeurs la liste d'éléments à rajouter
+     */
+    public void addLast(ArrayList<T> valeurs) {
+        this.content.addAll(valeurs);
+    }
+
+    /**
      * pour comparer l'information courante avec une autre information
      *
      * @param o l'information avec laquelle se comparer
