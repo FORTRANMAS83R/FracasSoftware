@@ -19,11 +19,18 @@ public class tebEnFctSNR {
      * @throws Exception
      */
     public static void main(String[] args) throws Exception {
-        int size = 800;     // si vous modifiez cette valeur, vérifiez que la boucle avec snr ne lance pas OutOfBandsException
-        double snrMin = -50;
+        int size = 300;     // si vous modifiez cette valeur, vérifiez que la boucle avec snr ne lance pas OutOfBandsException
+        double snrMin = 0;
         double snrMax = 30;
         int tailleMessage = 100000;
         int nbEch = 60;
+        int ampMinRZ = 0;
+        int ampMaxRZ = 5;
+        float ampMinNRZetNRZT = -2.5f;
+        float ampMaxNRZetNRZT = 2.5f;
+
+        int nombreDeSimulations = 100;
+
 
         LinkedList<float[]> tabsNRZ = new LinkedList<>();
         LinkedList<float[]> tabsRZ = new LinkedList<>();
@@ -36,32 +43,33 @@ public class tebEnFctSNR {
         float[] tabSNR = new float[size];
 
         // Boucle pour effectuer plusieurs simulations
-        for (int j = 0; j < 10; j++) {
+        for (int j = 0; j < nombreDeSimulations; j++) {
             float[] tempTabNRZ = new float[size];
             float[] tempTabRZ = new float[size];
             float[] tempTabNRZT = new float[size];
             int i = 0;
-            // Boucle pour varier le SNR de -50 à 30 avec un pas de 0.1
+            // Boucle pour varier le SNR avec un pas de 0.1
             for (double snr = snrMin; snr <= snrMax; snr += 0.1) {
-                String[] arguments = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000)};
+                String[] argumentsNRZetNRZT = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000)};
+                String[] argumentsRZ = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinRZ), String.valueOf(ampMaxRZ), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000)};
                 // Création et exécution du simulateur avec les paramètres spécifiés
-                Simulateur simulateur = new Simulateur(arguments);
+                Simulateur simulateur = new Simulateur(argumentsNRZetNRZT);
                 simulateur.execute();
                 // Calcul du taux d'erreur binaire et stockage dans le tableau temporaire
                 tempTabNRZT[i] = simulateur.calculTauxErreurBinaire();
 
-                simulateur = new Simulateur(arguments);
+                simulateur = new Simulateur(argumentsRZ);
                 simulateur.execute();
                 tempTabRZ[i] = simulateur.calculTauxErreurBinaire();
 
-                simulateur = new Simulateur(arguments);
+                simulateur = new Simulateur(argumentsNRZetNRZT);
                 simulateur.execute();
                 tempTabNRZ[i] = simulateur.calculTauxErreurBinaire();
 
                 i++;
-                System.out.println("boucle SNR" + i);
+                System.out.println("Simulation " + j + "/" + nombreDeSimulations + " boucle SNR " + i);
             }
-            System.out.println("numéro de la simulation" + j);
+            System.out.println("numéro de la simulation " + j + "/" + nombreDeSimulations);
             tabsNRZ.add(tempTabNRZ);
             tabsRZ.add(tempTabRZ);
             tabsNRZT.add(tempTabNRZT);
@@ -72,7 +80,7 @@ public class tebEnFctSNR {
         for (double snr = snrMin; snr <= snrMax; snr += 0.1) {
             tabTEBTheo[i] = (float) (0.5 * Erf.erfc(Math.sqrt(Math.pow(10, snr / 10))));
             tabSNR[i] = (float) snr;
-            if (snr > 0.1 || snr < -0.1) {
+            if (snr < 0.1 && snr > -0.1) {
                 tabSNR[i] = 0;
             }
             i++;
