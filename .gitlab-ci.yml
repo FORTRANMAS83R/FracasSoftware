@@ -6,6 +6,7 @@ stages:
 
 test:
     stage: test
+    image: openjdk:latest
     script:
         - env
         - chmod u+x ./runTests
