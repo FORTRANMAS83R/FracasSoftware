@@ -1,4 +1,9 @@
 #!/bin/bash
-echo "Generating javadoc..."
+echo "Génération de la javadoc..."
 javadoc -cp lib/*:bin/:. -d docs $(find src -name "*.java")
-echo "Done!"
+code=$?;
+if [ "$code" != "0" ]; then
+    echo "Erreur de génération de la documentation. code : $code";
+    exit -1;
+fi
+echo "Javadoc générée."

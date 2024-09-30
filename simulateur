@@ -6,8 +6,13 @@ if [ "$OSTYPE" == "msys" ] || [ "$OSTYPE" == "cygwin" ]; then
     CLASSPATH="..\bin;..\lib\*"
 else
     # Autre système (Linux, macOS, etc.)
-    CLASSPATH="..\bin:..\lib\*"
+    CLASSPATH="../bin:../lib/*"
 fi
 
 cd bin && java -classpath $CLASSPATH simulateur.Simulateur "$@"
+code=$?
+if [ $code -ne 0 ]; then
+    echo "Erreur de compilation. code : $code"
+    exit -1
+fi
 cd ../
