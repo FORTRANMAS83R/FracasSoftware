@@ -1,4 +1,4 @@
-image: openjdk:latest
+image: openjdk:24-ea-16-jdk-slim-bullseye
 
 stages:
     - test
@@ -59,7 +59,6 @@ livrable:
 
 pages:
     stage: release
-    image: openjdk:24-ea-16-jdk-slim-bullseye
     script:
         - chmod u+x ./genDoc
         - ./genDoc
