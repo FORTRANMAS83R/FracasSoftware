@@ -14,7 +14,6 @@ import java.util.Random;
 import static org.easymock.EasyMock.expect;
 import static org.hamcrest.CoreMatchers.is;
 
-
 /**
  * Classe de test pour la classe BBG.
  */
@@ -28,10 +27,9 @@ public class BBGTest {
      */
     @Test
     public void testCalculPuissanceSignal() {
-        final BBG bruit = new BBG(20f, 25);
         ArrayList<Float> signal = new ArrayList<>(Arrays.asList(2f, 2f, 2f, 2f));
         Information<Float> mockInformation = mockInit(signal);
-        final Float puissanceSignal = bruit.calculPuissanceSignal(mockInformation);
+        final Float puissanceSignal = BBG.calculPuissanceSignal(mockInformation);
         collector.checkThat(4f, is(puissanceSignal));
     }
 
@@ -40,18 +38,18 @@ public class BBGTest {
      */
     @Test
     public void testCalculVariance() {
-
-        final BBG bruit = new BBG(20f, 25);
         Information<Float> mockInformation = mockInit(new ArrayList<>(Arrays.asList(2f, 2f, 2f, 2f)));
-        final Float variance = bruit.calculVariance(bruit.calculPuissanceSignal(mockInformation), 20f, 4);
+        final Float variance = BBG.calculVariance(BBG.calculPuissanceSignal(mockInformation), 20f, 4);
         collector.checkThat(0.08f, is(variance));
     }
 
     /**
-     * Initialise et retourne un objet mock de type Information<Float> en utilisant EasyMock.
+     * Initialise et retourne un objet mock de type Information<Float> en utilisant
+     * EasyMock.
      * Cette méthode simule le comportement d'un objet Information pour les tests.
      *
-     * @param signal La liste des valeurs flottantes à utiliser pour initialiser le mock.
+     * @param signal La liste des valeurs flottantes à utiliser pour initialiser le
+     *               mock.
      * @return Un objet mock de type Information<Float>.
      */
     public static Information<Float> mockInit(ArrayList<Float> signal) {
@@ -67,7 +65,6 @@ public class BBGTest {
         return mockInformation;
 
     }
-
 
     /**
      * Teste le constructeur de la classe BBG sans seed.
@@ -85,16 +82,18 @@ public class BBGTest {
     @Test
     public void testConstructeurSeed() {
         final BBG bruit = new BBG(20f, 25);
-        //check that bruit is instance of BBG
+        // check that bruit is instance of BBG
         collector.checkThat(20f, is(bruit.getSNRpb()));
 
     }
 
     /**
-     * Initialise et retourne un objet mock de type Information\<Float\> pour la méthode bruitage en utilisant EasyMock.
+     * Initialise et retourne un objet mock de type Information\<Float\> pour la
+     * méthode bruitage en utilisant EasyMock.
      * Cette méthode simule le comportement d'un objet Information pour les tests.
      *
-     * @param signal La liste des valeurs flottantes à utiliser pour initialiser le mock.
+     * @param signal La liste des valeurs flottantes à utiliser pour initialiser le
+     *               mock.
      * @return Un objet mock de type Information\<Float\>.
      */
     public static Information<Float> mockBruitage(ArrayList<Float> signal) {
@@ -132,11 +131,13 @@ public class BBGTest {
         Random a1 = new Random(25);
         Random a2 = new Random(25);
 
-        // Crée un signal de base (par exemple 4 échantillons avec des valeurs identiques)
+        // Crée un signal de base (par exemple 4 échantillons avec des valeurs
+        // identiques)
         ArrayList<Float> signal = new ArrayList<>(Arrays.asList(2f, 2f, 2f, 2f));
         // Mock d'information basé sur le signal original
         Information<Float> mockInformation = mockBruitage(signal);
-        // Crée une instance réelle de l'information pour stocker le signal bruité attendu
+        // Crée une instance réelle de l'information pour stocker le signal bruité
+        // attendu
         Information<Float> signalBruiteExpected = new Information<>(signal.toArray(new Float[0]));
         // Calcul de la variance pour le bruit attendu
         Float variance = BBG.calculVariance(BBG.calculPuissanceSignal(signalBruiteExpected), 20f, 4);
@@ -164,4 +165,3 @@ public class BBGTest {
         }
     }
 }
-

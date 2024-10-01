@@ -1,0 +1,24 @@
+{
+	// Use IntelliSense to learn about possible attributes.
+	// Hover to view descriptions of existing attributes.
+	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "java",
+			"name": "Current File",
+			"request": "launch",
+			"mainClass": "${file}",
+			"preLaunchTask": "java (build): Build Workspace"
+		},
+		{
+			"type": "java",
+			"name": "Simulateur",
+			"request": "launch",
+			"mainClass": "simulateur.Simulateur",
+			"projectName": "SIT123",
+			"args": "-mess 0110010 -ti 15 0.5 -s",
+			"preLaunchTask": "java (build): Build Workspace"
+		}
+	]
+}

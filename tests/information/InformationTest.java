@@ -8,13 +8,17 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 
 /**
- * La classe InformationTest contient des tests unitaires pour la classe Information.
- * Elle utilise JUnit pour vérifier la correction de diverses méthodes de la classe Information.
+ * La classe InformationTest contient des tests unitaires pour la classe
+ * Information.
+ * Elle utilise JUnit pour vérifier la correction de diverses méthodes de la
+ * classe Information.
  */
 public class InformationTest {
     /**
-     * ErrorCollector est une règle JUnit qui permet l'exécution d'un test de continuer après la première erreur trouvée.
-     * Cela est nécessaire pour collecter tous les problèmes dans une méthode de test et les rapporter tous en une seule fois.
+     * ErrorCollector est une règle JUnit qui permet l'exécution d'un test de
+     * continuer après la première erreur trouvée.
+     * Cela est nécessaire pour collecter tous les problèmes dans une méthode de
+     * test et les rapporter tous en une seule fois.
      */
     @Rule
     public ErrorCollector collector = new ErrorCollector();
@@ -30,7 +34,7 @@ public class InformationTest {
      */
     @Test
     public void testCreationInformationNonVide() {
-        final Information<Boolean> i = new Information<Boolean>(new Boolean[]{true, false, true});
+        final Information<Boolean> i = new Information<Boolean>(new Boolean[] { true, false, true });
         collector.checkThat(i.nbElements(), is(3));
         collector.checkThat(i.iemeElement(0), is(true));
         collector.checkThat(i.iemeElement(1), is(false));
@@ -42,7 +46,7 @@ public class InformationTest {
      */
     @Test
     public void testCreationInformationNonVide2() {
-        final Information<Boolean> i = new Information<Boolean>(new Boolean[]{true, false, true, false, true}, 5);
+        final Information<Boolean> i = new Information<Boolean>(new Boolean[] { true, false, true, false, true }, 5);
         collector.checkThat(i.nbElements(), is(5));
         collector.checkThat(i.iemeElement(0), is(true));
         collector.checkThat(i.iemeElement(1), is(false));
@@ -57,7 +61,7 @@ public class InformationTest {
      */
     @Test
     public void testGetContent() {
-        final Information<Boolean> i = new Information<Boolean>(new Boolean[]{true, false, true, false, true}, 5);
+        final Information<Boolean> i = new Information<Boolean>(new Boolean[] { true, false, true, false, true }, 5);
         collector.checkThat(i.getContent().size(), is(5));
         collector.checkThat(i.getContent().get(0), is(true));
         collector.checkThat(i.getContent().get(1), is(false));
@@ -71,7 +75,7 @@ public class InformationTest {
      */
     @Test
     public void testSousInformation() {
-        final Boolean[] values = {true, false, true, true};
+        final Boolean[] values = { true, false, true, true };
         final Information<Boolean> i = new Information<Boolean>(values);
         final Information<Boolean> subI = i.sousInformation(1, 2);
 
@@ -93,7 +97,7 @@ public class InformationTest {
      */
     @Test
     public void testSetNbEchantillons() {
-        final Information<Boolean> i = new Information<Boolean>(new Boolean[]{true, false, true, false, true});
+        final Information<Boolean> i = new Information<Boolean>(new Boolean[] { true, false, true, false, true });
         i.setNbEchantillons(5);
         collector.checkThat(i.getNbEchantillons(), is(5));
     }
@@ -103,7 +107,7 @@ public class InformationTest {
      */
     @Test
     public void testSetIemeElement() {
-        final Information<Boolean> i = new Information<Boolean>(new Boolean[]{true, false, true, false, true});
+        final Information<Boolean> i = new Information<Boolean>(new Boolean[] { true, false, true, false, true });
         i.setIemeElement(0, false);
         collector.checkThat(i.iemeElement(0), is(false));
     }
@@ -113,10 +117,10 @@ public class InformationTest {
      */
     @Test
     public void testEquals() {
-        final Information<Boolean> i = new Information<Boolean>(new Boolean[]{true, false, true, false, true});
-        final Information<Boolean> i2 = new Information<Boolean>(new Boolean[]{true, false, true, false, true});
-        final Information<Boolean> i3 = new Information<Boolean>(new Boolean[]{true, false, true, false});
-        final Information<Boolean> i4 = new Information<Boolean>(new Boolean[]{true, false, true, false, false});
+        final Information<Boolean> i = new Information<Boolean>(new Boolean[] { true, false, true, false, true });
+        final Information<Boolean> i2 = new Information<Boolean>(new Boolean[] { true, false, true, false, true });
+        final Information<Boolean> i3 = new Information<Boolean>(new Boolean[] { true, false, true, false });
+        final Information<Boolean> i4 = new Information<Boolean>(new Boolean[] { true, false, true, false, false });
         collector.checkThat(i.equals(i2), is(true));
         collector.checkThat(i.equals(2), is(false));
         collector.checkThat(i.equals(i3), is(false));
@@ -128,7 +132,7 @@ public class InformationTest {
      */
     @Test
     public void testClone() {
-        final Information<Boolean> i = new Information<Boolean>(new Boolean[]{true, false, true, false, true});
+        final Information<Boolean> i = new Information<Boolean>(new Boolean[] { true, false, true, false, true });
         final Information<Boolean> i2 = i.clone();
         collector.checkThat(i.equals(i2), is(true));
     }
@@ -138,13 +142,12 @@ public class InformationTest {
      */
     @Test
     public void testIterator() {
-        final Information<Boolean> i = new Information<Boolean>(new Boolean[]{true, false, true, false, true});
+        final Information<Boolean> i = new Information<Boolean>(new Boolean[] { true, false, true, false, true });
         int j = 0;
         for (Boolean b : i) {
             collector.checkThat(b, is(i.iemeElement(j)));
             j++;
         }
     }
-
 
 }

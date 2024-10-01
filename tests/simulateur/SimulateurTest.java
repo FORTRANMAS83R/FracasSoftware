@@ -88,6 +88,22 @@ public class SimulateurTest {
 	}
 
 	/**
+	 * Lancement d'une simulation logique
+	 * 
+	 * @throws InformationNonConformeException
+	 * @throws ArgumentsException
+	 */
+	@Test
+	public void testSimulationMultiTrajets() throws ArgumentsException, InformationNonConformeException {
+		final String[] args = { "-mess", "500", "-ti", "1", "0.5", "2", "0.3", "3", "0.2" };
+		final Simulateur s = new Simulateur(args);
+
+		s.execute();
+		assertEquals(true, s.getTransmissionAnalogique());
+		s.calculTauxErreurBinaire();
+	}
+
+	/**
 	 * Lancement d'une simulation via la méthode static main
 	 */
 	@Test
