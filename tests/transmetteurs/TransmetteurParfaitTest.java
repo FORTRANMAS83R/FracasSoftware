@@ -10,7 +10,9 @@ import org.junit.Test;
 import org.junit.rules.ErrorCollector;
 
 import static org.easymock.EasyMock.*;
-
+/**
+ * Classe de test pour TransmetteurParfait.
+ */
 public class TransmetteurParfaitTest {
     @Rule
     public ErrorCollector collector = new ErrorCollector();
@@ -21,6 +23,10 @@ public class TransmetteurParfaitTest {
     TransmetteurParfait<Boolean> transmetteurParfait;
     Information<Boolean> info;
 
+    /**
+     * Configuration initiale avant chaque test.
+     * @throws InformationNonConformeException si l'information est non conforme.
+     */
     @Before
     public void setUp() throws InformationNonConformeException {
         transmetteurParfait = new TransmetteurParfait<>();
@@ -32,6 +38,10 @@ public class TransmetteurParfaitTest {
         replay(mockDestinationFinale);
     }
 
+    /**
+     * Test de la méthode recevoir.
+     * @throws InformationNonConformeException si l'information est non conforme.
+     */
     @Test
     public void recevoirTest() throws InformationNonConformeException {
         transmetteurParfait.recevoir(info);
@@ -40,6 +50,9 @@ public class TransmetteurParfaitTest {
         }
     }
 
+    /**
+     * Test de la méthode connecter.
+     */
     @Test
     public void connecterTest() {
         int connectionListLength = transmetteurParfait.getDestinationsConnectees().size();
@@ -49,6 +62,10 @@ public class TransmetteurParfaitTest {
         }
     }
 
+    /**
+     * Test de la méthode emettre.
+     * @throws InformationNonConformeException si l'information est non conforme.
+     */
     @Test
     public void emettreTest() throws InformationNonConformeException {
         transmetteurParfait.recevoir(info);

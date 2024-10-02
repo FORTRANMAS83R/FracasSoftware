@@ -9,12 +9,16 @@ import java.util.*;
 
 import static org.junit.Assert.*;
 
+/**
+ * Classe de test pour TransmetteurMultiTrajet.
+ */
 public class TransmetteurMultiTrajetTest {
 
 
-    //TO DO: Test de non création d'énergie
 
-
+    /**
+     * Test du constructeur avec des trajets nuls et un bruit nul.
+     */
     @Test
     public void testConstructeurNullTrajetNullBruit() {
         TransmetteurMultiTrajet transmetteurMultiTrajet = new TransmetteurMultiTrajet(null, null);
@@ -22,6 +26,9 @@ public class TransmetteurMultiTrajetTest {
         assertNull(transmetteurMultiTrajet.getSNRpb());
     }
 
+    /**
+     * Test du constructeur avec des trajets nuls et sans bruit.
+     */
     @Test
     public void testConstructeurNullTrajetSansBruit() {
         TransmetteurMultiTrajet transmetteurMultiTrajet = new TransmetteurMultiTrajet(null, 0.0f);
@@ -29,6 +36,9 @@ public class TransmetteurMultiTrajetTest {
         assertEquals(transmetteurMultiTrajet.getSNRpb(), 0.0f, 0.0f);
     }
 
+    /**
+     * Test du constructeur avec des trajets nuls et un bruit.
+     */
     @Test
     public void testConstructeurNullTrajetEtBruit() {
         TransmetteurMultiTrajet transmetteurMultiTrajet = new TransmetteurMultiTrajet(null, 1.0f);
@@ -36,6 +46,9 @@ public class TransmetteurMultiTrajetTest {
         assertEquals(transmetteurMultiTrajet.getSNRpb(), 1.0f, 0.0f);
     }
 
+    /**
+     * Test du constructeur avec des trajets et un bruit.
+     */
     @Test
     public void testConstructeurAvecTrajetEtBruit() {
         List<AbstractMap.SimpleEntry<Integer, Float>> trajets = new ArrayList<>();
@@ -46,6 +59,9 @@ public class TransmetteurMultiTrajetTest {
         assertEquals(transmetteurMultiTrajet.getSNRpb(), 2.0f, 0.0f);
     }
 
+    /**
+     * Test du constructeur avec des trajets sans bruit.
+     */
     @Test
     public void testConstructeurAvecTrajetSansBruit() {
         List<AbstractMap.SimpleEntry<Integer, Float>> trajets = new ArrayList<>();
@@ -55,6 +71,9 @@ public class TransmetteurMultiTrajetTest {
         assertEquals(transmetteurMultiTrajet.getTrajets(), trajets);
     }
 
+    /**
+     * Test de la méthode emettre.
+     */
     @Test
     public void emettreTest() throws InformationNonConformeException {
         List<AbstractMap.SimpleEntry<Integer, Float>> trajets = new ArrayList<>();
@@ -69,6 +88,9 @@ public class TransmetteurMultiTrajetTest {
         assertEquals(destinationFinale.getInformationRecue(), infoExpected);
     }
 
+    /**
+     * Test de la méthode emettre avec des trajets non réguliers.
+     */
     @Test
     public void emettreNonRegTest() throws InformationNonConformeException {
         List<AbstractMap.SimpleEntry<Integer, Float>> trajets = new ArrayList<>();
@@ -83,6 +105,9 @@ public class TransmetteurMultiTrajetTest {
         assertEquals(destinationFinale.getInformationRecue(),infoExpected);
     }
 
+    /**
+     * Test de la méthode tauMax.
+     */
     @Test
     public void tauMaxTest() {
         List<AbstractMap.SimpleEntry<Integer, Float>> trajets = new ArrayList<>();
@@ -95,6 +120,9 @@ public class TransmetteurMultiTrajetTest {
         assertEquals(Optional.ofNullable(transmetteurMultiTrajet.tauMax()), Optional.ofNullable(9));
     }
 
+    /**
+     * Test de la méthode nonCreationEnergie.
+     */
     @Test
     public void nonCreationEnergieTest(){
         List<AbstractMap.SimpleEntry<Integer, Float>> trajets = new ArrayList<>();
