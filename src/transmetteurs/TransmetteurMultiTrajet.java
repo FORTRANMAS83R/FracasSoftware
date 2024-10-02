@@ -105,4 +105,21 @@ public class TransmetteurMultiTrajet extends Transmetteur<Float, Float> {
         }
         return informationMultiTrajet;
     }
+
+    /**
+     * Retourne la liste des paramètres des trajets multiples.
+     *
+     * @return la liste des paramètres des trajets multiples.
+     */
+    public List<SimpleEntry<Integer, Float>> getTrajets() {
+        return trajets;
+    }
+    /**
+     * Retourne le SNR par bit.
+     *
+     * @return le SNR par bit.
+     */
+    public Float getSNRpb() {
+        return SNRpb;
+    }
 }

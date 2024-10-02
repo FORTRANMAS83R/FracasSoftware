@@ -1,24 +1,114 @@
 package transmetteurs;
 
+import bruit.BBG;
 import destinations.DestinationFinale;
 import information.Information;
 import information.InformationNonConformeException;
-import org.easymock.Mock;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ErrorCollector;
+import java.util.*;
 
-import static org.easymock.EasyMock.*;
-import static org.easymock.EasyMock.replay;
+import static org.junit.Assert.*;
 
 public class TransmetteurMultiTrajetTest {
-    //TO DO: Test de emettre
-    //TO DO: Test de recevoir
-    //TO DO: Test de connecter
-    //TO DO: Test des 2 constructeurs
-    //TO DO: Test de multiTrajet -> vérifier qu'une information reçue est égale à l'information émise si tau et alpha vallent 0
-    //TO DO: Test de tauMax
+
+
     //TO DO: Test de non création d'énergie
 
+
+    @Test
+    public void testConstructeurNullTrajetNullBruit() {
+        TransmetteurMultiTrajet transmetteurMultiTrajet = new TransmetteurMultiTrajet(null, null);
+        assertNull(transmetteurMultiTrajet.getTrajets());
+        assertNull(transmetteurMultiTrajet.getSNRpb());
+    }
+
+    @Test
+    public void testConstructeurNullTrajetSansBruit() {
+        TransmetteurMultiTrajet transmetteurMultiTrajet = new TransmetteurMultiTrajet(null, 0.0f);
+        assertNull(transmetteurMultiTrajet.getTrajets());
+        assertEquals(transmetteurMultiTrajet.getSNRpb(), 0.0f, 0.0f);
+    }
+
+    @Test
+    public void testConstructeurNullTrajetEtBruit() {
+        TransmetteurMultiTrajet transmetteurMultiTrajet = new TransmetteurMultiTrajet(null, 1.0f);
+        assertNull(transmetteurMultiTrajet.getTrajets());
+        assertEquals(transmetteurMultiTrajet.getSNRpb(), 1.0f, 0.0f);
+    }
+
+    @Test
+    public void testConstructeurAvecTrajetEtBruit() {
+        List<AbstractMap.SimpleEntry<Integer, Float>> trajets = new ArrayList<>();
+        trajets.add(new AbstractMap.SimpleEntry<>(1, 1.0f));
+        trajets.add(new AbstractMap.SimpleEntry<>(2, 0.8f));
+        TransmetteurMultiTrajet transmetteurMultiTrajet = new TransmetteurMultiTrajet(trajets, 2.0f);
+        assertEquals(transmetteurMultiTrajet.getTrajets(), trajets);
+        assertEquals(transmetteurMultiTrajet.getSNRpb(), 2.0f, 0.0f);
+    }
+
+    @Test
+    public void testConstructeurAvecTrajetSansBruit() {
+        List<AbstractMap.SimpleEntry<Integer, Float>> trajets = new ArrayList<>();
+        trajets.add(new AbstractMap.SimpleEntry<>(1, 1.0f));
+        trajets.add(new AbstractMap.SimpleEntry<>(2, 0.8f));
+        TransmetteurMultiTrajet transmetteurMultiTrajet = new TransmetteurMultiTrajet(trajets);
+        assertEquals(transmetteurMultiTrajet.getTrajets(), trajets);
+    }
+
+    @Test
+    public void emettreTest() throws InformationNonConformeException {
+        List<AbstractMap.SimpleEntry<Integer, Float>> trajets = new ArrayList<>();
+        trajets.add(new AbstractMap.SimpleEntry<>(1, 1.0f));
+        trajets.add(new AbstractMap.SimpleEntry<>(2, 1.0f));
+        Information<Float> infoTested = new Information<>(new Float[]{1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f});
+        Information<Float> infoExpected = new Information<>(new Float[]{1.0f, 1.0f, 2.0f, 1.0f, 2.0f, 1.0f, 2.0f, 1.0f, 1.0f, 0.0f});
+        DestinationFinale destinationFinale = new DestinationFinale();
+        TransmetteurMultiTrajet transmetteurMultiTrajet = new TransmetteurMultiTrajet(trajets);
+        transmetteurMultiTrajet.connecter(destinationFinale);
+        transmetteurMultiTrajet.recevoir(infoTested);
+        assertEquals(destinationFinale.getInformationRecue(), infoExpected);
+    }
+
+    @Test
+    public void emettreNonRegTest() throws InformationNonConformeException {
+        List<AbstractMap.SimpleEntry<Integer, Float>> trajets = new ArrayList<>();
+        trajets.add(new AbstractMap.SimpleEntry<>(0, 0.0f));
+        trajets.add(new AbstractMap.SimpleEntry<>(0, 0.0f));
+        Information<Float> infoTested = new Information<>(new Float[]{1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f});
+        Information<Float> infoExpected = infoTested.clone();
+        DestinationFinale destinationFinale = new DestinationFinale();
+        TransmetteurMultiTrajet transmetteurMultiTrajet = new TransmetteurMultiTrajet(trajets);
+        transmetteurMultiTrajet.connecter(destinationFinale);
+        transmetteurMultiTrajet.recevoir(infoTested);
+        assertEquals(destinationFinale.getInformationRecue(),infoExpected);
+    }
+
+    @Test
+    public void tauMaxTest() {
+        List<AbstractMap.SimpleEntry<Integer, Float>> trajets = new ArrayList<>();
+        trajets.add(new AbstractMap.SimpleEntry<>(1, 1.0f));
+        trajets.add(new AbstractMap.SimpleEntry<>(5, 0.4f));
+        trajets.add(new AbstractMap.SimpleEntry<>(2, 0.4f));
+        trajets.add(new AbstractMap.SimpleEntry<>(9, 0.5f));
+        trajets.add(new AbstractMap.SimpleEntry<>(0, 0.2f));
+        TransmetteurMultiTrajet transmetteurMultiTrajet = new TransmetteurMultiTrajet(trajets);
+        assertEquals(Optional.ofNullable(transmetteurMultiTrajet.tauMax()), Optional.ofNullable(9));
+    }
+
+//    @Test
+//    public void nonCreationEnergieTest(){
+//        List<AbstractMap.SimpleEntry<Integer, Float>> trajets = new ArrayList<>();
+//        trajets.add(new AbstractMap.SimpleEntry<>(1, 0.8f));
+//        trajets.add(new AbstractMap.SimpleEntry<>(5, 0.5f));
+//        trajets.add(new AbstractMap.SimpleEntry<>(2, 0.7f));
+//        trajets.add(new AbstractMap.SimpleEntry<>(9, 2.0f));
+//        trajets.add(new AbstractMap.SimpleEntry<>(20, 9.0f));
+//        TransmetteurMultiTrajet transmetteurMultiTrajet = new TransmetteurMultiTrajet(trajets);
+//        Information<Float> infoTested = new Information<>(new Float[]{1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f});
+//        assertTrue(BBG.calculPuissanceSignal(transmetteurMultiTrajet.multiTrajet(infoTested))<=BBG.calculPuissanceSignal(infoTested));
+//
+//
+//    }
 }
+
+
