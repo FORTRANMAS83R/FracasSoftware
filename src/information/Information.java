@@ -125,6 +125,8 @@ public class Information<T> implements Iterable<T> {
         this.content.addAll(valeurs);
     }
 
+
+
     /**
      * pour comparer l'information courante avec une autre information
      *

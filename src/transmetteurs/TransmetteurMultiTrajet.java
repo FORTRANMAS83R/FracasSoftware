@@ -14,7 +14,7 @@ public class TransmetteurMultiTrajet extends Transmetteur<Float, Float> {
 
     private List<SimpleEntry<Integer, Float>> trajets; // liste des parametres des trajets multiples
     private Float SNRpb = null; // SNR par bit, vaut null si non défini
-
+    private Float indice;
     /**
      * Constructeur du transmetteur multi-trajet sans bruit.
      *
@@ -90,7 +90,7 @@ public class TransmetteurMultiTrajet extends Transmetteur<Float, Float> {
      * @return
      */
     public Information<Float> multiTrajet(Information<Float> information) {
-        Information<Float> informationMultiTrajet = information.clone();
+        Information<Float> informationMultiTrajet = multiply(information.clone(),setAmpTrajetDirect(this.trajets));
         Integer maxTau = this.tauMax();
         informationMultiTrajet.addLast(new ArrayList<>(Collections.nCopies(maxTau, 0.0f)));
         for (int i = 0; i < informationMultiTrajet.nbElements(); i++) {
@@ -121,5 +121,23 @@ public class TransmetteurMultiTrajet extends Transmetteur<Float, Float> {
      */
     public Float getSNRpb() {
         return SNRpb;
+    }
+
+    public static Float setAmpTrajetDirect(List<SimpleEntry<Integer, Float>> trajets) {
+        Float sum = 0.0f;
+        for (int i = 0; i < trajets.size(); i++) {
+            sum += (float)Math.pow(trajets.get(i).getValue(),2);
+        }
+        System.out.println("AmpTrajetDirect: " + sum);
+        return (float) Math.sqrt(1-sum);
+    }
+
+    public static Information<Float> multiply(Information<Float> information, Float a)
+    {
+        for(int i = 0; i < information.nbElements(); i++)
+        {
+            information.setIemeElement(i, information.iemeElement(i)*a);
+        }
+        return information;
     }
 }

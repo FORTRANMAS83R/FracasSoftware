@@ -318,6 +318,14 @@ public class Simulateur {
 					throw new ArgumentsException(
 							"Pas de valeur du paramètre de trajet multiple renseignée ou paramètre dt1 invalide");
 				}
+				Float sum = 0.0f;
+				for(int j = 0; i < multiTrajets.size(); j++) {
+					sum += (float)Math.pow(multiTrajets.get(j).getValue(),2);
+				}
+				if (sum > 1) {
+					throw new ArgumentsException(
+							"La somme des carrés des amplitudes des trajets multiples doit être inférieure ou égale à 1");
+				}
 			}
 
 			// Vérification de la cohérence des arguments passés
