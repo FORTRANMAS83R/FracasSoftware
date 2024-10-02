@@ -1,13 +1,18 @@
 package simulateur;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
+import java.util.Optional;
 
+import destinations.Destination;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import sources.analogique.SourceAnalogique;
+import sources.analogique.SourceAnalogiqueType;
 
 /**
  * Classe de test pour Argument. Utilise JUnit pour les assertions et
@@ -628,6 +633,23 @@ public class ArgumentTest {
 		thrown.expectMessage("Argument invalide pour la forme d'onde, attendu : RZ | NRZ | NRZT, reçu : -ampl");
 		new Simulateur(args);
 	}
+	/**
+	 * Test des getter des arguments
+	 */
+	@Test()
+	public void testGetAguments() throws ArgumentsException{
+		final String[] args = { "-form", "NRZ", "-ampl", "-1", "3", "-nbEch", "60", "-snrpb", "10", "-mess", "0110001", "-seed", "500" };
+		Simulateur sim = new Simulateur(args);
+		Configurations congig = sim.getConfig();
+		assertEquals(congig.getFormatSignal(), SourceAnalogiqueType.NRZ);
+		assertEquals(congig.getAmplMin(), -1, 0);
+		assertEquals(congig.getAmplMax(), 3, 0);
+		assertEquals(congig.getNbEch(), 60);
+		assertEquals(congig.getSnrpb(), 10, 0);
+		assertEquals(congig.getMessageString(), "0110001");
+		assertEquals(Optional.ofNullable(congig.getSeed()), Optional.ofNullable(500));
+	}
+
 
 	/**
 	 * Test de l'argument -ti vide

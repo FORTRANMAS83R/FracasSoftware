@@ -13,9 +13,6 @@ import static org.junit.Assert.*;
  * Classe de test pour TransmetteurMultiTrajet.
  */
 public class TransmetteurMultiTrajetTest {
-
-
-
     /**
      * Test du constructeur avec des trajets nuls et un bruit nul.
      */
@@ -79,8 +76,10 @@ public class TransmetteurMultiTrajetTest {
         List<AbstractMap.SimpleEntry<Integer, Float>> trajets = new ArrayList<>();
         trajets.add(new AbstractMap.SimpleEntry<>(1, 0.1f));
         trajets.add(new AbstractMap.SimpleEntry<>(2, 0.7f));
-        Information<Float> infoTested = new Information<>(new Float[]{1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f});
-        Information<Float> infoExpected = new Information<>(new Float[]{0.70710677f, 0.1f, 1.4071068f, 0.1f, 1.4071068f, 0.1f, 1.4071068f, 0.1f, 0.7f, 0.0f});
+        Information<Float> infoTested = new Information<>(
+                new Float[] { 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f });
+        Information<Float> infoExpected = new Information<>(
+                new Float[] { 0.70710677f, 0.1f, 1.4071068f, 0.1f, 1.4071068f, 0.1f, 1.4071068f, 0.1f, 0.7f, 0.0f });
         DestinationFinale destinationFinale = new DestinationFinale();
         TransmetteurMultiTrajet transmetteurMultiTrajet = new TransmetteurMultiTrajet(trajets);
         transmetteurMultiTrajet.connecter(destinationFinale);
@@ -96,13 +95,14 @@ public class TransmetteurMultiTrajetTest {
         List<AbstractMap.SimpleEntry<Integer, Float>> trajets = new ArrayList<>();
         trajets.add(new AbstractMap.SimpleEntry<>(0, 0.0f));
         trajets.add(new AbstractMap.SimpleEntry<>(0, 0.0f));
-        Information<Float> infoTested = new Information<>(new Float[]{1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f});
+        Information<Float> infoTested = new Information<>(
+                new Float[] { 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f });
         Information<Float> infoExpected = infoTested.clone();
         DestinationFinale destinationFinale = new DestinationFinale();
         TransmetteurMultiTrajet transmetteurMultiTrajet = new TransmetteurMultiTrajet(trajets);
         transmetteurMultiTrajet.connecter(destinationFinale);
         transmetteurMultiTrajet.recevoir(infoTested);
-        assertEquals(destinationFinale.getInformationRecue(),infoExpected);
+        assertEquals(destinationFinale.getInformationRecue(), infoExpected);
     }
 
     /**
@@ -124,7 +124,7 @@ public class TransmetteurMultiTrajetTest {
      * Test de la méthode nonCreationEnergie.
      */
     @Test
-    public void nonCreationEnergieTest(){
+    public void nonCreationEnergieTest() {
         List<AbstractMap.SimpleEntry<Integer, Float>> trajets = new ArrayList<>();
         trajets.add(new AbstractMap.SimpleEntry<>(1, 0.1f));
         trajets.add(new AbstractMap.SimpleEntry<>(5, 0.1f));
@@ -132,11 +132,10 @@ public class TransmetteurMultiTrajetTest {
         trajets.add(new AbstractMap.SimpleEntry<>(9, 0.1f));
         trajets.add(new AbstractMap.SimpleEntry<>(20, 0.10f));
         TransmetteurMultiTrajet transmetteurMultiTrajet = new TransmetteurMultiTrajet(trajets);
-        Information<Float> infoTested = new Information<>(new Float[]{1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f});
-        assertTrue(BBG.calculPuissanceSignal(transmetteurMultiTrajet.multiTrajet(infoTested))<=BBG.calculPuissanceSignal(infoTested));
-
+        Information<Float> infoTested = new Information<>(
+                new Float[] { 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f });
+        assertTrue(BBG.calculPuissanceSignal(transmetteurMultiTrajet.multiTrajet(infoTested)) <= BBG
+                .calculPuissanceSignal(infoTested));
 
     }
 }
-
-

@@ -33,48 +33,7 @@ import visualisations.SondeLogique;
  */
 public class Simulateur {
 
-	/**
-	 * indique si le Simulateur utilise des sondes d'affichage
-	 */
-	private boolean affichage = false;
-
-	/**
-	 * indique si le Simulateur utilise un message généré de manière aléatoire
-	 * (message imposé sinon)
-	 */
-	private boolean messageAleatoire = true;
-
-	private boolean transmissionAnalogique = false;
-
-	/**
-	 * indique si le Simulateur utilise un bruit blanc gaussien
-	 */
-	private boolean messageBruitee = false;
-
-	/**
-	 * indique si le Simulateur utilise un bruit blanc gaussien
-	 */
-	private Float snrpb = 0.0f;
-
-	/**
-	 * la valeur de la semence utilisée pour les générateurs aléatoires
-	 */
-	private Integer seed = null; // pas de semence par défaut
-
-	/**
-	 * la longueur du message aléatoire à transmettre si un message n'est pas imposé
-	 */
-	private int nbBitsMess = 100;
-
-	/**
-	 * la chaîne de caractères correspondant à m dans l'argument -mess m
-	 */
-	private String messageString = "100";
-
-	/**
-	 * Les différents multi-trajets à prendre en compte
-	 */
-	private List<SimpleEntry<Integer, Float>> multiTrajets = new ArrayList<>();
+	private Configurations config;
 
 	/**
 	 * le composant Source de la chaine de transmission
@@ -94,12 +53,6 @@ public class Simulateur {
 	private Destination<Boolean> destinationLogique = null;
 	private Destination<Float> destinationAnalogique = null;
 
-	private SourceAnalogiqueType formatSignal = SourceAnalogiqueType.RZ;
-
-	private int nbEch = 30;
-
-	private float ampl_min = 0.0f, ampl_max = 1.0f;
-
 	private float TEB = 0.0f;
 
 	/**
@@ -113,32 +66,42 @@ public class Simulateur {
 	 * @param args le tableau des différents arguments.
 	 * @throws ArgumentsException si un des arguments est incorrect
 	 */
+
 	public Simulateur(String[] args) throws ArgumentsException {
 		// analyser et récupérer les arguments
-		analyseArguments(args);
+		config = new Configurations(args);
+		// analyseArguments(args);
 
-		if (transmissionAnalogique) {
+		if (config.getTransmissionAnalogique()) {
 			// Analogique
-			if (!messageAleatoire) {
-				switch (formatSignal) {
-					case RZ -> sourceAnalogique = new SourceRZ(messageString, nbEch, ampl_min, ampl_max);
-					case NRZ -> sourceAnalogique = new SourceNRZ(messageString, nbEch, ampl_min, ampl_max);
-					case NRZT -> sourceAnalogique = new SourceNRZT(messageString, nbEch, ampl_min, ampl_max);
+			if (!config.getMessageAleatoire()) {
+				switch (config.getFormatSignal()) {
+					case RZ -> sourceAnalogique = new SourceRZ(config.getMessageString(), config.getNbEch(),
+							config.getAmplMin(), config.getAmplMax());
+					case NRZ -> sourceAnalogique = new SourceNRZ(config.getMessageString(), config.getNbEch(),
+							config.getAmplMin(), config.getAmplMax());
+					case NRZT -> sourceAnalogique = new SourceNRZT(config.getMessageString(), config.getNbEch(),
+							config.getAmplMin(), config.getAmplMax());
 				}
 			} else {
-				switch (formatSignal) {
-					case RZ -> sourceAnalogique = new SourceRZ(nbEch, ampl_min, ampl_max, nbBitsMess, seed);
-					case NRZ -> sourceAnalogique = new SourceNRZ(nbEch, ampl_min, ampl_max, nbBitsMess, seed);
-					case NRZT -> sourceAnalogique = new SourceNRZT(nbEch, ampl_min, ampl_max, nbBitsMess, seed);
+				switch (config.getFormatSignal()) {
+					case RZ -> sourceAnalogique = new SourceRZ(config.getNbEch(), config.getAmplMin(),
+							config.getAmplMax(), config.getNbBitsMess(), config.getSeed());
+					case NRZ -> sourceAnalogique = new SourceNRZ(config.getNbEch(), config.getAmplMin(),
+							config.getAmplMax(), config.getNbBitsMess(), config.getSeed());
+					case NRZT -> sourceAnalogique = new SourceNRZT(config.getNbEch(), config.getAmplMin(),
+							config.getAmplMax(), config.getNbBitsMess(), config.getSeed());
 				}
 			}
 
-			if (multiTrajets.size() > 0) {
-				transmetteurAnalogique = messageBruitee ? new TransmetteurMultiTrajet(multiTrajets, snrpb)
-						: new TransmetteurMultiTrajet(multiTrajets);
-			} else if (messageBruitee) {
-				transmetteurAnalogique = new TransmetteurBruite(this.snrpb);
-				transmetteurAnalogique.connecter(new SondeHistogramme("Histogramme de l'information reçue", affichage));
+			if (config.getMultiTrajets().size() > 0) {
+				transmetteurAnalogique = config.getMessageBruitee()
+						? new TransmetteurMultiTrajet(config.getMultiTrajets(), config.getSnrpb())
+						: new TransmetteurMultiTrajet(config.getMultiTrajets());
+			} else if (config.getMessageBruitee()) {
+				transmetteurAnalogique = new TransmetteurBruite(config.getSnrpb());
+				transmetteurAnalogique
+						.connecter(new SondeHistogramme("Histogramme de l'information reçue", config.getAffichage()));
 			} else {
 				transmetteurAnalogique = new TransmetteurParfait<>();
 			}
@@ -147,20 +110,21 @@ public class Simulateur {
 			destinationAnalogique = new DestinationFinale<>();
 			transmetteurAnalogique.connecter(destinationAnalogique);
 
-			if (affichage) {
+			if (config.getAffichage()) {
 				sourceAnalogique.connecter(new SondeAnalogique("Sonde en sortie de la source"));
 				transmetteurAnalogique.connecter(new SondeAnalogique("Sonde en sortie du transmetteur"));
 			}
 		} else {
 			// Logique
-			sourceLogique = messageAleatoire ? new SourceAleatoire(nbBitsMess, seed) : new SourceFixe(messageString);
+			sourceLogique = config.getMessageAleatoire() ? new SourceAleatoire(config.getNbBitsMess(), config.getSeed())
+					: new SourceFixe(config.getMessageString());
 			destinationLogique = new DestinationFinale<>();
 			transmetteurLogique = new TransmetteurParfait<>();
 
 			sourceLogique.connecter(transmetteurLogique);
 			transmetteurLogique.connecter(destinationLogique);
 
-			if (affichage) {
+			if (config.getAffichage()) {
 				sourceLogique.connecter(new SondeLogique("Sonde en sortie de la source", 300));
 				transmetteurLogique.connecter(new SondeLogique("Sonde en sortie du transmetteur", 300));
 			}
@@ -169,188 +133,14 @@ public class Simulateur {
 	}
 
 	/**
-	 * La méthode analyseArguments extrait d'un tableau de chaînes de caractères les
-	 * différentes options de la simulation. <br>
-	 * Elle met à jour les attributs correspondants du Simulateur.
+	 * La méthode renvoie l'objet Configurations qui contient les paramètres de la
+	 * simulation.
+	 * 
+	 * @return L'objet Configurations
 	 *
-	 * @param args le tableau des différents arguments. <br>
-	 *             <br>
-	 *             Les arguments autorisés sont : <br>
-	 *             <dl>
-	 *             <dt>-mess m</dt>
-	 *             <dd>m (String) constitué de 7 ou plus digits à 0 | 1, le message
-	 *             à transmettre</dd>
-	 *             <dt>-mess m</dt>
-	 *             <dd>m (int) constitué de 1 à 6 digits, le nombre de bits du
-	 *             message "aléatoire" à transmettre</dd>
-	 *             <dt>-s</dt>
-	 *             <dd>pour demander l'utilisation des sondes d'affichage</dd>
-	 *             <dt>-seed v</dt>
-	 *             <dd>v (int) d'initialisation pour les générateurs aléatoires</dd>
-	 *             </dl>
-	 * @throws ArgumentsException si un des arguments est incorrect.
 	 */
-	private void analyseArguments(String[] args) throws ArgumentsException {
-
-		for (int i = 0; i < args.length; i++) { // traiter les arguments 1 par 1
-
-			if (args[i].matches("-s")) {
-				affichage = true;
-			} else if (args[i].matches("-seed")) {
-				i++;
-				String argSeed = getArgumentOrThrows(args, i, "Pas de valeur du paramètre de seed renseignée");
-				try {
-					seed = Integer.valueOf(argSeed);
-				} catch (Exception e) {
-					throw new ArgumentsException("Valeur du paramètre -seed invalide : " + argSeed);
-				}
-			} else if (args[i].matches("-mess")) {
-				i++;
-				// traiter la valeur associee
-				messageString = getArgumentOrThrows(args, i, "Pas de valeur du paramètre de message renseignée ");
-				if (messageString.matches("[0,1]{7,}")) { // au moins 7 digits
-					messageAleatoire = false;
-					nbBitsMess = messageString.length();
-				} else if (messageString.matches("[0-9]{1,6}")) { // de 1 à 6 chiffres
-					messageAleatoire = true;
-					nbBitsMess = Integer.parseInt(messageString);
-					if (nbBitsMess < 1)
-						throw new ArgumentsException("Valeur du paramètre -mess invalide : " + nbBitsMess);
-				} else
-					throw new ArgumentsException("Valeur du paramètre -mess invalide : " + messageString);
-			} else if (args[i].matches("-form")) {
-				transmissionAnalogique = true;
-				i++;
-				String argForm = getArgumentOrThrows(args, i, "Pas de valeur du paramètre de forme d'onde renseignée");
-				if (argForm.matches("NRZ")) {
-					formatSignal = SourceAnalogiqueType.NRZ;
-				} else if (argForm.matches("NRZT")) {
-					formatSignal = SourceAnalogiqueType.NRZT;
-				} else if (argForm.matches("RZ")) {
-					formatSignal = SourceAnalogiqueType.RZ;
-				} else {
-					throw new ArgumentsException(
-							"Argument invalide pour la forme d'onde, attendu : RZ | NRZ | NRZT, reçu : " + args[i]);
-				}
-			} else if (args[i].matches("-nbEch")) {
-				i++;
-				String argNbEch = getArgumentOrThrows(args, i,
-						"Pas de valeur du paramètre de nombre d'échantillons renseignée");
-				if (argNbEch.matches("[0-9]+")) {
-					nbEch = Integer.parseInt(argNbEch);
-					if (nbEch % 3 != 0) {
-						nbEch = nbEch - nbEch % 3 + 3;
-						System.out.println("\tAttention: Le nombre d'échantillons a été ajusté à " + nbEch);
-					}
-				} else
-					throw new ArgumentsException("Valeur du parametre -nbEch invalide : " + argNbEch);
-			} else if (args[i].matches("-ampl")) {
-				i++;
-				String argAmpl = getArgumentOrThrows(args, i, "Pas de valeur du paramètre d'amplitude min renseignée");
-				if (argAmpl.matches("-?[0-9]+([.,][0-9]+)?")) {
-					ampl_min = Float.parseFloat(argAmpl.replace(',', '.'));
-					i++;
-					argAmpl = getArgumentOrThrows(args, i, "Pas de valeur du paramètre d'amplitude max renseignée");
-					if (argAmpl.matches("-?[0-9]+([.,][0-9]+)?")) {
-						ampl_max = Float.parseFloat(argAmpl.replace(',', '.'));
-					} else
-						throw new ArgumentsException("Valeur du parametre amplitude max invalide : " + argAmpl);
-				} else
-					throw new ArgumentsException("Valeur du parametre amplitude min invalide : " + argAmpl);
-
-			} else if (args[i].matches("-snrpb")) {
-				i++;
-				// match regex d'un float
-				String argSnrPb = getArgumentOrThrows(args, i,
-						"Pas de valeur du paramètre de signal à bruit renseignée");
-				if (argSnrPb.matches("-?[0-9]+([.,][0-9]+)?")) {
-					messageBruitee = true;
-					snrpb = Float.parseFloat(argSnrPb.replace(',', '.'));
-
-				} else
-					throw new ArgumentsException("Valeur du parametre signal a bruit invalide : " + args[i]);
-
-			} else if (args[i].matches("-ti")) {
-				transmissionAnalogique = true;
-				while (i < args.length - 1 && args[i + 1].matches("-?[0-9]+([.,][0-9]+)?")) {
-					i++;
-					int count = multiTrajets.size() + 1;
-
-					if (count > 5)
-						throw new ArgumentsException("Nombre de trajets supérieur à 5");
-
-					int dt;
-					float ar;
-
-					try {
-						dt = Integer.parseInt(args[i]);
-					} catch (Exception e) {
-						throw new ArgumentsException(
-								"Paramètre dt" + count + " invalide : " + args[i]);
-					}
-
-					if (dt < 0)
-						throw new ArgumentsException(
-								"Le paramètre dt doit être positif (>= 0), dt" + count + " : " + args[i]);
-
-					i++;
-
-					String arStr = getArgumentOrThrows(args, i,
-							"Pas de valeur du paramètre ti a" + count + " renseignée");
-
-					try {
-						ar = Float.parseFloat(
-								arStr.replace(',', '.'));
-					} catch (Exception e) {
-						throw new ArgumentsException(
-								"Paramètre ar" + count + " invalide : " + arStr);
-					}
-
-					if (ar < 0 || ar > 1)
-						throw new ArgumentsException(
-								"Le paramètre ar doit être compris entre 0 inclus et 1 inclus, ar" + count + " : "
-										+ arStr);
-
-					multiTrajets.add(new SimpleEntry<>(dt, ar));
-				}
-
-				if (multiTrajets.isEmpty()) {
-					throw new ArgumentsException(
-							"Pas de valeur du paramètre de trajet multiple renseignée ou paramètre dt1 invalide");
-				}
-				Float sum = 0.0f;
-				for(int j = 0; i < multiTrajets.size(); j++) {
-					sum += (float)Math.pow(multiTrajets.get(j).getValue(),2);
-				}
-				if (sum > 1) {
-					throw new ArgumentsException(
-							"La somme des carrés des amplitudes des trajets multiples doit être inférieure ou égale à 1");
-				}
-			}
-
-			// Vérification de la cohérence des arguments passés
-
-			if (formatSignal == SourceAnalogiqueType.RZ && ampl_min != 0) {
-				throw new ArgumentsException(
-						"Attention : Pour une forme d'onde impulsionnelle (RZ), l'amplitude min est forcément égale à 0");
-			}
-
-			if (ampl_max <= ampl_min)
-				throw new ArgumentsException(
-						"L'amplitude min ne peut pas être supérieure ou égale à l'amplitude max, valeurs renseignées :\nmin : "
-								+ ampl_min + ", max : " + ampl_max);
-
-			if (formatSignal == SourceAnalogiqueType.NRZ || formatSignal == SourceAnalogiqueType.NRZT) {
-				if (ampl_max < 0)
-					throw new ArgumentsException(
-							"Pour une forme d'onde rectangulaire ou trapézoïdale (NRZ/NRZT), la valeur de l'amplitude max doit être supérieure ou égale à 0, valeur renseignée : "
-									+ ampl_max);
-				if (ampl_min > 0)
-					throw new ArgumentsException(
-							"Pour une forme d'onde rectangulaire ou trapézoïdale (NRZ/NRZT), la valeur de l'amplitude min doit être inférieure ou égale à 0, valeur renseignée : "
-									+ ampl_min);
-			}
-		}
+	public Configurations getConfig() {
+		return config;
 	}
 
 	/**
@@ -371,7 +161,7 @@ public class Simulateur {
 	 * @return La valeur du Taux dErreur Binaire.
 	 */
 	public float calculTauxErreurBinaire() {
-		TEB = transmissionAnalogique ? calculTEBAnalogique() : calculTEBLogique();
+		TEB = config.getTransmissionAnalogique() ? calculTEBAnalogique() : calculTEBLogique();
 		return TEB;
 	}
 
@@ -379,30 +169,30 @@ public class Simulateur {
 		int nbBitEronnes = 0;
 		Information<?> src = getSource().getInformationEmise();
 		Information<?> dst = getDestination().getInformationRecue();
-		for (int i = 0; i < nbBitsMess; i++) {
+		for (int i = 0; i < config.getNbBitsMess(); i++) {
 			if (src.iemeElement(i) != dst.iemeElement(i)) {
 				nbBitEronnes++;
 			}
 		}
-		return (float) nbBitEronnes / (float) nbBitsMess;
+		return (float) nbBitEronnes / (float) config.getNbBitsMess();
 	}
 
 	private float calculTEBAnalogique() {
 		int nbBitEronnes = 0;
 		float moy_src, moy_dst, somme_src, somme_dst;
-		float moy_ampl = (ampl_max + ampl_min) / 2.0f;
+		float moy_ampl = (config.getAmplMax() + config.getAmplMin()) / 2.0f;
 		Information<?> src = getSource().getInformationEmise();
 		Information<?> dst = getDestination().getInformationRecue();
-		for (int i = 0; i < nbBitsMess; i++) {
+		for (int i = 0; i < config.getNbBitsMess(); i++) {
 			somme_src = 0;
 			somme_dst = 0;
-			for (int j = 0; j < nbEch; j++) {
-				somme_src += (float) src.iemeElement(i * nbEch + j);
-				somme_dst += (float) dst.iemeElement(i * nbEch + j);
+			for (int j = 0; j < config.getNbEch(); j++) {
+				somme_src += (float) src.iemeElement(i * config.getNbEch() + j);
+				somme_dst += (float) dst.iemeElement(i * config.getNbEch() + j);
 			}
 			// Calcul de la moyenne Source et destination
-			moy_src = (float) Math.round((somme_src / (float) nbEch) * 100) / 100;
-			moy_dst = (float) Math.round((somme_dst / (float) nbEch) * 100) / 100;
+			moy_src = (float) Math.round((somme_src / (float) config.getNbEch()) * 100) / 100;
+			moy_dst = (float) Math.round((somme_dst / (float) config.getNbEch()) * 100) / 100;
 
 			// si c'est un 0 à la source
 			if (moy_src < moy_ampl) {
@@ -415,7 +205,7 @@ public class Simulateur {
 				}
 			}
 		}
-		return (float) nbBitEronnes / (float) nbBitsMess;
+		return (float) nbBitEronnes / (float) config.getNbBitsMess();
 	}
 
 	/**
@@ -424,15 +214,15 @@ public class Simulateur {
 	 * @return L'état du simulateur, true = analogique, false = logique
 	 */
 	public boolean getTransmissionAnalogique() {
-		return transmissionAnalogique;
+		return config.getTransmissionAnalogique();
 	}
 
 	public Source<?> getSource() {
-		return transmissionAnalogique ? sourceAnalogique : sourceLogique;
+		return config.getTransmissionAnalogique() ? sourceAnalogique : sourceLogique;
 	}
 
 	public Destination<?> getDestination() {
-		return transmissionAnalogique ? destinationAnalogique : destinationLogique;
+		return config.getTransmissionAnalogique() ? destinationAnalogique : destinationLogique;
 	}
 
 	public static String getArgumentOrThrows(String[] args, int index, String error) throws ArgumentsException {
