@@ -13,9 +13,9 @@ import information.InformationNonConformeException;
  * méthode de conversion spécifique pour le codage NRZ.
  */
 public class ConvertisseurAnalogiqueNumerique<R, E> extends Transmetteur<Float, Boolean> {
-    float seuil;
-    int nbEch;
-    int nbBitsMessage;
+    public float seuil;
+    public int nbEch;
+    public int nbBitsMessage;
 
     /**
      * Construit un objet ConvertisseurAnalogiqueNumerique avec les paramètres
@@ -63,5 +63,17 @@ public class ConvertisseurAnalogiqueNumerique<R, E> extends Transmetteur<Float, 
         for (DestinationInterface<Boolean> destinationConnectee : destinationsConnectees) {
             destinationConnectee.recevoir(informationEmise);
         }
+    }
+
+    public float getSeuil() {
+        return seuil;
+    }
+
+    public int getNbBitsMessage() {
+        return nbBitsMessage;
+    }
+
+    public int getNbEch() {
+        return nbEch;
     }
 }

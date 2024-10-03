@@ -30,28 +30,42 @@ import visualisations.SondeLogique;
  */
 public class Simulateur {
 
-    private Configurations config;
+    /**
+     * le composant Configuration de la chaine de transmission. Utilisé pour traiter les paramètres de la simulation.
+     */
+    private final Configurations config;
 
     /**
-     * le composant Source de la chaine de transmission
+     * le composant Source Analogique de la chaine de transmission
      */
     private Source<Float> sourceAnalogique = null;
+
+    /**
+     * le composant Source Logique de la chaine de transmission
+     */
     private Source<Boolean> sourceLogique = null;
 
     /**
      * le composant Transmetteur parfait logique de la chaine de transmission
      */
     private Transmetteur<Boolean, Boolean> transmetteurLogique = null;
+    /**
+     * le composant Transmetteur analogique de la chaine de transmission
+     */
     private Transmetteur<Float, Float> transmetteurAnalogique = null;
 
+    /**
+     * le composant Convertisseur analogique-numérique de la chaine de transmission
+     */
     private ConvertisseurAnalogiqueNumerique<Float, Boolean> convertisseurAnalogiqueNumerique = null;
     /**
      * le composant Destination de la chaine de transmission
      */
-    private Destination<Boolean> destinationLogique = null;
-    private Destination<Float> destinationAnalogique = null;
     private Destination<Boolean> destination = null;
 
+    /**
+     * le composant TEB de la chaine de transmission
+     */
     private float TEB = 0.0f;
 
     /**
@@ -93,18 +107,17 @@ public class Simulateur {
                 }
             }
 
-            if (config.getMultiTrajets().size() > 0) {
+            if (!config.getMultiTrajets().isEmpty()) {
                 transmetteurAnalogique = config.getMessageBruitee() ? new TransmetteurMultiTrajet(config.getMultiTrajets(), config.getSnrpb()) : new TransmetteurMultiTrajet(config.getMultiTrajets());
             } else if (config.getMessageBruitee()) {
-                transmetteurAnalogique = new TransmetteurBruite(config.getSnrpb());
+                transmetteurAnalogique = new TransmetteurBruite<>(config.getSnrpb());
                 transmetteurAnalogique.connecter(new SondeHistogramme("Histogramme de l'information reçue", config.getAffichage()));
             } else {
                 transmetteurAnalogique = new TransmetteurParfait<>();
             }
 
             sourceAnalogique.connecter(transmetteurAnalogique);
-            convertisseurAnalogiqueNumerique = new ConvertisseurAnalogiqueNumerique<>((config.getAmplMin() + config.getAmplMax())/2.0f, config.getNbEch(), config.getNbBitsMess());
-            destinationLogique = new DestinationFinale<>();
+            convertisseurAnalogiqueNumerique = new ConvertisseurAnalogiqueNumerique<>((config.getAmplMin() + config.getAmplMax()) / 2.0f, config.getNbEch(), config.getNbBitsMess());
             transmetteurAnalogique.connecter(convertisseurAnalogiqueNumerique);
             convertisseurAnalogiqueNumerique.connecter(destination);
 
@@ -116,7 +129,6 @@ public class Simulateur {
         } else {
             // Logique
             sourceLogique = config.getMessageAleatoire() ? new SourceAleatoire(config.getNbBitsMess(), config.getSeed()) : new SourceFixe(config.getMessageString());
-//            destinationLogique = new DestinationFinale<>();
             transmetteurLogique = new TransmetteurParfait<>();
 
             sourceLogique.connecter(transmetteurLogique);
@@ -176,9 +188,9 @@ public class Simulateur {
             // destination");
             // sondeDest.recevoir(simulateur.destinationAnalogique.getInformationRecue());
             // }
-            String s = "java  Simulateur  ";
-            for (int i = 0; i < args.length; i++) { // copier tous les paramètres de simulation
-                s += args[i] + "  ";
+            StringBuilder s = new StringBuilder("java  Simulateur  ");
+            for (String arg : args) { // copier tous les paramètres de simulation
+                s.append(arg).append("  ");
             }
             System.out.println(s + "  =>   TEB : " + simulateur.calculTauxErreurBinaire());
         } catch (Exception e) {
@@ -224,7 +236,7 @@ public class Simulateur {
                 nbBitEronnes++;
             }
         }
-        TEB =  (float) nbBitEronnes / (float) config.getNbBitsMess();
+        TEB = (float) nbBitEronnes / (float) config.getNbBitsMess();
         return TEB;
     }
 
