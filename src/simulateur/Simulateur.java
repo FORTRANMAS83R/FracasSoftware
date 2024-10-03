@@ -20,6 +20,7 @@ import transmetteurs.TransmetteurBruite;
 import transmetteurs.TransmetteurMultiTrajet;
 import transmetteurs.TransmetteurParfait;
 import visualisations.SondeAnalogique;
+import visualisations.SondeDiagrammeDeLoeil;
 import visualisations.SondeHistogramme;
 import visualisations.SondeLogique;
 
@@ -113,6 +114,7 @@ public class Simulateur {
 			if (config.getAffichage()) {
 				sourceAnalogique.connecter(new SondeAnalogique("Sonde en sortie de la source"));
 				transmetteurAnalogique.connecter(new SondeAnalogique("Sonde en sortie du transmetteur"));
+				transmetteurAnalogique.connecter(new SondeDiagrammeDeLoeil("Diagramme de l'oeil"));
 			}
 		} else {
 			// Logique

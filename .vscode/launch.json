@@ -6,13 +6,6 @@
 	"configurations": [
 		{
 			"type": "java",
-			"name": "Current File",
-			"request": "launch",
-			"mainClass": "${file}",
-			"preLaunchTask": "java (build): Build Workspace"
-		},
-		{
-			"type": "java",
 			"name": "Simulateur",
 			"request": "launch",
 			"mainClass": "simulateur.Simulateur",
