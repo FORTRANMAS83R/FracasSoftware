@@ -6,7 +6,6 @@ package visualisations;
  */
 
 import java.awt.*;
-import java.awt.geom.*;
 
 import information.Information;
 
@@ -101,8 +100,6 @@ public class VueOeil extends Vue {
                     float y1 = y0Axe - signal.iemeElement(i + j) * dy;
                     float x2 = x0Axe + (j + 1) * dx;
                     float y2 = y0Axe - signal.iemeElement(i + j + 1) * dy;
-
-                    // System.out.println("x1=" + x1 + " y1=" + y1 + " x2=" + x2 + " y2=" + y2);
 
                     getContentPane().getGraphics().drawLine((int) x1, (int) y1, (int) x2, (int) y2);
                 }
