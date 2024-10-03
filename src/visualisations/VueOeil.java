@@ -8,100 +8,59 @@ package visualisations;
 import java.awt.*;
 import java.awt.geom.*;
 
+import information.Information;
+
 public class VueOeil extends Vue {
 
     private static final long serialVersionUID = 1917L;
 
-    private Point2D.Float[] coordonnees;
+    private Information<Float> signal;
     private float yMax = 0;
     private float yMin = 0;
 
-    public VueOeil(float[] valeurs, String nom) {
+    public VueOeil(Information<Float> signal, String nom) {
         super(nom);
+
+        this.signal = signal;
 
         int xPosition = Vue.getXPosition();
         int yPosition = Vue.getYPosition();
         setLocation(xPosition, yPosition);
 
-        this.coordonnees = new Point2D.Float[valeurs.length];
         yMax = 0;
         yMin = 0;
 
-        for (int i = 0; i < valeurs.length; i++) {
-            if (valeurs[i] > yMax)
-                yMax = valeurs[i];
-            if (valeurs[i] < yMin)
-                yMin = valeurs[i];
-            coordonnees[i] = new Point2D.Float(i, valeurs[i]);
+        for (int i = 0; i < signal.nbElements(); i++) {
+            if (signal.iemeElement(i) > yMax)
+                yMax = signal.iemeElement(i);
+            if (signal.iemeElement(i) < yMin)
+                yMin = signal.iemeElement(i);
         }
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        int largeur = valeurs.length + 10;
-        if (largeur > 1000)
-            largeur = 1000;
-        setSize(largeur, 200);
+        setSize(500, 200);
         setVisible(true);
         repaint();
-    }
-
-    public void changer(boolean[] valeurs) {
-
-        this.coordonnees = new Point2D.Float[(2 * valeurs.length) + 1];
-        yMax = 1;
-        yMin = 0;
-
-        coordonnees[0] = new Point2D.Float(0, 0);
-
-        for (int i = 0, j = 0; i < valeurs.length; i++, j += 2) {
-            if (valeurs[i]) {
-                coordonnees[j + 1] = new Point2D.Float(i, 1);
-                coordonnees[j + 2] = new Point2D.Float(i + 1, 1);
-            } else {
-                coordonnees[j + 1] = new Point2D.Float(i, 0);
-                coordonnees[j + 2] = new Point2D.Float(i + 1, 0);
-            }
-        }
-
-        paint();
-    }
-
-    public void changer(float[] valeurs) {
-
-        this.coordonnees = new Point2D.Float[valeurs.length];
-        yMax = 0;
-        yMin = 0;
-
-        for (int i = 0; i < valeurs.length; i++) {
-            if (valeurs[i] > yMax)
-                yMax = valeurs[i];
-            if (valeurs[i] < yMin)
-                yMin = valeurs[i];
-            coordonnees[i] = new Point2D.Float(i, valeurs[i]);
-        }
-
-        paint();
-    }
-
-    /**
-     */
-    public void paint() {
-        paint(getGraphics());
     }
 
     public void paint(Graphics g) {
         if (g == null) {
             return;
         }
+
         // effacement total
         g.setColor(Color.white);
         g.fillRect(0, 0, getWidth(), getHeight());
         g.setColor(Color.black);
 
+        int width = getContentPane().getWidth();
+        int height = getContentPane().getHeight();
+
         int x0Axe = 10;
-        float deltaX = getContentPane().getWidth() - (2 * x0Axe);
+        float deltaX = width - (2 * x0Axe);
 
         int y0Axe = 10;
-        float deltaY = getContentPane().getHeight() - (2 * y0Axe);
+        float deltaY = height - (2 * y0Axe);
 
         if ((yMax > 0) && (yMin <= 0)) {
             y0Axe += (int) (deltaY * (yMax / (yMax - yMin)));
@@ -122,23 +81,35 @@ public class VueOeil extends Vue {
 
         // tracer la courbe
 
-        float dx = deltaX / (float) coordonnees[coordonnees.length - 1].getX();
-        float dy = 0.0f;
-        if ((yMax >= 0) && (yMin <= 0)) {
-            dy = deltaY / (yMax - yMin);
-        } else if (yMin > 0) {
-            dy = deltaY / yMax;
-        } else if (yMax < 0) {
-            dy = -(deltaY / yMin);
+        if (signal.nbElements() > signal.getNbEchantillons() * 3) {
+            float dx = deltaX / (signal.getNbEchantillons() * 3.0f);
+            float dy = 0.0f;
+            if ((yMax >= 0) && (yMin <= 0)) {
+                dy = deltaY / (yMax - yMin);
+            } else if (yMin > 0) {
+                dy = deltaY / yMax;
+            } else if (yMax < 0) {
+                dy = -(deltaY / yMin);
+            }
+
+            // Parcourir chaque symbole, de 1 à N-1
+            for (int i = 0; i <= signal.nbElements()
+                    - 3 * signal.getNbEchantillons(); i += signal.getNbEchantillons()) {
+                // Parcourir les échantillons
+                for (int j = 0; j < signal.getNbEchantillons() * 3 - 1; j++) {
+                    float x1 = x0Axe + j * dx;
+                    float y1 = y0Axe - signal.iemeElement(i + j) * dy;
+                    float x2 = x0Axe + (j + 1) * dx;
+                    float y2 = y0Axe - signal.iemeElement(i + j + 1) * dy;
+
+                    // System.out.println("x1=" + x1 + " y1=" + y1 + " x2=" + x2 + " y2=" + y2);
+
+                    getContentPane().getGraphics().drawLine((int) x1, (int) y1, (int) x2, (int) y2);
+                }
+            }
         }
 
-        for (int i = 1; i < coordonnees.length; i++) {
-            int x1 = (int) (coordonnees[i - 1].getX() * dx);
-            int x2 = (int) (coordonnees[i].getX() * dx);
-            int y1 = (int) (coordonnees[i - 1].getY() * dy);
-            int y2 = (int) (coordonnees[i].getY() * dy);
-            getContentPane().getGraphics().drawLine(x0Axe + x1, y0Axe - y1, x0Axe + x2, y0Axe - y2);
-        }
+        System.out.println("Paint end");
 
     }
 
