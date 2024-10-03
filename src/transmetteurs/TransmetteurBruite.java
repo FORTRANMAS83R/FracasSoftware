@@ -9,7 +9,7 @@ import information.InformationNonConformeException;
  * Classe représentant un transmetteur bruite.
  * Ce transmetteur ajoute du bruit à l'information reçue en fonction du SNR par bit (SNRpb).
  */
-public class TransmetteurBruite extends Transmetteur<Float, Float> {
+public class TransmetteurBruite<R,E> extends Transmetteur<Float, Float> {
 
     private Float SNRpb;
 
@@ -30,7 +30,7 @@ public class TransmetteurBruite extends Transmetteur<Float, Float> {
      * @throws InformationNonConformeException Si l'information est non conforme.
      */
     @Override
-    public void recevoir(Information information) throws InformationNonConformeException {
+    public void recevoir(Information<Float> information) throws InformationNonConformeException {
         this.informationRecue = information.clone();
         BBG bruit = new BBG(this.SNRpb);
         informationEmise = bruit.bruitage(this.informationRecue);

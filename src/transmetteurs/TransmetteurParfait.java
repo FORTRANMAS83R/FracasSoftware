@@ -24,7 +24,7 @@ public class TransmetteurParfait<R> extends Transmetteur<R, R> {
      */
     @Override
     public void recevoir(Information<R> information) throws InformationNonConformeException {
-        informationRecue = information;
+        informationRecue = information.clone();
         emettre();
     }
     /**

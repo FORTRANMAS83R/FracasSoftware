@@ -10,7 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.AbstractMap.SimpleEntry;
 
-public class TransmetteurMultiTrajet extends Transmetteur<Float, Float> {
+public class TransmetteurMultiTrajet<R,E> extends Transmetteur<Float, Float> {
 
     private List<SimpleEntry<Integer, Float>> trajets; // liste des parametres des trajets multiples
     private Float SNRpb = null; // SNR par bit, vaut null si non défini

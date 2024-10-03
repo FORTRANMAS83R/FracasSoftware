@@ -11,10 +11,10 @@ import static org.junit.Assert.assertTrue;
  * Teste la génération de bruit par la classe BBG.
  */
 public class CalculTauxErreurBinaireTest {
-    int nbEch, nbBitsMessage;
+    int nbBitsMessage;
     private Simulateur simulateur;
-    private Information<Float> sourceInfo;
-    private Information<Float> destinationInfo;
+    private Information<Boolean> sourceInfo;
+    private Information<Boolean> destinationInfo;
 
     /**
      * Configuration initiale avant chaque test.
@@ -23,12 +23,10 @@ public class CalculTauxErreurBinaireTest {
      */
     @Before
     public void setUp() throws ArgumentsException {
-        simulateur = new Simulateur(new String[]{"-mess", "10101100", "-form", "NRZ", "-nbEch", "3"});
+        simulateur = new Simulateur(new String[]{"-mess", "10101100"});
         sourceInfo = new Information<>();
         destinationInfo = new Information<>();
-
-        nbEch = 30;
-        nbBitsMessage = 10;
+        nbBitsMessage = 8;
     }
 
     /**
@@ -38,9 +36,9 @@ public class CalculTauxErreurBinaireTest {
      */
     @Test
     public void testAucuneErreur() throws Exception {
-        for (int i = 0; i < nbEch * nbBitsMessage; i++) {
-            sourceInfo.add(1.0f);
-            destinationInfo.add(1.0f);
+        for (int i = 0; i < nbBitsMessage; i++) {
+            sourceInfo.add(true);
+            destinationInfo.add(true);
         }
         simulateur.execute();
         simulateur.getSource().setInformationEmise(sourceInfo);
@@ -57,12 +55,12 @@ public class CalculTauxErreurBinaireTest {
      */
     @Test
     public void testAvecErreurs() throws Exception {
-        for (int i = 0; i < nbEch * nbBitsMessage; i++) {
-            sourceInfo.add(1.0f);
+        for (int i = 0; i < nbBitsMessage; i++) {
+            sourceInfo.add(true);
             if (i % 2 == 0) {
-                destinationInfo.add(0.0f);
+                destinationInfo.add(false);
             } else {
-                destinationInfo.add(1.0f);
+                destinationInfo.add(true);
             }
         }
 
@@ -81,9 +79,9 @@ public class CalculTauxErreurBinaireTest {
      */
     @Test
     public void testErreursComplete() throws Exception {
-        for (int i = 0; i < nbEch * nbBitsMessage; i++) {
-            sourceInfo.add(1.0f);
-            destinationInfo.add(0.0f);
+        for (int i = 0; i < nbBitsMessage; i++) {
+            sourceInfo.add(true);
+            destinationInfo.add(false);
         }
 
         simulateur.execute();

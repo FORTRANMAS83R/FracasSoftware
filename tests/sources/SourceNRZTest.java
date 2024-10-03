@@ -76,10 +76,10 @@ public class SourceNRZTest {
     @Test
     public void testInformationGeneree() {
         SourceNRZ test = new SourceNRZ("010011", 10, -5, 5);
-        Float[] expected = {0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, 5.0f, 5.0f, 5.0f, 5.0f,
+        Float[] expected = {-5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, 5.0f, 5.0f, 5.0f, 5.0f,
                 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f,
                 -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, -5.0f, 5.0f, 5.0f, 5.0f, 5.0f,
-                5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 0f};
+                5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f, 5.0f};
         for (int i = 0; i < test.getInformationGeneree().nbElements(); i++) {
             if (!test.getInformationGeneree().iemeElement(i).equals(expected[i])) {
                 collector.addError(new AssertionError("Erreur de génération de la source NRZ"));

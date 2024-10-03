@@ -39,8 +39,6 @@ public class SourceNRZ extends SourceAnalogique {
     @Override
     protected void filtreMiseEnForme() {
         informationGeneree = informationEchantillon.clone();
-        informationGeneree.setIemeElement(0, 0f);
-        informationGeneree.setIemeElement(informationGeneree.nbElements() - 1, 0f);
     }
 
 }
