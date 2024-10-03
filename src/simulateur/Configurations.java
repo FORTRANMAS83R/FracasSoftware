@@ -79,7 +79,7 @@ public class Configurations {
                 } else
                     throw new ArgumentsException("Valeur du paramètre -mess invalide : " + this.messageString);
             } else if (args[i].matches("-form")) {
-                this.transmissionAnalogique = true;
+                transmissionAnalogique = true;
                 i++;
                 String argForm = getArgumentOrThrows(args, i, "Pas de valeur du paramètre de forme d'onde renseignée");
                 if (argForm.matches("NRZ")) {
@@ -94,6 +94,7 @@ public class Configurations {
                 }
             } else if (args[i].matches("-nbEch")) {
                 i++;
+                transmissionAnalogique = true;
                 String argNbEch = getArgumentOrThrows(args, i,
                         "Pas de valeur du paramètre de nombre d'échantillons renseignée");
                 if (argNbEch.matches("[0-9]+")) {
@@ -119,6 +120,7 @@ public class Configurations {
                     throw new ArgumentsException("Valeur du parametre amplitude min invalide : " + argAmpl);
 
             } else if (args[i].matches("-snrpb")) {
+                transmissionAnalogique = true;
                 i++;
                 // match regex d'un float
                 String argSnrPb = getArgumentOrThrows(args, i,
