@@ -12,6 +12,8 @@ import information.InformationNonConformeException;
 public class TransmetteurBruite<R,E> extends Transmetteur<Float, Float> {
 
     private Float SNRpb;
+    private Integer seed;
+    private Boolean haveSeed = false;
 
     /**
      * Constructeur du transmetteur bruite.
@@ -21,6 +23,12 @@ public class TransmetteurBruite<R,E> extends Transmetteur<Float, Float> {
     public TransmetteurBruite(Float snrPB) {
         super();
         this.SNRpb = snrPB;
+    }
+    public TransmetteurBruite(Float snrPB, Integer seed) {
+        super();
+        this.SNRpb = snrPB;
+        this.seed = seed;
+        this.haveSeed = true;
     }
 
     /**
@@ -32,8 +40,13 @@ public class TransmetteurBruite<R,E> extends Transmetteur<Float, Float> {
     @Override
     public void recevoir(Information<Float> information) throws InformationNonConformeException {
         this.informationRecue = information.clone();
-        BBG bruit = new BBG(this.SNRpb);
-        informationEmise = bruit.bruitage(this.informationRecue);
+        BBG bruit;
+        if (!this.haveSeed) {
+             bruit = new BBG(this.SNRpb);
+        }else {
+             bruit = new BBG(this.SNRpb, this.seed);
+        }
+        this.informationEmise = bruit.bruitage(this.informationRecue);
         emettre();
     }
 

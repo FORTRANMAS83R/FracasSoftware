@@ -28,6 +28,7 @@ public class SourceNRZTTest {
     @Test
     public void testNRZTFixe() {
         SourceNRZT src = new SourceNRZT("10100110", 10, -5, 5);
+
         collector.checkThat(src.getInformationGeneree().nbElements(), is(10 * 8));
         for (int i = 0; i < src.getInformationGeneree().nbElements(); i++) {
             if (src.getInformationGeneree().iemeElement(i) < -5 || src.getInformationGeneree().iemeElement(i) > 5) {
@@ -37,6 +38,17 @@ public class SourceNRZTTest {
         }
     }
 
+    @Test
+    public void testNRZTnbEch() {
+        SourceNRZT src = new SourceNRZT("1", 1, -5, 5);
+        collector.checkThat(src.getInformationGeneree().nbElements(), is(1 * 1));
+        for (int i = 0; i < src.getInformationGeneree().nbElements(); i++) {
+            if (src.getInformationGeneree().iemeElement(i) < -5 || src.getInformationGeneree().iemeElement(i) > 5) {
+            collector
+                    .addError(new AssertionError("Les valeurs générées ne sont pas dans l'intervalle d'amplitude"));
+        }
+    }
+    }
     /**
      * Teste la génération de la source NRZT avec des valeurs aléatoires et une
      * graine. Vérifie que le nombre d'éléments générés est correct et que les

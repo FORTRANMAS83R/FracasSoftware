@@ -1,9 +1,5 @@
 package visualisations;
 
-/**
- * @author B. Prou
- * Updated by E. Cousin - 2021
- */
 
 import java.awt.*;
 
@@ -52,6 +48,7 @@ public class VueOeil extends Vue {
         g.fillRect(0, 0, getWidth(), getHeight());
         g.setColor(Color.black);
 
+
         int width = getContentPane().getWidth();
         int height = getContentPane().getHeight();
 
@@ -68,6 +65,7 @@ public class VueOeil extends Vue {
         } else if (yMax <= 0) {
             y0Axe += 0;
         }
+
         getContentPane().getGraphics().drawLine(x0Axe, y0Axe, x0Axe + (int) deltaX + x0Axe, y0Axe);
         getContentPane().getGraphics().drawLine(x0Axe + (int) deltaX + x0Axe - 5, y0Axe - 5,
                 x0Axe + (int) deltaX + x0Axe, y0Axe);
@@ -79,6 +77,7 @@ public class VueOeil extends Vue {
         getContentPane().getGraphics().drawLine(x0Axe - 5, 5, x0Axe, 0);
 
         // tracer la courbe
+        g.setColor(Color.BLUE);
 
         if (signal.nbElements() > signal.getNbEchantillons() * 3) {
             float dx = deltaX / (signal.getNbEchantillons() * 3.0f);
@@ -100,8 +99,9 @@ public class VueOeil extends Vue {
                     float y1 = y0Axe - signal.iemeElement(i + j) * dy;
                     float x2 = x0Axe + (j + 1) * dx;
                     float y2 = y0Axe - signal.iemeElement(i + j + 1) * dy;
-
-                    getContentPane().getGraphics().drawLine((int) x1, (int) y1, (int) x2, (int) y2);
+                    g.setColor(new Color(20, 200, 180, 255));
+                    g.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
+                    //getContentPane().getGraphics().drawLine((int) x1, (int) y1, (int) x2, (int) y2);
                 }
             }
         }

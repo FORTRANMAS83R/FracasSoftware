@@ -22,6 +22,7 @@ public class Configurations {
     private SourceAnalogiqueType formatSignal = SourceAnalogiqueType.RZ;
     private List<SimpleEntry<Integer, Float>> multiTrajets = new ArrayList<>();
 
+
     public Configurations(String[] args) throws ArgumentsException {
         analyseArguments(args);
 
