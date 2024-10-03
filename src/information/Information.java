@@ -29,13 +29,19 @@ public class Information<T> implements Iterable<T> {
     public Information(T[] content) {
         this.content = new ArrayList<T>();
         this.nbEchantillons = content.length;
-        this.content.addAll(Arrays.asList(content));
+        for (int i = 0; i < content.length; i++) {
+            this.content.add(content[i]);
+        }
+
     }
 
     public Information(T[] content, Integer nbEchantillons) {
         this.content = new ArrayList<T>();
         this.nbEchantillons = nbEchantillons;
-        this.content.addAll(Arrays.asList(content));
+        for (int i = 0; i < content.length; i++) {
+            this.content.add(content[i]);
+        }
+
     }
 
     /**
