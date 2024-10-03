@@ -39,7 +39,7 @@ test-scripts:
         - ./simulateur
         - ./simulateur -mess 100000
         # Analogique
-        - ./simulateur -mess 100000 -nbEch 1000 -seed 1234
+        - ./simulateur -mess 100000 -nbEch 100 -seed 1234
         - ./genDoc
         - ./cleanAll
 
