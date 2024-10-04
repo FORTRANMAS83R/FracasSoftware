@@ -32,16 +32,6 @@ public class Simulateur {
      */
     private final Configurations config;
 
-    /**
-     * le composant Source Analogique de la chaine de transmission
-     */
-    private Source<Float> sourceAnalogique = null;
-
-    /**
-     * le composant Source Logique de la chaine de transmission
-     */
-    private Source<Boolean> sourceLogique = null;
-
     private Source<Boolean> source;
 
     /**
@@ -84,33 +74,18 @@ public class Simulateur {
     public Simulateur(String[] args) throws ArgumentsException {
         // analyser et récupérer les arguments
         config = new Configurations(args);
-        // analyseArguments(args);
+
+        // Instanciation de la source et destination
+        source = config.getMessageAleatoire() ? new SourceAleatoire(config.getNbBitsMess(), config.getSeed()) : new SourceFixe(config.getMessageString());
         destination = new DestinationFinale<>();
 
         if (config.getTransmissionAnalogique()) {
             // Analogique
-            if (!config.getMessageAleatoire()) {
-                source = new SourceFixe(config.getMessageString());
-//                switch (config.getFormatSignal()) {
-//                    case RZ ->
-//                            sourceAnalogique = new SourceRZ(config.getMessageString(), config.getNbEch(), config.getAmplMin(), config.getAmplMax());
-//                    case NRZ ->
-//                            sourceAnalogique = new SourceNRZ(config.getMessageString(), config.getNbEch(), config.getAmplMin(), config.getAmplMax());
-//                    case NRZT ->
-//                            sourceAnalogique = new SourceNRZT(config.getMessageString(), config.getNbEch(), config.getAmplMin(), config.getAmplMax());
-//                }
-            } else {
-                source = new SourceAleatoire(config.getNbBitsMess(), config.getSeed());
-//                switch (config.getFormatSignal()) {
-//                    case RZ ->
-//                            sourceAnalogique = new SourceRZ(config.getNbEch(), config.getAmplMin(), config.getAmplMax(), config.getNbBitsMess(), config.getSeed());
-//                    case NRZ ->
-//                            sourceAnalogique = new SourceNRZ(config.getNbEch(), config.getAmplMin(), config.getAmplMax(), config.getNbBitsMess(), config.getSeed());
-//                    case NRZT ->
-//                            sourceAnalogique = new SourceNRZT(config.getNbEch(), config.getAmplMin(), config.getAmplMax(), config.getNbBitsMess(), config.getSeed());
-//                }
-            }
+            // CAN
             convertisseurNumeriqueAnalogique = new ConvertisseurNumeriqueAnalogique<>(config.getNbEch(), config.getAmplMin(), config.getAmplMax(), config.getFormatSignal());
+            source.connecter(convertisseurNumeriqueAnalogique);
+
+            // Instanciation du transmetteur
             if (!config.getMultiTrajets().isEmpty()) {
                 transmetteurAnalogique = config.getMessageBruitee() ? new TransmetteurMultiTrajet(config.getMultiTrajets(), config.getSnrpb()) : new TransmetteurMultiTrajet(config.getMultiTrajets());
             } else if (config.getMessageBruitee()) {
@@ -119,36 +94,40 @@ public class Simulateur {
             } else {
                 transmetteurAnalogique = new TransmetteurParfait<>();
             }
-//            sourceAnalogique.connecter(transmetteurAnalogique);
-            source.connecter(convertisseurNumeriqueAnalogique);
-            convertisseurNumeriqueAnalogique.connecter(transmetteurAnalogique);
-            convertisseurAnalogiqueNumerique = new ConvertisseurAnalogiqueNumerique<>((config.getAmplMin() + config.getAmplMax()) / 2.0f, config.getNbEch(), config.getNbBitsMess());
 
+            // Connexion CNA au transmetteur
+            convertisseurNumeriqueAnalogique.connecter(transmetteurAnalogique);
+
+            // Instanciation CAN et connexion du transmetteur au CAN
+            convertisseurAnalogiqueNumerique = new ConvertisseurAnalogiqueNumerique<>((config.getAmplMin() + config.getAmplMax()) / 2.0f, config.getNbEch(), config.getNbBitsMess());
             if(!config.getMultiTrajets().isEmpty()){
-                egaliseur = new Egaliseur(config.getMultiTrajets(), sourceAnalogique);
-                transmetteurAnalogique.connecter(egaliseur);
-                egaliseur.connecter(convertisseurAnalogiqueNumerique);
+                // TODO Enlever les commentaires et supprimer la dernière ligne une fois l'envoi de l'information à égaliseur corrigé.
+//                egaliseur = new Egaliseur(config.getMultiTrajets(), sourceAnalogique);
+//                transmetteurAnalogique.connecter(egaliseur);
+//                egaliseur.connecter(convertisseurAnalogiqueNumerique);
+                transmetteurAnalogique.connecter(convertisseurAnalogiqueNumerique);
             }
             else{
                 transmetteurAnalogique.connecter(convertisseurAnalogiqueNumerique);
             }
+
+            // Connexion du CAN à la destination
             convertisseurAnalogiqueNumerique.connecter(destination);
 
             if (config.getAffichage()) {
-                sourceAnalogique.connecter(new SondeAnalogique("Sonde en sortie de la source"));
+                source.connecter(new SondeLogique("Sonde en sortie de la source",720));
                 transmetteurAnalogique.connecter(new SondeAnalogique("Sonde en sortie du transmetteur"));
                 transmetteurAnalogique.connecter(new SondeDiagrammeDeLoeil("Diagramme de l'oeil"));
             }
         } else {
             // Logique
-            source = config.getMessageAleatoire() ? new SourceAleatoire(config.getNbBitsMess(), config.getSeed()) : new SourceFixe(config.getMessageString());
             transmetteurLogique = new TransmetteurParfait<>();
 
-            sourceLogique.connecter(transmetteurLogique);
+            source.connecter(transmetteurLogique);
             transmetteurLogique.connecter(destination);
 
             if (config.getAffichage()) {
-                sourceLogique.connecter(new SondeLogique("Sonde en sortie de la source", 300));
+                source.connecter(new SondeLogique("Sonde en sortie de la source", 300));
                 transmetteurLogique.connecter(new SondeLogique("Sonde en sortie du transmetteur", 300));
             }
         }
