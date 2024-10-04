@@ -14,9 +14,9 @@ public class Egaliseur extends Transmetteur<Float, Float> {
     private int ordre; // Ordre du filtre de l'égaliseur
     private Float[] coefficients; // Coefficients du filtre de l'égaliseur
     private Float mu; // Pas d'apprentissage (taux de convergence)
-    private Source<Float> source;
+    private ConvertisseurNumeriqueAnalogique<Boolean,Float> source;
 
-    public Egaliseur(List<AbstractMap.SimpleEntry<Integer,Float>> multiTrajet, Source<Float> source) {
+    public Egaliseur(List<AbstractMap.SimpleEntry<Integer,Float>> multiTrajet, ConvertisseurNumeriqueAnalogique<Boolean,Float> source) {
         super();
         this.ordre = tauMax(multiTrajet) + 1;
         this.coefficients = new Float[ordre];
