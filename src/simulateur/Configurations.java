@@ -13,6 +13,7 @@ public class Configurations {
     private boolean messageAleatoire = true;
     private boolean transmissionAnalogique = false;
     private boolean messageBruitee = false;
+    private boolean codeur = false;
     private Float snrpb = 0.0f;
     private Integer seed = null; // pas de semence par défaut
     private int nbBitsMess = 100;
@@ -77,8 +78,7 @@ public class Configurations {
                     this.nbBitsMess = Integer.parseInt(this.messageString);
                     if (this.nbBitsMess < 1)
                         throw new ArgumentsException("Valeur du paramètre -mess invalide : " + this.nbBitsMess);
-                } else
-                    throw new ArgumentsException("Valeur du paramètre -mess invalide : " + this.messageString);
+                } else throw new ArgumentsException("Valeur du paramètre -mess invalide : " + this.messageString);
             } else if (args[i].matches("-form")) {
                 transmissionAnalogique = true;
                 i++;
@@ -90,22 +90,19 @@ public class Configurations {
                 } else if (argForm.matches("RZ")) {
                     this.formatSignal = SourceAnalogiqueType.RZ;
                 } else {
-                    throw new ArgumentsException(
-                            "Argument invalide pour la forme d'onde, attendu : RZ | NRZ | NRZT, reçu : " + args[i]);
+                    throw new ArgumentsException("Argument invalide pour la forme d'onde, attendu : RZ | NRZ | NRZT, reçu : " + args[i]);
                 }
             } else if (args[i].matches("-nbEch")) {
                 i++;
                 transmissionAnalogique = true;
-                String argNbEch = getArgumentOrThrows(args, i,
-                        "Pas de valeur du paramètre de nombre d'échantillons renseignée");
+                String argNbEch = getArgumentOrThrows(args, i, "Pas de valeur du paramètre de nombre d'échantillons renseignée");
                 if (argNbEch.matches("[0-9]+")) {
                     this.nbEch = Integer.parseInt(argNbEch);
                     if (this.nbEch % 3 != 0) {
                         this.nbEch = this.nbEch - this.nbEch % 3 + 3;
                         System.out.println("\tAttention: Le nombre d'échantillons a été ajusté à " + this.nbEch);
                     }
-                } else
-                    throw new ArgumentsException("Valeur du parametre -nbEch invalide : " + argNbEch);
+                } else throw new ArgumentsException("Valeur du parametre -nbEch invalide : " + argNbEch);
             } else if (args[i].matches("-ampl")) {
                 i++;
                 String argAmpl = getArgumentOrThrows(args, i, "Pas de valeur du paramètre d'amplitude min renseignée");
@@ -115,23 +112,19 @@ public class Configurations {
                     argAmpl = getArgumentOrThrows(args, i, "Pas de valeur du paramètre d'amplitude max renseignée");
                     if (argAmpl.matches("-?[0-9]+([.,][0-9]+)?")) {
                         this.ampl_max = Float.parseFloat(argAmpl.replace(',', '.'));
-                    } else
-                        throw new ArgumentsException("Valeur du parametre amplitude max invalide : " + argAmpl);
-                } else
-                    throw new ArgumentsException("Valeur du parametre amplitude min invalide : " + argAmpl);
+                    } else throw new ArgumentsException("Valeur du parametre amplitude max invalide : " + argAmpl);
+                } else throw new ArgumentsException("Valeur du parametre amplitude min invalide : " + argAmpl);
 
             } else if (args[i].matches("-snrpb")) {
                 transmissionAnalogique = true;
                 i++;
                 // match regex d'un float
-                String argSnrPb = getArgumentOrThrows(args, i,
-                        "Pas de valeur du paramètre de signal à bruit renseignée");
+                String argSnrPb = getArgumentOrThrows(args, i, "Pas de valeur du paramètre de signal à bruit renseignée");
                 if (argSnrPb.matches("-?[0-9]+([.,][0-9]+)?")) {
                     this.messageBruitee = true;
                     this.snrpb = Float.parseFloat(argSnrPb.replace(',', '.'));
 
-                } else
-                    throw new ArgumentsException("Valeur du parametre signal a bruit invalide : " + args[i]);
+                } else throw new ArgumentsException("Valeur du parametre signal a bruit invalide : " + args[i]);
 
             } else if (args[i].matches("-ti")) {
                 transmissionAnalogique = true;
@@ -139,8 +132,7 @@ public class Configurations {
                     i++;
                     int count = multiTrajets.size() + 1;
 
-                    if (count > 5)
-                        throw new ArgumentsException("Nombre de trajets supérieur à 5");
+                    if (count > 5) throw new ArgumentsException("Nombre de trajets supérieur à 5");
 
                     int dt;
                     float ar;
@@ -148,72 +140,58 @@ public class Configurations {
                     try {
                         dt = Integer.parseInt(args[i]);
                     } catch (Exception e) {
-                        throw new ArgumentsException(
-                                "Paramètre dt" + count + " invalide : " + args[i]);
+                        throw new ArgumentsException("Paramètre dt" + count + " invalide : " + args[i]);
                     }
 
                     if (dt < 0)
-                        throw new ArgumentsException(
-                                "Le paramètre dt doit être positif (>= 0), dt" + count + " : " + args[i]);
+                        throw new ArgumentsException("Le paramètre dt doit être positif (>= 0), dt" + count + " : " + args[i]);
 
                     i++;
 
-                    String arStr = getArgumentOrThrows(args, i,
-                            "Pas de valeur du paramètre ti a" + count + " renseignée");
+                    String arStr = getArgumentOrThrows(args, i, "Pas de valeur du paramètre ti a" + count + " renseignée");
 
                     try {
-                        ar = Float.parseFloat(
-                                arStr.replace(',', '.'));
+                        ar = Float.parseFloat(arStr.replace(',', '.'));
                     } catch (Exception e) {
-                        throw new ArgumentsException(
-                                "Paramètre ar" + count + " invalide : " + arStr);
+                        throw new ArgumentsException("Paramètre ar" + count + " invalide : " + arStr);
                     }
 
                     if (ar < 0 || ar > 1)
-                        throw new ArgumentsException(
-                                "Le paramètre ar doit être compris entre 0 inclus et 1 inclus, ar" + count + " : "
-                                        + arStr);
+                        throw new ArgumentsException("Le paramètre ar doit être compris entre 0 inclus et 1 inclus, ar" + count + " : " + arStr);
 
                     multiTrajets.add(new SimpleEntry<>(dt, ar));
                 }
 
                 if (multiTrajets.isEmpty()) {
-                    throw new ArgumentsException(
-                            "Pas de valeur du paramètre de trajet multiple renseignée ou paramètre dt1 invalide");
+                    throw new ArgumentsException("Pas de valeur du paramètre de trajet multiple renseignée ou paramètre dt1 invalide");
                 }
                 Float sum = 0.0f;
                 for (int j = 0; i < multiTrajets.size(); j++) {
                     sum += (float) Math.pow(multiTrajets.get(j).getValue(), 2);
                 }
                 if (sum > 1) {
-                    throw new ArgumentsException(
-                            "La somme des carrés des amplitudes des trajets multiples doit être inférieure ou égale à 1");
+                    throw new ArgumentsException("La somme des carrés des amplitudes des trajets multiples doit être inférieure ou égale à 1");
                 }
-            } else
-                throw new ArgumentsException("Option invalide :" + args[i]);
+            } else if (args[i].matches("-codeur")) {
+                this.codeur = true;
+//                i++;
+            } else throw new ArgumentsException("Option invalide :" + args[i]);
         }
 
         // Vérification de la cohérence des arguments passés
 
         if (this.formatSignal == SourceAnalogiqueType.RZ && this.ampl_min != 0) {
-            throw new ArgumentsException(
-                    "Attention : Pour une forme d'onde impulsionnelle (RZ), l'amplitude min est forcément égale à 0");
+            throw new ArgumentsException("Attention : Pour une forme d'onde impulsionnelle (RZ), l'amplitude min est forcément égale à 0");
         }
 
         if (this.ampl_max <= this.ampl_min)
-            throw new ArgumentsException(
-                    "L'amplitude min ne peut pas être supérieure ou égale à l'amplitude max, valeurs renseignées :\nmin : "
-                            + this.ampl_min + ", max : " + this.ampl_max);
+            throw new ArgumentsException("L'amplitude min ne peut pas être supérieure ou égale à l'amplitude max, valeurs renseignées :\nmin : " + this.ampl_min + ", max : " + this.ampl_max);
 
         if (this.formatSignal == SourceAnalogiqueType.NRZ || this.formatSignal == SourceAnalogiqueType.NRZT) {
             if (this.ampl_max < 0)
-                throw new ArgumentsException(
-                        "Pour une forme d'onde rectangulaire ou trapézoïdale (NRZ/NRZT), la valeur de l'amplitude max doit être supérieure ou égale à 0, valeur renseignée : "
-                                + this.ampl_max);
+                throw new ArgumentsException("Pour une forme d'onde rectangulaire ou trapézoïdale (NRZ/NRZT), la valeur de l'amplitude max doit être supérieure ou égale à 0, valeur renseignée : " + this.ampl_max);
             if (this.ampl_min > 0)
-                throw new ArgumentsException(
-                        "Pour une forme d'onde rectangulaire ou trapézoïdale (NRZ/NRZT), la valeur de l'amplitude min doit être inférieure ou égale à 0, valeur renseignée : "
-                                + this.ampl_min);
+                throw new ArgumentsException("Pour une forme d'onde rectangulaire ou trapézoïdale (NRZ/NRZT), la valeur de l'amplitude min doit être inférieure ou égale à 0, valeur renseignée : " + this.ampl_min);
         }
     }
 
@@ -259,6 +237,10 @@ public class Configurations {
 
     public float getAmplMax() {
         return this.ampl_max;
+    }
+
+    public boolean getCodeur() {
+        return this.codeur;
     }
 
     public SourceAnalogiqueType getFormatSignal() {

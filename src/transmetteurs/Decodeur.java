@@ -4,7 +4,7 @@ import destinations.DestinationInterface;
 import information.Information;
 import information.InformationNonConformeException;
 
-public class Decodeur extends Transmetteur<Boolean, Boolean> {
+public class Decodeur<R,E> extends Transmetteur<Boolean, Boolean> {
 
 
     /**

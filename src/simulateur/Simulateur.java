@@ -30,6 +30,9 @@ public class Simulateur {
 
     private final Source<Boolean> source;
 
+    private Codeur<Boolean, Boolean> codeur = null;
+    private Decodeur<Boolean, Boolean> decodeur = null;
+
     /**
      * le composant Transmetteur parfait logique de la chaine de transmission
      */
@@ -79,7 +82,13 @@ public class Simulateur {
             // Analogique
             // CAN
             convertisseurNumeriqueAnalogique = new ConvertisseurNumeriqueAnalogique<>(config.getNbEch(), config.getAmplMin(), config.getAmplMax(), config.getFormatSignal());
-            source.connecter(convertisseurNumeriqueAnalogique);
+            if (config.getCodeur()) {
+                codeur = new Codeur<>();
+                source.connecter(codeur);
+                codeur.connecter(convertisseurNumeriqueAnalogique);
+            } else {
+                source.connecter(convertisseurNumeriqueAnalogique);
+            }
 
             // Instanciation du transmetteur
             if (!config.getMultiTrajets().isEmpty()) {
@@ -95,20 +104,24 @@ public class Simulateur {
             convertisseurNumeriqueAnalogique.connecter(transmetteurAnalogique);
 
             // Instanciation CAN et connexion du transmetteur au CAN
-            convertisseurAnalogiqueNumerique = new ConvertisseurAnalogiqueNumerique<>((config.getAmplMin() + config.getAmplMax()) / 2.0f, config.getNbEch(), config.getNbBitsMess());
+            convertisseurAnalogiqueNumerique = new ConvertisseurAnalogiqueNumerique<>(config.getNbEch(), config.getNbBitsMess(), (config.getAmplMin()+config.getAmplMax())/2, config.getFormatSignal());
             if(!config.getMultiTrajets().isEmpty()){
-                // TODO Enlever les commentaires et supprimer la dernière ligne une fois l'envoi de l'information à égaliseur corrigé.
                 egaliseur = new Egaliseur(config.getMultiTrajets(), convertisseurNumeriqueAnalogique);
                 transmetteurAnalogique.connecter(egaliseur);
                 egaliseur.connecter(convertisseurAnalogiqueNumerique);
-//                transmetteurAnalogique.connecter(convertisseurAnalogiqueNumerique);
             }
             else{
                 transmetteurAnalogique.connecter(convertisseurAnalogiqueNumerique);
             }
 
             // Connexion du CAN à la destination
-            convertisseurAnalogiqueNumerique.connecter(destination);
+            if (config.getCodeur()) {
+                decodeur = new Decodeur<>();
+                convertisseurAnalogiqueNumerique.connecter(decodeur);
+                decodeur.connecter(destination);
+            } else {
+                convertisseurAnalogiqueNumerique.connecter(destination);
+            }
 
             if (config.getAffichage()) {
                 source.connecter(new SondeLogique("Sonde en sortie de la source",720));

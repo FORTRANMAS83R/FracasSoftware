@@ -31,31 +31,31 @@ public class tebEnFctSNR {
         float ampMinNRZetNRZT = -2.5f;
         float ampMaxNRZetNRZT = 2.5f;
 
-        int nombreDeSimulations = 100;
+        int nombreDeSimulations = 10;
 
 
-		LinkedList<float[]> tabsNRZ = new LinkedList<>();
-		LinkedList<float[]> tabsRZ = new LinkedList<>();
-		LinkedList<float[]> tabsNRZT = new LinkedList<>();
-		float[] finalTabNRZ = new float[size];
-		float[] finalTabRZ = new float[size];
-		float[] finalTabNRZT = new float[size];
+        LinkedList<float[]> tabsNRZ = new LinkedList<>();
+        LinkedList<float[]> tabsRZ = new LinkedList<>();
+        LinkedList<float[]> tabsNRZT = new LinkedList<>();
+        float[] finalTabNRZ = new float[size];
+        float[] finalTabRZ = new float[size];
+        float[] finalTabNRZT = new float[size];
         float[] tabTEBTheo = new float[size];
         float[] tabSNR = new float[size];
 
         // Boucle pour effectuer plusieurs simulations
         for (int j = 0; j < nombreDeSimulations; j++) {
-			float[] tempTabNRZ = new float[size];
-			float[] tempTabRZ = new float[size];
-			float[] tempTabNRZT = new float[size];
+            float[] tempTabNRZ = new float[size];
+            float[] tempTabRZ = new float[size];
+            float[] tempTabNRZT = new float[size];
 
 
             int i = 0;
             // Boucle pour varier le SNR avec un pas de 0.1
             for (double snr = snrMin; snr <= snrMax; snr += 0.1) {
-                String[] argumentsNRZT = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000)};
-                String[] argumentsNRZ = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000)};
-                String[] argumentsRZ = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "RZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinRZ), String.valueOf(ampMaxRZ), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000)};
+                String[] argumentsNRZT = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-codeur", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000)};
+                String[] argumentsNRZ = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZ", "-codeur", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000)};
+                String[] argumentsRZ = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "RZ", "-codeur", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinRZ), String.valueOf(ampMaxRZ), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000)};
                 // Création et exécution du simulateur avec les paramètres spécifiés
                 Simulateur simulateur = new Simulateur(argumentsNRZT);
                 simulateur.execute();
@@ -116,7 +116,6 @@ public class tebEnFctSNR {
             // POUR RZ
 
 
-
             finalTabNRZ[y] = sommeNRZ / (float) tabsNRZ.size();
             finalTabRZ[y] = sommeRZ / (float) tabsRZ.size();
             finalTabNRZT[y] = sommeNRZT / (float) tabsNRZT.size();
@@ -153,7 +152,7 @@ public class tebEnFctSNR {
         finalTabs.add(finalTabNRZTString);
 
         // Créer un fichier CSV avec le nom de chaque tableau et les valeurs associées
-        File csvFile = new File("tebEnFctSNR.csv");
+        File csvFile = new File("tebEnFctSNR_codeur.csv");
         FileWriter writer = new FileWriter(csvFile);
         writer.write("SNR par bit,TEB theorique,TEB RZ, TEB NRZ, TEB NRZT\n");
         for (int x = 0; x < size; x++) {

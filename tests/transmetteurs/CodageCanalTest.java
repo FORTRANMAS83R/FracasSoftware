@@ -18,7 +18,7 @@ public class CodageCanalTest {
         information.add(true);
         information.add(false);
         information.add(true);
-        Information<Boolean> informationCodee = CodageCanal.codeCanal(information);
+        Information<Boolean> informationCodee = Codeur.codeCanal(information);
         assertEquals(" true false true false true false true false true", informationCodee.toString());
     }
 }
