@@ -7,12 +7,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.Optional;
 
-import destinations.Destination;
+//import destinations.Destination;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import sources.analogique.SourceAnalogique;
-import sources.analogique.SourceAnalogiqueType;
+//import sources.analogique.SourceAnalogique;
+import sources.SourceAnalogiqueType;
 
 /**
  * Classe de test pour Argument. Utilise JUnit pour les assertions et

@@ -16,7 +16,7 @@ public class Information<T> implements Iterable<T> {
      * pour construire une information vide
      */
     public Information() {
-        this.content = new ArrayList<T>();
+        this.content = new ArrayList<>();
         this.nbEchantillons = 0;
     }
 
@@ -27,14 +27,14 @@ public class Information<T> implements Iterable<T> {
      *                construite
      */
     public Information(T[] content) {
-        this.content = new ArrayList<T>();
+        this.content = new ArrayList<>();
         this.nbEchantillons = content.length;
         this.content.addAll(Arrays.asList(content));
 
     }
 
     public Information(T[] content, Integer nbEchantillons) {
-        this.content = new ArrayList<T>();
+        this.content = new ArrayList<>();
         this.nbEchantillons = nbEchantillons;
         this.content.addAll(Arrays.asList(content));
 
@@ -153,7 +153,7 @@ public class Information<T> implements Iterable<T> {
      * @return une copie de l'information
      */
     public Information<T> clone() {
-        Information<T> clone = new Information<T>();
+        Information<T> clone = new Information<>();
         for (int i = 0; i < this.nbElements(); i++) {
             clone.add(this.iemeElement(i));
         }
@@ -167,11 +167,11 @@ public class Information<T> implements Iterable<T> {
      * @return representation de l'information sous forme de String
      */
     public String toString() {
-        String s = "";
+        StringBuilder s = new StringBuilder();
         for (int i = 0; i < this.nbElements(); i++) {
-            s += " " + this.iemeElement(i);
+            s.append(" ").append(this.iemeElement(i));
         }
-        return s;
+        return s.toString();
     }
 
     /**

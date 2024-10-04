@@ -1,4 +1,4 @@
-package sources.analogique;
+package sources;
 
 /**
  * Enum représentant différents types de sources analogiques.

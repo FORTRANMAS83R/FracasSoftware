@@ -10,11 +10,11 @@ import information.Information;
  * Rq: on pourrait envisager une classe parent ou une interface si l'on venait à avoir plusieurs types de bruits
  */
 public class BBG {
-    private Float SNRpb;
+    private final Float SNRpb;
     private Float variance;
     private Float SNR;
-    private Random a1; // générateur de nombres aléatoires suivant une loi uniforme entre 0 et 1
-    private Random a2; // générateur de nombres aléatoires suivant une loi uniforme entre 0 et 1
+    private final Random a1; // générateur de nombres aléatoires suivant une loi uniforme entre 0 et 1
+    private final Random a2; // générateur de nombres aléatoires suivant une loi uniforme entre 0 et 1
     private Float puissanceSignal;
 
     /**

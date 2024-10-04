@@ -1,6 +1,6 @@
 package simulateur;
 
-import sources.analogique.SourceAnalogiqueType;
+import sources.SourceAnalogiqueType;
 
 import static simulateur.Simulateur.getArgumentOrThrows;
 
@@ -20,7 +20,7 @@ public class Configurations {
     private int nbEch = 30;
     private float ampl_min = 0.0f, ampl_max = 1.0f;
     private SourceAnalogiqueType formatSignal = SourceAnalogiqueType.RZ;
-    private List<SimpleEntry<Integer, Float>> multiTrajets = new ArrayList<>();
+    private final List<SimpleEntry<Integer, Float>> multiTrajets = new ArrayList<>();
 
 
     public Configurations(String[] args) throws ArgumentsException {

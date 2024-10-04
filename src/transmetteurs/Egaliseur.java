@@ -11,10 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Egaliseur extends Transmetteur<Float, Float> {
-    private int ordre; // Ordre du filtre de l'égaliseur
-    private Float[] coefficients; // Coefficients du filtre de l'égaliseur
+    private final int ordre; // Ordre du filtre de l'égaliseur
+    private final Float[] coefficients; // Coefficients du filtre de l'égaliseur
     private Float mu; // Pas d'apprentissage (taux de convergence)
-    private ConvertisseurNumeriqueAnalogique<Boolean,Float> source;
+    private final ConvertisseurNumeriqueAnalogique<Boolean,Float> source;
 
     public Egaliseur(List<AbstractMap.SimpleEntry<Integer,Float>> multiTrajet, ConvertisseurNumeriqueAnalogique<Boolean,Float> source) {
         super();

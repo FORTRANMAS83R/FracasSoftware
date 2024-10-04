@@ -1,10 +1,10 @@
 package simulateur;
 
-import static org.junit.Assert.assertEquals;
-
 import org.junit.Test;
 
 import information.InformationNonConformeException;
+
+import static org.junit.Assert.*;
 
 public class SimulateurTest {
 	/**
@@ -21,7 +21,7 @@ public class SimulateurTest {
 		final Simulateur s = new Simulateur(args);
 
 		s.execute();
-		assertEquals(true, s.getTransmissionAnalogique());
+        assertTrue(s.getTransmissionAnalogique());
 	}
 
 	/**
@@ -37,7 +37,7 @@ public class SimulateurTest {
 		final Simulateur s = new Simulateur(args);
 
 		s.execute();
-		assertEquals(true, s.getTransmissionAnalogique());
+        assertTrue(s.getTransmissionAnalogique());
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class SimulateurTest {
 		final Simulateur s = new Simulateur(args);
 
 		s.execute();
-		assertEquals(true, s.getTransmissionAnalogique());
+        assertTrue(s.getTransmissionAnalogique());
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class SimulateurTest {
 		final Simulateur s = new Simulateur(args);
 
 		s.execute();
-		assertEquals(true, s.getTransmissionAnalogique());
+        assertTrue(s.getTransmissionAnalogique());
 	}
 
 	/**
@@ -83,7 +83,7 @@ public class SimulateurTest {
 		final Simulateur s = new Simulateur(args);
 
 		s.execute();
-		assertEquals(false, s.getTransmissionAnalogique());
+        assertFalse(s.getTransmissionAnalogique());
 		s.calculTauxErreurBinaire();
 	}
 
@@ -99,7 +99,7 @@ public class SimulateurTest {
 		final Simulateur s = new Simulateur(args);
 
 		s.execute();
-		assertEquals(true, s.getTransmissionAnalogique());
+        assertTrue(s.getTransmissionAnalogique());
 		s.calculTauxErreurBinaire();
 	}
 

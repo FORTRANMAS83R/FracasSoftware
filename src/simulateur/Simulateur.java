@@ -1,6 +1,5 @@
 package simulateur;
 
-import sources.analogique.SourceAnalogiqueType;
 import transmetteurs.*;
 import destinations.Destination;
 import destinations.DestinationFinale;
@@ -9,9 +8,6 @@ import information.InformationNonConformeException;
 import sources.Source;
 import sources.SourceAleatoire;
 import sources.SourceFixe;
-import sources.analogique.SourceNRZ;
-import sources.analogique.SourceNRZT;
-import sources.analogique.SourceRZ;
 import visualisations.SondeAnalogique;
 import visualisations.SondeDiagrammeDeLoeil;
 import visualisations.SondeHistogramme;
@@ -32,7 +28,7 @@ public class Simulateur {
      */
     private final Configurations config;
 
-    private Source<Boolean> source;
+    private final Source<Boolean> source;
 
     /**
      * le composant Transmetteur parfait logique de la chaine de transmission

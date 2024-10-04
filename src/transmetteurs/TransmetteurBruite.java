@@ -11,7 +11,7 @@ import information.InformationNonConformeException;
  */
 public class TransmetteurBruite<R,E> extends Transmetteur<Float, Float> {
 
-    private Float SNRpb;
+    private final Float SNRpb;
     private Integer seed;
     private Boolean haveSeed = false;
 
