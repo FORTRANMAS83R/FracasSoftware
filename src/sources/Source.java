@@ -97,11 +97,12 @@ public abstract class Source<T> implements SourceInterface<T> {
      *                                         anomalie
      */
     public void emettre() throws InformationNonConformeException {
+        this.informationEmise = informationGeneree;
         // émission vers les composants connectés
         for (DestinationInterface<T> destinationConnectee : destinationsConnectees) {
             destinationConnectee.recevoir(informationGeneree);
         }
-        this.informationEmise = informationGeneree;
+
     }
 
     protected Information<Boolean> genInformationAleatoire(int nBits, Integer seed) {
