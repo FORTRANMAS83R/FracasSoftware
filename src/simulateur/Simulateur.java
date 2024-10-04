@@ -1,5 +1,6 @@
 package simulateur;
 
+import sources.analogique.SourceAnalogiqueType;
 import transmetteurs.*;
 import destinations.Destination;
 import destinations.DestinationFinale;
@@ -41,6 +42,8 @@ public class Simulateur {
      */
     private Source<Boolean> sourceLogique = null;
 
+    private Source<Boolean> source;
+
     /**
      * le composant Transmetteur parfait logique de la chaine de transmission
      */
@@ -49,6 +52,8 @@ public class Simulateur {
      * le composant Transmetteur analogique de la chaine de transmission
      */
     private Transmetteur<Float, Float> transmetteurAnalogique = null;
+
+    private ConvertisseurNumeriqueAnalogique<Boolean, Float> convertisseurNumeriqueAnalogique = null;
 
     /**
      * le composant Convertisseur analogique-numérique de la chaine de transmission
@@ -81,28 +86,31 @@ public class Simulateur {
         config = new Configurations(args);
         // analyseArguments(args);
         destination = new DestinationFinale<>();
+
         if (config.getTransmissionAnalogique()) {
             // Analogique
             if (!config.getMessageAleatoire()) {
-                switch (config.getFormatSignal()) {
-                    case RZ ->
-                            sourceAnalogique = new SourceRZ(config.getMessageString(), config.getNbEch(), config.getAmplMin(), config.getAmplMax());
-                    case NRZ ->
-                            sourceAnalogique = new SourceNRZ(config.getMessageString(), config.getNbEch(), config.getAmplMin(), config.getAmplMax());
-                    case NRZT ->
-                            sourceAnalogique = new SourceNRZT(config.getMessageString(), config.getNbEch(), config.getAmplMin(), config.getAmplMax());
-                }
+                source = new SourceFixe(config.getMessageString());
+//                switch (config.getFormatSignal()) {
+//                    case RZ ->
+//                            sourceAnalogique = new SourceRZ(config.getMessageString(), config.getNbEch(), config.getAmplMin(), config.getAmplMax());
+//                    case NRZ ->
+//                            sourceAnalogique = new SourceNRZ(config.getMessageString(), config.getNbEch(), config.getAmplMin(), config.getAmplMax());
+//                    case NRZT ->
+//                            sourceAnalogique = new SourceNRZT(config.getMessageString(), config.getNbEch(), config.getAmplMin(), config.getAmplMax());
+//                }
             } else {
-                switch (config.getFormatSignal()) {
-                    case RZ ->
-                            sourceAnalogique = new SourceRZ(config.getNbEch(), config.getAmplMin(), config.getAmplMax(), config.getNbBitsMess(), config.getSeed());
-                    case NRZ ->
-                            sourceAnalogique = new SourceNRZ(config.getNbEch(), config.getAmplMin(), config.getAmplMax(), config.getNbBitsMess(), config.getSeed());
-                    case NRZT ->
-                            sourceAnalogique = new SourceNRZT(config.getNbEch(), config.getAmplMin(), config.getAmplMax(), config.getNbBitsMess(), config.getSeed());
-                }
+                source = new SourceAleatoire(config.getNbBitsMess(), config.getSeed());
+//                switch (config.getFormatSignal()) {
+//                    case RZ ->
+//                            sourceAnalogique = new SourceRZ(config.getNbEch(), config.getAmplMin(), config.getAmplMax(), config.getNbBitsMess(), config.getSeed());
+//                    case NRZ ->
+//                            sourceAnalogique = new SourceNRZ(config.getNbEch(), config.getAmplMin(), config.getAmplMax(), config.getNbBitsMess(), config.getSeed());
+//                    case NRZT ->
+//                            sourceAnalogique = new SourceNRZT(config.getNbEch(), config.getAmplMin(), config.getAmplMax(), config.getNbBitsMess(), config.getSeed());
+//                }
             }
-
+            convertisseurNumeriqueAnalogique = new ConvertisseurNumeriqueAnalogique<>(config.getNbEch(), config.getAmplMin(), config.getAmplMax(), config.getFormatSignal());
             if (!config.getMultiTrajets().isEmpty()) {
                 transmetteurAnalogique = config.getMessageBruitee() ? new TransmetteurMultiTrajet(config.getMultiTrajets(), config.getSnrpb()) : new TransmetteurMultiTrajet(config.getMultiTrajets());
             } else if (config.getMessageBruitee()) {
@@ -111,8 +119,11 @@ public class Simulateur {
             } else {
                 transmetteurAnalogique = new TransmetteurParfait<>();
             }
-            sourceAnalogique.connecter(transmetteurAnalogique);
+//            sourceAnalogique.connecter(transmetteurAnalogique);
+            source.connecter(convertisseurNumeriqueAnalogique);
+            convertisseurNumeriqueAnalogique.connecter(transmetteurAnalogique);
             convertisseurAnalogiqueNumerique = new ConvertisseurAnalogiqueNumerique<>((config.getAmplMin() + config.getAmplMax()) / 2.0f, config.getNbEch(), config.getNbBitsMess());
+
             if(!config.getMultiTrajets().isEmpty()){
                 egaliseur = new Egaliseur(config.getMultiTrajets(), sourceAnalogique);
                 transmetteurAnalogique.connecter(egaliseur);
@@ -130,7 +141,7 @@ public class Simulateur {
             }
         } else {
             // Logique
-            sourceLogique = config.getMessageAleatoire() ? new SourceAleatoire(config.getNbBitsMess(), config.getSeed()) : new SourceFixe(config.getMessageString());
+            source = config.getMessageAleatoire() ? new SourceAleatoire(config.getNbBitsMess(), config.getSeed()) : new SourceFixe(config.getMessageString());
             transmetteurLogique = new TransmetteurParfait<>();
 
             sourceLogique.connecter(transmetteurLogique);
@@ -231,7 +242,8 @@ public class Simulateur {
      */
     public float calculTauxErreurBinaire() {
         int nbBitEronnes = 0;
-        Information<?> src = config.getTransmissionAnalogique() ? getSource().getInformationBinaire() : getSource().getInformationEmise();
+//        Information<?> src = config.getTransmissionAnalogique() ? getSource().getInformationBinaire() : getSource().getInformationEmise();
+        Information<?> src = getSource().getInformationEmise();
         Information<?> dst = getDestination().getInformationRecue();
         for (int i = 0; i < config.getNbBitsMess(); i++) {
             if (src.iemeElement(i) != dst.iemeElement(i)) {
@@ -252,7 +264,8 @@ public class Simulateur {
     }
 
     public Source<?> getSource() {
-        return config.getTransmissionAnalogique() ? sourceAnalogique : sourceLogique;
+        return source;
+//        return config.getTransmissionAnalogique() ? sourceAnalogique : sourceLogique;
     }
 
     public Destination<?> getDestination() {

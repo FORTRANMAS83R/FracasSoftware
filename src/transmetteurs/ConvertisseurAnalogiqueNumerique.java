@@ -39,6 +39,7 @@ public class ConvertisseurAnalogiqueNumerique<R, E> extends Transmetteur<Float, 
      */
     @Override
     public void recevoir(Information<Float> information) throws InformationNonConformeException {
+        this.informationRecue = information.clone();
         informationEmise = new Information<>();
         for (int i = 0; i < nbBitsMessage; i++) {
             float somme = 0;
