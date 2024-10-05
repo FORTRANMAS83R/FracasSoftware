@@ -1,6 +1,5 @@
 package visualisations;
 
-
 import java.awt.*;
 
 import information.Information;
@@ -48,7 +47,6 @@ public class VueOeil extends Vue {
         g.fillRect(0, 0, getWidth(), getHeight());
         g.setColor(Color.black);
 
-
         int width = getContentPane().getWidth();
         int height = getContentPane().getHeight();
 
@@ -90,6 +88,9 @@ public class VueOeil extends Vue {
                 dy = -(deltaY / yMin);
             }
 
+            // Fix problem with delta in drawing lines
+            g = getContentPane().getGraphics();
+
             // Parcourir chaque symbole, de 1 à N-1
             for (int i = 0; i <= signal.nbElements()
                     - 3 * signal.getNbEchantillons(); i += signal.getNbEchantillons()) {
@@ -101,7 +102,8 @@ public class VueOeil extends Vue {
                     float y2 = y0Axe - signal.iemeElement(i + j + 1) * dy;
                     g.setColor(new Color(20, 200, 180, 255));
                     g.drawLine((int) x1, (int) y1, (int) x2, (int) y2);
-                    //getContentPane().getGraphics().drawLine((int) x1, (int) y1, (int) x2, (int) y2);
+                    // getContentPane().getGraphics().drawLine((int) x1, (int) y1, (int) x2, (int)
+                    // y2);
                 }
             }
         }
