@@ -7,28 +7,18 @@ import information.InformationNonConformeException;
 
 /**
  * Classe représentant un transmetteur bruite.
- * Ce transmetteur ajoute du bruit à l'information reçue en fonction du SNR par bit (SNRpb).
+ * Ce transmetteur ajoute du bruit à l'information reçue en fonction du SNR par
+ * bit (SNRpb).
  */
-public class TransmetteurBruite<R,E> extends Transmetteur<Float, Float> {
+public class TransmetteurBruite<R, E> extends Transmetteur<Float, Float> {
 
     private final Float SNRpb;
     private Integer seed;
-    private Boolean haveSeed = false;
 
-    /**
-     * Constructeur du transmetteur bruite.
-     *
-     * @param snrPB Le rapport signal sur bruit par bit.
-     */
-    public TransmetteurBruite(Float snrPB) {
-        super();
-        this.SNRpb = snrPB;
-    }
     public TransmetteurBruite(Float snrPB, Integer seed) {
         super();
         this.SNRpb = snrPB;
         this.seed = seed;
-        this.haveSeed = true;
     }
 
     /**
@@ -41,11 +31,7 @@ public class TransmetteurBruite<R,E> extends Transmetteur<Float, Float> {
     public void recevoir(Information<Float> information) throws InformationNonConformeException {
         this.informationRecue = information.clone();
         BBG bruit;
-        if (!this.haveSeed) {
-             bruit = new BBG(this.SNRpb);
-        }else {
-             bruit = new BBG(this.SNRpb, this.seed);
-        }
+        bruit = new BBG(this.SNRpb, this.seed);
         this.informationEmise = bruit.bruitage(this.informationRecue);
         emettre();
     }

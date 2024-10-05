@@ -5,9 +5,11 @@ import java.util.Random;
 import information.Information;
 
 /**
- * Classe émulant un bruit blanc gaussien. Applicable théoriquement aussi bien sur les transmetteurs que
+ * Classe émulant un bruit blanc gaussien. Applicable théoriquement aussi bien
+ * sur les transmetteurs que
  * les sources ou les destinations
- * Rq: on pourrait envisager une classe parent ou une interface si l'on venait à avoir plusieurs types de bruits
+ * Rq: on pourrait envisager une classe parent ou une interface si l'on venait à
+ * avoir plusieurs types de bruits
  */
 public class BBG {
     private final Float SNRpb;
@@ -18,31 +20,23 @@ public class BBG {
     private Float puissanceSignal;
 
     /**
-     * Constructeur de la classe BBG (sans graine)
-     *
+     * *
+     * 
      * @param SNRpb: le rapport signal sur bruit en dB
-     */
-    public BBG(Float SNRpb) {
-        this.variance = 0.0f;
-        this.SNR = 0.0f;
-        this.puissanceSignal = 0.0f;
-        this.a1 = new Random();
-        this.a2 = new Random();
-        this.SNRpb = SNRpb;
-    }
-
-    /**
-     * Constructeur de la classe BBG (avec graine)
-     *
-     * @param SNRpb: le rapport signal sur bruit en dB
-     * @param seed:  la graine pour le générateur de nombres aléatoires a1
+     * @param seed:  la graine pour le générateur de nombres aléatoires a1, null =
+     *               sans seed
      */
     public BBG(Float SNRpb, Integer seed) {
         this.variance = 0.0f;
         this.SNR = 0.0f;
         this.puissanceSignal = 0.0f;
-        this.a1 = new Random(seed); // générateur de nombres aléatoires suivant une loi uniforme entre 0 et 1
-        this.a2 = new Random(seed);
+        if (seed != null) {
+            this.a1 = new Random(seed);
+            this.a2 = new Random(seed);
+        } else {
+            this.a1 = new Random();
+            this.a2 = new Random();
+        }
         this.SNRpb = SNRpb;
     }
 
@@ -62,7 +56,7 @@ public class BBG {
             signal.setIemeElement(i,
                     signal.iemeElement(i)
                             + (float) Math.sqrt(this.variance) * (float) Math.sqrt(-2 * Math.log(1 - a1.nextFloat()))
-                            * (float) Math.cos(2 * Math.PI * a2.nextFloat()));
+                                    * (float) Math.cos(2 * Math.PI * a2.nextFloat()));
         }
 
         return signal;

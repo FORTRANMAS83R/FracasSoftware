@@ -71,7 +71,7 @@ public class BBGTest {
      */
     @Test
     public void testConstructeur() {
-        final BBG bruit = new BBG(20f);
+        final BBG bruit = new BBG(20f, null);
         collector.checkThat(20f, is(bruit.getSNRpb()));
 
     }
