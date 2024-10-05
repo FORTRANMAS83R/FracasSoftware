@@ -80,7 +80,10 @@ public class Egaliseur extends Transmetteur<Float, Float> {
     @Override
     public void recevoir(Information<Float> information) throws InformationNonConformeException {
         this.informationRecue = information;
-        this.informationEmise = new Information<>(egaliser(information.getContent(), this.source.getInformationEmise().getContent()));
+        if(this.ordre > 1){
+            this.informationEmise = new Information<>(egaliser(information.getContent(), this.source.getInformationEmise().getContent()));    
+        }
+        else this.informationEmise = information;
         emettre();
     }
 
