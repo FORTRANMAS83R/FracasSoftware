@@ -41,6 +41,7 @@ public class tebEnFctSNR {
         float[] finalTabRZ = new float[size];
         float[] finalTabNRZT = new float[size];
         float[] tabTEBTheo = new float[size];
+        float[] tabTEBTheoCodeur = new float[size];
         float[] tabSNR = new float[size];
 
         // Boucle pour effectuer plusieurs simulations
@@ -87,7 +88,9 @@ public class tebEnFctSNR {
         // complémentaire
         int i = 0;
         for (double snr = snrMin; snr <= snrMax; snr += 0.1) {
-            tabTEBTheo[i] = (float) (0.5 * Erf.erfc(Math.sqrt(Math.pow(10, snr / 10))));
+//            tabTEBTheo[i] = (float) (0.5 * Erf.erfc(Math.sqrt(Math.pow(10, snr / 10))));
+            tabTEBTheo[i] = (float) ((1/2.0f) * Erf.erfc(1/(Math.sqrt(2) * Math.sqrt((double) 1 /(2*Math.pow(10, snr/10))))));
+            tabTEBTheoCodeur[i] = (float) ((1/6.0f) * Erf.erfc(1/(Math.sqrt(2) * Math.sqrt((double) 1 /(2*Math.pow(10, snr/10))))));
             tabSNR[i] = (float) snr;
             if (snr < 0.1 && snr > -0.1) {
                 tabSNR[i] = 0;
@@ -131,30 +134,31 @@ public class tebEnFctSNR {
         String[] finalTabRZString = new String[size];
         String[] finalTabNRZTString = new String[size];
         String[] tabTEBTheoString = new String[size];
+        String[] tabTEBTheoCodeurString = new String[size];
         String[] tabSNRString = new String[size];
 
         for (int x = 0; x < size; x++) {
-
-
             finalTabNRZString[x] = String.valueOf(finalTabNRZ[x]);
             finalTabRZString[x] = String.valueOf(finalTabRZ[x]);
             finalTabNRZTString[x] = String.valueOf(finalTabNRZT[x]);
             tabTEBTheoString[x] = String.valueOf(tabTEBTheo[x]);
+            tabTEBTheoCodeurString[x] = String.valueOf(tabTEBTheoCodeur[x]);
             tabSNRString[x] = String.valueOf(tabSNR[x]);
         }
 
         LinkedList<String[]> finalTabs = new LinkedList<>();
         finalTabs.add(tabSNRString);
         finalTabs.add(tabTEBTheoString);
-
+        finalTabs.add(tabTEBTheoCodeurString);
         finalTabs.add(finalTabRZString);
         finalTabs.add(finalTabNRZString);
         finalTabs.add(finalTabNRZTString);
 
         // Créer un fichier CSV avec le nom de chaque tableau et les valeurs associées
-        File csvFile = new File("tebEnFctSNR_codeur.csv");
+        File csvFile = new File("tebEnFctSNR_Theo.csv");
         FileWriter writer = new FileWriter(csvFile);
-        writer.write("SNR par bit,TEB theorique,TEB RZ, TEB NRZ, TEB NRZT\n");
+        writer.write("SNR par bit,TEB theorique,TEB Theorique codeur,TEB RZ, TEB NRZ, TEB NRZT\n");
+//        writer.write("SNR par bit,TEB theorique,TEB Theorique codeur\n");
         for (int x = 0; x < size; x++) {
             StringBuilder sb = new StringBuilder();
             i = 0;
