@@ -1,8 +1,10 @@
 package transmetteurs;
 
+import destinations.DestinationInterface;
 import information.Information;
+import information.InformationNonConformeException;
 
-public class CodageCanal {
+public class Codeur<R,E> extends Transmetteur<Boolean, Boolean> {
    //1-> 101
    //0-> 010
 
@@ -20,6 +22,20 @@ public class CodageCanal {
             }
         }
         return informationCodee;
+    }
+
+    @Override
+    public void recevoir(Information<Boolean> information) throws InformationNonConformeException {
+        this.informationRecue = information;
+        this.informationEmise = codeCanal(information);
+        emettre();
+    }
+
+    @Override
+    public void emettre() throws InformationNonConformeException {
+        for (DestinationInterface<Boolean> destinationConnectee : destinationsConnectees) {
+            destinationConnectee.recevoir(informationEmise);
+        }
     }
 }
 

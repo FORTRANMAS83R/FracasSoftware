@@ -1,6 +1,5 @@
 package simulateur;
 
-import sources.analogique.SourceAnalogiqueType;
 import transmetteurs.*;
 import destinations.Destination;
 import destinations.DestinationFinale;
@@ -9,9 +8,6 @@ import information.InformationNonConformeException;
 import sources.Source;
 import sources.SourceAleatoire;
 import sources.SourceFixe;
-import sources.analogique.SourceNRZ;
-import sources.analogique.SourceNRZT;
-import sources.analogique.SourceRZ;
 import visualisations.SondeAnalogique;
 import visualisations.SondeDiagrammeDeLoeil;
 import visualisations.SondeHistogramme;
@@ -26,13 +22,17 @@ import visualisations.SondeLogique;
  * @author prou
  */
 public class Simulateur {
-    private Transmetteur<Float,Float> egaliseur = null;
+    private Transmetteur<Float, Float> egaliseur = null;
     /**
-     * le composant Configuration de la chaine de transmission. Utilisé pour traiter les paramètres de la simulation.
+     * le composant Configuration de la chaine de transmission. Utilisé pour traiter
+     * les paramètres de la simulation.
      */
     private final Configurations config;
 
-    private Source<Boolean> source;
+    private final Source<Boolean> source;
+
+    private Codeur<Boolean, Boolean> codeur = null;
+    private Decodeur<Boolean, Boolean> decodeur = null;
 
     /**
      * le composant Transmetteur parfait logique de la chaine de transmission
@@ -83,13 +83,19 @@ public class Simulateur {
             // Analogique
             // CAN
             convertisseurNumeriqueAnalogique = new ConvertisseurNumeriqueAnalogique<>(config.getNbEch(), config.getAmplMin(), config.getAmplMax(), config.getFormatSignal());
-            source.connecter(convertisseurNumeriqueAnalogique);
+            if (config.getCodeur()) {
+                codeur = new Codeur<>();
+                source.connecter(codeur);
+                codeur.connecter(convertisseurNumeriqueAnalogique);
+            } else {
+                source.connecter(convertisseurNumeriqueAnalogique);
+            }
 
             // Instanciation du transmetteur
             if (!config.getMultiTrajets().isEmpty()) {
-                transmetteurAnalogique = config.getMessageBruitee() ? new TransmetteurMultiTrajet(config.getMultiTrajets(), config.getSnrpb()) : new TransmetteurMultiTrajet(config.getMultiTrajets());
+                transmetteurAnalogique = new TransmetteurMultiTrajet(config.getMultiTrajets(), config.getSnrpb(), config.getSeed());
             } else if (config.getMessageBruitee()) {
-                transmetteurAnalogique = new TransmetteurBruite<>(config.getSnrpb());
+                transmetteurAnalogique = new TransmetteurBruite<>(config.getSnrpb(), config.getSeed());
                 transmetteurAnalogique.connecter(new SondeHistogramme("Histogramme de l'information reçue", config.getAffichage()));
             } else {
                 transmetteurAnalogique = new TransmetteurParfait<>();
@@ -99,25 +105,29 @@ public class Simulateur {
             convertisseurNumeriqueAnalogique.connecter(transmetteurAnalogique);
 
             // Instanciation CAN et connexion du transmetteur au CAN
-            convertisseurAnalogiqueNumerique = new ConvertisseurAnalogiqueNumerique<>((config.getAmplMin() + config.getAmplMax()) / 2.0f, config.getNbEch(), config.getNbBitsMess());
-            if(!config.getMultiTrajets().isEmpty()){
-                // TODO Enlever les commentaires et supprimer la dernière ligne une fois l'envoi de l'information à égaliseur corrigé.
-//                egaliseur = new Egaliseur(config.getMultiTrajets(), sourceAnalogique);
-//                transmetteurAnalogique.connecter(egaliseur);
-//                egaliseur.connecter(convertisseurAnalogiqueNumerique);
-                transmetteurAnalogique.connecter(convertisseurAnalogiqueNumerique);
-            }
-            else{
+            convertisseurAnalogiqueNumerique = new ConvertisseurAnalogiqueNumerique<>(config.getNbEch(), config.getNbBitsMess(), (config.getAmplMin() + config.getAmplMax()) / 2, config.getFormatSignal());
+            if (!config.getMultiTrajets().isEmpty() && Egaliseur.tauMax(config.getMultiTrajets()) > 0) {
+                egaliseur = new Egaliseur(config.getMultiTrajets(), convertisseurNumeriqueAnalogique);
+                transmetteurAnalogique.connecter(egaliseur);
+                egaliseur.connecter(convertisseurAnalogiqueNumerique);
+            } else {
                 transmetteurAnalogique.connecter(convertisseurAnalogiqueNumerique);
             }
 
             // Connexion du CAN à la destination
-            convertisseurAnalogiqueNumerique.connecter(destination);
+            if (config.getCodeur()) {
+                decodeur = new Decodeur<>();
+                convertisseurAnalogiqueNumerique.connecter(decodeur);
+                decodeur.connecter(destination);
+            } else {
+                convertisseurAnalogiqueNumerique.connecter(destination);
+            }
 
             if (config.getAffichage()) {
-                source.connecter(new SondeLogique("Sonde en sortie de la source",720));
+                source.connecter(new SondeLogique("Sonde en sortie de la source", 720));
                 transmetteurAnalogique.connecter(new SondeAnalogique("Sonde en sortie du transmetteur"));
                 transmetteurAnalogique.connecter(new SondeDiagrammeDeLoeil("Diagramme de l'oeil"));
+                egaliseur.connecter(new SondeAnalogique("Sonde en sortie de l'égaliseur"));
             }
         } else {
             // Logique
@@ -221,7 +231,8 @@ public class Simulateur {
      */
     public float calculTauxErreurBinaire() {
         int nbBitEronnes = 0;
-//        Information<?> src = config.getTransmissionAnalogique() ? getSource().getInformationBinaire() : getSource().getInformationEmise();
+        // Information<?> src = config.getTransmissionAnalogique() ?
+        // getSource().getInformationBinaire() : getSource().getInformationEmise();
         Information<?> src = getSource().getInformationEmise();
         Information<?> dst = getDestination().getInformationRecue();
         for (int i = 0; i < config.getNbBitsMess(); i++) {
@@ -244,7 +255,7 @@ public class Simulateur {
 
     public Source<?> getSource() {
         return source;
-//        return config.getTransmissionAnalogique() ? sourceAnalogique : sourceLogique;
+        // return config.getTransmissionAnalogique() ? sourceAnalogique : sourceLogique;
     }
 
     public Destination<?> getDestination() {

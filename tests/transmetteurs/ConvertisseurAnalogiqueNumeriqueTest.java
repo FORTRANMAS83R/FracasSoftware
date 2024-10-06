@@ -4,6 +4,7 @@ import information.Information;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ErrorCollector;
+import sources.SourceAnalogiqueType;
 
 import static org.hamcrest.CoreMatchers.is;
 
@@ -17,7 +18,7 @@ public class ConvertisseurAnalogiqueNumeriqueTest {
      */
     @Test
     public void testConstructeurNullTrajetNullBruit() {
-        ConvertisseurAnalogiqueNumerique<Float, Boolean> can = new ConvertisseurAnalogiqueNumerique<>(1.0f, 10, 1000);
+        ConvertisseurAnalogiqueNumerique<Float, Boolean> can = new ConvertisseurAnalogiqueNumerique<>(10, 1000, 1.0f, SourceAnalogiqueType.NRZ);
         collector.checkThat(can.getSeuil(), is(1.0f));
         collector.checkThat(can.getNbBitsMessage(), is(1000));
         collector.checkThat(can.getNbEch(), is(10));
@@ -30,7 +31,7 @@ public class ConvertisseurAnalogiqueNumeriqueTest {
      */
     @Test
     public void testTailleInfoEmise() {
-        ConvertisseurAnalogiqueNumerique<Float, Boolean> can = new ConvertisseurAnalogiqueNumerique<>(1.0f, 10, 1000);
+        ConvertisseurAnalogiqueNumerique<Float, Boolean> can = new ConvertisseurAnalogiqueNumerique<>(10, 1000, 1.0f, SourceAnalogiqueType.NRZ);
         Information<Float> info = new Information<>();
         for (int i = 0; i < 1000 * 10; i++) {
             info.add(1.0f);
@@ -48,7 +49,7 @@ public class ConvertisseurAnalogiqueNumeriqueTest {
      */
     @Test
     public void conversionTypeInfo() {
-        ConvertisseurAnalogiqueNumerique<Float, Boolean> can = new ConvertisseurAnalogiqueNumerique<>(1.0f, 10, 1000);
+        ConvertisseurAnalogiqueNumerique<Float, Boolean> can = new ConvertisseurAnalogiqueNumerique<>(10, 1000, 1.0f, SourceAnalogiqueType.NRZ);
         Information<Float> info = new Information<>();
         for (int i = 0; i < 1000 * 10; i++) {
             info.add(1.0f);

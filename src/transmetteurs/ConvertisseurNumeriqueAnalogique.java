@@ -3,13 +3,13 @@ package transmetteurs;
 import destinations.DestinationInterface;
 import information.Information;
 import information.InformationNonConformeException;
-import sources.analogique.SourceAnalogiqueType;
+import sources.SourceAnalogiqueType;
 
 public class ConvertisseurNumeriqueAnalogique<R, E> extends Transmetteur<Boolean, Float> {
-    private int nbEch;
-    private float amp_min;
-    private float amp_max;
-    private SourceAnalogiqueType type;
+    private final int nbEch;
+    private final float amp_min;
+    private final float amp_max;
+    private final SourceAnalogiqueType type;
 
     public ConvertisseurNumeriqueAnalogique(int nbEch, float amp_min, float amp_max, SourceAnalogiqueType type) {
         super();

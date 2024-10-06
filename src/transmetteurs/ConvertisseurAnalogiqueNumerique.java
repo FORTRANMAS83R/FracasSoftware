@@ -3,6 +3,7 @@ package transmetteurs;
 import destinations.DestinationInterface;
 import information.Information;
 import information.InformationNonConformeException;
+import sources.SourceAnalogiqueType;
 
 // TODO Pour codage canal, prévoir un champ codage dans le constructeur et modifier la traduction float vers binaire
 //  en conséquence (voir énoncé pour les spécifications)
@@ -21,15 +22,18 @@ public class ConvertisseurAnalogiqueNumerique<R, E> extends Transmetteur<Float, 
      * Construit un objet ConvertisseurAnalogiqueNumerique avec les paramètres
      * spécifiés.
      *
-     * @param moyAmpl        Le seuil décision qui correspond dans notre cas à la moyenne de l'amplitude.
      * @param nbEch          Le nombre d'échantillons par symbole.
      * @param nbBitsMessage  Le nombre de bits dans le message.
      */
-    public ConvertisseurAnalogiqueNumerique(float moyAmpl, int nbEch, int nbBitsMessage) {
+    public ConvertisseurAnalogiqueNumerique(int nbEch, int nbBitsMessage, float moyAmpl, SourceAnalogiqueType type) {
         super();
-        this.seuil = moyAmpl;
         this.nbEch = nbEch;
         this.nbBitsMessage = nbBitsMessage;
+        if (type == SourceAnalogiqueType.RZ) {
+            this.seuil = moyAmpl/3;
+        } else {
+            this.seuil = moyAmpl;
+        }
     }
 
     /**
@@ -41,7 +45,8 @@ public class ConvertisseurAnalogiqueNumerique<R, E> extends Transmetteur<Float, 
     public void recevoir(Information<Float> information) throws InformationNonConformeException {
         this.informationRecue = information.clone();
         informationEmise = new Information<>();
-        for (int i = 0; i < nbBitsMessage; i++) {
+        // Pour chaque symbole :
+        for (int i = 0; i < this.informationRecue.nbElements()/nbEch; i++) {
             float somme = 0;
             for (int j = 0; j < nbEch; j++) {
                 somme += information.iemeElement(i * nbEch + j);

@@ -1,6 +1,6 @@
 package simulateur;
 
-import sources.analogique.SourceAnalogiqueType;
+import sources.SourceAnalogiqueType;
 
 import static simulateur.Simulateur.getArgumentOrThrows;
 
@@ -13,15 +13,15 @@ public class Configurations {
     private boolean messageAleatoire = true;
     private boolean transmissionAnalogique = false;
     private boolean messageBruitee = false;
-    private Float snrpb = 0.0f;
+    private boolean codeur = false;
+    private Float snrpb = null;
     private Integer seed = null; // pas de semence par défaut
     private int nbBitsMess = 100;
     private String messageString = "100";
     private int nbEch = 30;
     private float ampl_min = 0.0f, ampl_max = 1.0f;
     private SourceAnalogiqueType formatSignal = SourceAnalogiqueType.RZ;
-    private List<SimpleEntry<Integer, Float>> multiTrajets = new ArrayList<>();
-
+    private final List<SimpleEntry<Integer, Float>> multiTrajets = new ArrayList<>();
 
     public Configurations(String[] args) throws ArgumentsException {
         analyseArguments(args);
@@ -148,8 +148,7 @@ public class Configurations {
                     try {
                         dt = Integer.parseInt(args[i]);
                     } catch (Exception e) {
-                        throw new ArgumentsException(
-                                "Paramètre dt" + count + " invalide : " + args[i]);
+                        throw new ArgumentsException("Paramètre dt" + count + " invalide : " + args[i]);
                     }
 
                     if (dt < 0)
@@ -162,17 +161,14 @@ public class Configurations {
                             "Pas de valeur du paramètre ti a" + count + " renseignée");
 
                     try {
-                        ar = Float.parseFloat(
-                                arStr.replace(',', '.'));
+                        ar = Float.parseFloat(arStr.replace(',', '.'));
                     } catch (Exception e) {
-                        throw new ArgumentsException(
-                                "Paramètre ar" + count + " invalide : " + arStr);
+                        throw new ArgumentsException("Paramètre ar" + count + " invalide : " + arStr);
                     }
 
                     if (ar < 0 || ar > 1)
-                        throw new ArgumentsException(
-                                "Le paramètre ar doit être compris entre 0 inclus et 1 inclus, ar" + count + " : "
-                                        + arStr);
+                        throw new ArgumentsException("Le paramètre ar doit être compris entre 0 inclus et 1 inclus, ar"
+                                + count + " : " + arStr);
 
                     multiTrajets.add(new SimpleEntry<>(dt, ar));
                 }
@@ -189,6 +185,9 @@ public class Configurations {
                     throw new ArgumentsException(
                             "La somme des carrés des amplitudes des trajets multiples doit être inférieure ou égale à 1");
                 }
+            } else if (args[i].matches("-codeur")) {
+                this.codeur = true;
+                // i++;
             } else
                 throw new ArgumentsException("Option invalide :" + args[i]);
         }
@@ -259,6 +258,10 @@ public class Configurations {
 
     public float getAmplMax() {
         return this.ampl_max;
+    }
+
+    public boolean getCodeur() {
+        return this.codeur;
     }
 
     public SourceAnalogiqueType getFormatSignal() {

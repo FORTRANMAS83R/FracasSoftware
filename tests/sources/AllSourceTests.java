@@ -11,7 +11,6 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({SourceTest.class,
         SourceAleatoireTest.class,
-        SourceFixeTest.class,
-        SourceAnalogiqueTest.class})
+        SourceFixeTest.class})
 public class AllSourceTests {
 }

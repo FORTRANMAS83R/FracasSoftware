@@ -11,12 +11,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Egaliseur extends Transmetteur<Float, Float> {
-    private int ordre; // Ordre du filtre de l'égaliseur
-    private Float[] coefficients; // Coefficients du filtre de l'égaliseur
+    private final int ordre; // Ordre du filtre de l'égaliseur
+    private final Float[] coefficients; // Coefficients du filtre de l'égaliseur
     private Float mu; // Pas d'apprentissage (taux de convergence)
-    private Source<Float> source;
+    private final ConvertisseurNumeriqueAnalogique<Boolean,Float> source;
 
-    public Egaliseur(List<AbstractMap.SimpleEntry<Integer,Float>> multiTrajet, Source<Float> source) {
+    public Egaliseur(List<AbstractMap.SimpleEntry<Integer,Float>> multiTrajet, ConvertisseurNumeriqueAnalogique<Boolean,Float> source) {
         super();
         this.ordre = tauMax(multiTrajet) + 1;
         this.coefficients = new Float[ordre];
@@ -80,7 +80,10 @@ public class Egaliseur extends Transmetteur<Float, Float> {
     @Override
     public void recevoir(Information<Float> information) throws InformationNonConformeException {
         this.informationRecue = information;
-        this.informationEmise = new Information<>(egaliser(information.getContent(), this.source.getInformationEmise().getContent()));
+        if(this.ordre > 1){
+            this.informationEmise = new Information<>(egaliser(information.getContent(), this.source.getInformationEmise().getContent()));    
+        }
+        else this.informationEmise = information;
         emettre();
     }
 
