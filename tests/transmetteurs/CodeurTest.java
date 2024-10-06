@@ -7,7 +7,7 @@ import static org.junit.Assert.*;
 
 //1-> 101
 //0-> 010
-public class CodageCanalTest {
+public class CodeurTest {
 
     @Rule
     public ErrorCollector collector = new ErrorCollector();

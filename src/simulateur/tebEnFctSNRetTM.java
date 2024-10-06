@@ -31,7 +31,7 @@ public class tebEnFctSNRetTM {
         float ampMinNRZetNRZT = -2.5f;
         float ampMaxNRZetNRZT = 2.5f;
 
-        int nombreDeSimulations = 10;
+        int nombreDeSimulations = 1;
 
         // POUR RZ
         LinkedList<float[]> tabsRZ_1ti_nbEch_div_10_alpha_075 = new LinkedList<>();
@@ -130,7 +130,7 @@ public class tebEnFctSNRetTM {
             float[] tempTabRZ_ti2_of_10_alpha_025 = new float[size];
             float[] tempTabRZ_ti3_of_15_alpha_01 = new float[size];
             float[] tempTabRZ_ti4_of_20_alpha_005 = new float[size];
-            float[] tempTabRZ_ti5_of_30_alpha_01 = new float[size];
+//            float[] tempTabRZ_ti5_of_30_alpha_01 = new float[size];
 
             // POUR NRZ
             float[] tempTabNRZ_1ti_nbEch_div_10_alpha_075 = new float[size];
@@ -141,7 +141,7 @@ public class tebEnFctSNRetTM {
             float[] tempTabNRZ_ti2_of_10_alpha_025 = new float[size];
             float[] tempTabNRZ_ti3_of_15_alpha_01 = new float[size];
             float[] tempTabNRZ_ti4_of_20_alpha_005 = new float[size];
-            float[] tempTabNRZ_ti5_of_30_alpha_01 = new float[size];
+//            float[] tempTabNRZ_ti5_of_30_alpha_01 = new float[size];
 
             // POUR NRZT
             float[] tempTabNRZT_1ti_nbEch_div_10_alpha_075 = new float[size];
@@ -152,7 +152,7 @@ public class tebEnFctSNRetTM {
             float[] tempTabNRZT_ti2_of_10_alpha_025 = new float[size];
             float[] tempTabNRZT_ti3_of_15_alpha_01 = new float[size];
             float[] tempTabNRZT_ti4_of_20_alpha_005 = new float[size];
-            float[] tempTabNRZT_ti5_of_30_alpha_01 = new float[size];
+//            float[] tempTabNRZT_ti5_of_30_alpha_01 = new float[size];
 
             int i = 0;
             // Boucle pour varier le SNR avec un pas de 0.1
@@ -180,32 +180,32 @@ public class tebEnFctSNRetTM {
                 String[] argumentsRZ_1ti_nbEch_div_3_alpha_075 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "RZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinRZ), String.valueOf(ampMaxRZ), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", String.valueOf(nbEch / 3), "0.75"};
                 String[] argumentsRZ_1ti_nbEch_div_2_alpha_05 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "RZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinRZ), String.valueOf(ampMaxRZ), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", String.valueOf(nbEch / 2), "0.5"};
                 String[] argumentsRZ_1ti_nbEch_div_2_alpha_025 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "RZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinRZ), String.valueOf(ampMaxRZ), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", String.valueOf(nbEch / 2), "0.25"};
-                String[] argumentsRZ_ti1_of_5_alpha_05 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "RZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinRZ), String.valueOf(ampMaxRZ), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5"};
-                String[] argumentsRZ_ti2_of_10_alpha_025 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "RZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinRZ), String.valueOf(ampMaxRZ), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5", "10", "0.25"};
-                String[] argumentsRZ_ti3_of_15_alpha_01 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "RZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinRZ), String.valueOf(ampMaxRZ), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5", "10", "0.25", "15", "0.1"};
-                String[] argumentsRZ_ti4_of_20_alpha_005 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "RZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinRZ), String.valueOf(ampMaxRZ), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5", "10", "0.25", "15", "0.1", "20", "0.05"};
-                String[] argumentsRZ_ti5_of_30_alpha_01 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "RZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinRZ), String.valueOf(ampMaxRZ), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5", "10", "0.25", "15", "0.1", "20", "0.05", "30", "0.1"};
+                String[] argumentsRZ_ti1_of_5_alpha_05 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "RZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinRZ), String.valueOf(ampMaxRZ), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "60", "0.5"};
+                String[] argumentsRZ_ti2_of_10_alpha_025 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "RZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinRZ), String.valueOf(ampMaxRZ), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "60", "0.5", "90", "0.25"};
+                String[] argumentsRZ_ti3_of_15_alpha_01 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "RZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinRZ), String.valueOf(ampMaxRZ), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "60", "0.5", "90", "0.25", "15", "0.2"};
+                String[] argumentsRZ_ti4_of_20_alpha_005 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "RZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinRZ), String.valueOf(ampMaxRZ), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "60", "0.5", "90", "0.25", "15", "0.2", "20", "0.05"};
+//                String[] argumentsRZ_ti5_of_30_alpha_01 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "RZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinRZ), String.valueOf(ampMaxRZ), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5", "10", "0.25", "15", "0.1", "20", "0.05", "30", "0.1"};
 
                 // POUR NRZ
                 String[] argumentsNRZ_1ti_nbEch_div_10_alpha_075 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", String.valueOf(nbEch / 10), "0.75"};
                 String[] argumentsNRZ_1ti_nbEch_div_3_alpha_075 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", String.valueOf(nbEch / 3), "0.75"};
                 String[] argumentsNRZ_1ti_nbEch_div_2_alpha_05 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", String.valueOf(nbEch / 2), "0.5"};
                 String[] argumentsNRZ_1ti_nbEch_div_2_alpha_025 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", String.valueOf(nbEch / 2), "0.25"};
-                String[] argumentsNRZ_ti1_of_5_alpha_05 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5"};
-                String[] argumentsNRZ_ti2_of_10_alpha_025 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5", "10", "0.25"};
-                String[] argumentsNRZ_ti3_of_15_alpha_01 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5", "10", "0.25", "15", "0.1"};
-                String[] argumentsNRZ_ti4_of_20_alpha_005 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5", "10", "0.25", "15", "0.1", "20", "0.05"};
-                String[] argumentsNRZ_ti5_of_30_alpha_01 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5", "10", "0.25", "15", "0.1", "20", "0.05", "30", "0.1"};
+                String[] argumentsNRZ_ti1_of_5_alpha_05 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "60", "0.5"};
+                String[] argumentsNRZ_ti2_of_10_alpha_025 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "60", "0.5", "90", "0.25"};
+                String[] argumentsNRZ_ti3_of_15_alpha_01 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "60", "0.5", "90", "0.25", "15", "0.2"};
+                String[] argumentsNRZ_ti4_of_20_alpha_005 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "60", "0.5", "90", "0.25", "15", "0.2", "20", "0.05"};
+//                String[] argumentsNRZ_ti5_of_30_alpha_01 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZ", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5", "10", "0.25", "15", "0.1", "20", "0.05", "30", "0.1"};
                 // POUR NRZT
                 String[] argumentsNRZT_1ti_nbEch_div_10_alpha_075 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", String.valueOf(nbEch / 10), "0.75"};
                 String[] argumentsNRZT_1ti_nbEch_div_3_alpha_075 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", String.valueOf(nbEch / 3), "0.75"};
                 String[] argumentsNRZT_1ti_nbEch_div_2_alpha_05 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", String.valueOf(nbEch / 2), "0.5"};
                 String[] argumentsNRZT_1ti_nbEch_div_2_alpha_025 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", String.valueOf(nbEch / 2), "0.25"};
-                String[] argumentsNRZT_ti1_of_5_alpha_05 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5"};
-                String[] argumentsNRZT_ti2_of_10_alpha_025 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5", "10", "0.25"};
-                String[] argumentsNRZT_ti3_of_15_alpha_01 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5", "10", "0.25", "15", "0.1"};
-                String[] argumentsNRZT_ti4_of_20_alpha_005 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5", "10", "0.25", "15", "0.1", "20", "0.05"};
-                String[] argumentsNRZT_ti5_of_30_alpha_01 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5", "10", "0.25", "15", "0.1", "20", "0.05", "30", "0.1"};
+                String[] argumentsNRZT_ti1_of_5_alpha_05 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "60", "0.5"};
+                String[] argumentsNRZT_ti2_of_10_alpha_025 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "60", "0.5", "90", "0.25"};
+                String[] argumentsNRZT_ti3_of_15_alpha_01 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "60", "0.5", "90", "0.25", "15", "0.2"};
+                String[] argumentsNRZT_ti4_of_20_alpha_005 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "60", "0.5", "90", "0.25", "15", "0.2", "20", "0.05"};
+//                String[] argumentsNRZT_ti5_of_30_alpha_01 = new String[]{"-mess", String.valueOf(tailleMessage), "-form", "NRZT", "-nbEch", String.valueOf(nbEch), "-ampl", String.valueOf(ampMinNRZetNRZT), String.valueOf(ampMaxNRZetNRZT), "-snrpb", String.valueOf(Math.round(snr * 1000) / (float) 1000), "-ti", "5", "0.5", "10", "0.25", "15", "0.1", "20", "0.05", "30", "0.1"};
 
                 //POUR RZ
                 // Création et exécution du simulateur avec les paramètres spécifiés
@@ -242,9 +242,9 @@ public class tebEnFctSNRetTM {
                 simulateur.execute();
                 tempTabRZ_ti4_of_20_alpha_005[i] = simulateur.calculTauxErreurBinaire();
 
-                simulateur = new Simulateur(argumentsRZ_ti5_of_30_alpha_01);
-                simulateur.execute();
-                tempTabRZ_ti5_of_30_alpha_01[i] = simulateur.calculTauxErreurBinaire();
+//                simulateur = new Simulateur(argumentsRZ_ti5_of_30_alpha_01);
+//                simulateur.execute();
+//                tempTabRZ_ti5_of_30_alpha_01[i] = simulateur.calculTauxErreurBinaire();
 
                 //POUR NRZ
                 simulateur = new Simulateur(argumentsNRZ_1ti_nbEch_div_10_alpha_075);
@@ -279,9 +279,9 @@ public class tebEnFctSNRetTM {
                 simulateur.execute();
                 tempTabNRZ_ti4_of_20_alpha_005[i] = simulateur.calculTauxErreurBinaire();
 
-                simulateur = new Simulateur(argumentsNRZ_ti5_of_30_alpha_01);
-                simulateur.execute();
-                tempTabNRZ_ti5_of_30_alpha_01[i] = simulateur.calculTauxErreurBinaire();
+//                simulateur = new Simulateur(argumentsNRZ_ti5_of_30_alpha_01);
+//                simulateur.execute();
+//                tempTabNRZ_ti5_of_30_alpha_01[i] = simulateur.calculTauxErreurBinaire();
 
                 // POUR NRZT
                 simulateur = new Simulateur(argumentsNRZT_1ti_nbEch_div_10_alpha_075);
@@ -316,9 +316,9 @@ public class tebEnFctSNRetTM {
                 simulateur.execute();
                 tempTabNRZT_ti4_of_20_alpha_005[i] = simulateur.calculTauxErreurBinaire();
 
-                simulateur = new Simulateur(argumentsNRZT_ti5_of_30_alpha_01);
-                simulateur.execute();
-                tempTabNRZT_ti5_of_30_alpha_01[i] = simulateur.calculTauxErreurBinaire();
+//                simulateur = new Simulateur(argumentsNRZT_ti5_of_30_alpha_01);
+//                simulateur.execute();
+//                tempTabNRZT_ti5_of_30_alpha_01[i] = simulateur.calculTauxErreurBinaire();
 
 
                 i++;
@@ -335,7 +335,7 @@ public class tebEnFctSNRetTM {
             tabsRZ_ti2_of_10_alpha_025.add(tempTabRZ_ti2_of_10_alpha_025);
             tabsRZ_ti3_of_15_alpha_01.add(tempTabRZ_ti3_of_15_alpha_01);
             tabsRZ_ti4_of_20_alpha_005.add(tempTabRZ_ti4_of_20_alpha_005);
-            tabsRZ_ti5_of_30_alpha_01.add(tempTabRZ_ti5_of_30_alpha_01);
+//            tabsRZ_ti5_of_30_alpha_01.add(tempTabRZ_ti5_of_30_alpha_01);
 
             // POUR NRZ
             tabsNRZ_1ti_nbEch_div_10_alpha_075.add(tempTabNRZ_1ti_nbEch_div_10_alpha_075);
@@ -346,7 +346,7 @@ public class tebEnFctSNRetTM {
             tabsNRZ_ti2_of_10_alpha_025.add(tempTabNRZ_ti2_of_10_alpha_025);
             tabsNRZ_ti3_of_15_alpha_01.add(tempTabNRZ_ti3_of_15_alpha_01);
             tabsNRZ_ti4_of_20_alpha_005.add(tempTabNRZ_ti4_of_20_alpha_005);
-            tabsNRZ_ti5_of_30_alpha_01.add(tempTabNRZ_ti5_of_30_alpha_01);
+//            tabsNRZ_ti5_of_30_alpha_01.add(tempTabNRZ_ti5_of_30_alpha_01);
 
             // POUR NRZT
             tabsNRZT_1ti_nbEch_div_10_alpha_075.add(tempTabNRZT_1ti_nbEch_div_10_alpha_075);
@@ -357,7 +357,7 @@ public class tebEnFctSNRetTM {
             tabsNRZT_ti2_of_10_alpha_025.add(tempTabNRZT_ti2_of_10_alpha_025);
             tabsNRZT_ti3_of_15_alpha_01.add(tempTabNRZT_ti3_of_15_alpha_01);
             tabsNRZT_ti4_of_20_alpha_005.add(tempTabNRZT_ti4_of_20_alpha_005);
-            tabsNRZT_ti5_of_30_alpha_01.add(tempTabNRZT_ti5_of_30_alpha_01);
+//            tabsNRZT_ti5_of_30_alpha_01.add(tempTabNRZT_ti5_of_30_alpha_01);
 
 //            tabsNRZ.add(tempTabNRZ);
 //            tabsRZ.add(tempTabRZ);
@@ -391,7 +391,7 @@ public class tebEnFctSNRetTM {
             float sommeRZ_ti2_of_10_alpha_025 = 0;
             float sommeRZ_ti3_of_15_alpha_01 = 0;
             float sommeRZ_ti4_of_20_alpha_005 = 0;
-            float sommeRZ_ti5_of_30_alpha_01 = 0;
+//            float sommeRZ_ti5_of_30_alpha_01 = 0;
 
             // POUR NRZ
             float sommeNRZ_1ti_nbEch_div_10_alpha_075 = 0;
@@ -402,7 +402,7 @@ public class tebEnFctSNRetTM {
             float sommeNRZ_ti2_of_10_alpha_025 = 0;
             float sommeNRZ_ti3_of_15_alpha_01 = 0;
             float sommeNRZ_ti4_of_20_alpha_005 = 0;
-            float sommeNRZ_ti5_of_30_alpha_01 = 0;
+//            float sommeNRZ_ti5_of_30_alpha_01 = 0;
 
             // POUR NRZT
             float sommeNRZT_1ti_nbEch_div_10_alpha_075 = 0;
@@ -413,7 +413,7 @@ public class tebEnFctSNRetTM {
             float sommeNRZT_ti2_of_10_alpha_025 = 0;
             float sommeNRZT_ti3_of_15_alpha_01 = 0;
             float sommeNRZT_ti4_of_20_alpha_005 = 0;
-            float sommeNRZT_ti5_of_30_alpha_01 = 0;
+//            float sommeNRZT_ti5_of_30_alpha_01 = 0;
 
             // POUR RZ
             for (float[] tab : tabsRZ_1ti_nbEch_div_10_alpha_075) {
@@ -440,9 +440,9 @@ public class tebEnFctSNRetTM {
             for (float[] tab : tabsRZ_ti4_of_20_alpha_005) {
                 sommeRZ_ti4_of_20_alpha_005 += tab[y];
             }
-            for (float[] tab : tabsRZ_ti5_of_30_alpha_01) {
-                sommeRZ_ti5_of_30_alpha_01 += tab[y];
-            }
+//            for (float[] tab : tabsRZ_ti5_of_30_alpha_01) {
+//                sommeRZ_ti5_of_30_alpha_01 += tab[y];
+//            }
 
             // POUR NRZ
             for (float[] tab : tabsNRZ_1ti_nbEch_div_10_alpha_075) {
@@ -469,9 +469,9 @@ public class tebEnFctSNRetTM {
             for (float[] tab : tabsNRZ_ti4_of_20_alpha_005) {
                 sommeNRZ_ti4_of_20_alpha_005 += tab[y];
             }
-            for (float[] tab : tabsNRZ_ti5_of_30_alpha_01) {
-                sommeNRZ_ti5_of_30_alpha_01 += tab[y];
-            }
+//            for (float[] tab : tabsNRZ_ti5_of_30_alpha_01) {
+//                sommeNRZ_ti5_of_30_alpha_01 += tab[y];
+//            }
 
             // POUR NRZT
             for (float[] tab : tabsNRZT_1ti_nbEch_div_10_alpha_075) {
@@ -498,9 +498,9 @@ public class tebEnFctSNRetTM {
             for (float[] tab : tabsNRZT_ti4_of_20_alpha_005) {
                 sommeNRZT_ti4_of_20_alpha_005 += tab[y];
             }
-            for (float[] tab : tabsNRZT_ti5_of_30_alpha_01) {
-                sommeNRZT_ti5_of_30_alpha_01 += tab[y];
-            }
+//            for (float[] tab : tabsNRZT_ti5_of_30_alpha_01) {
+//                sommeNRZT_ti5_of_30_alpha_01 += tab[y];
+//            }
 
 //            for (float[] tab : tabsNRZ) {
 //                sommeNRZ += tab[y];
@@ -522,7 +522,7 @@ public class tebEnFctSNRetTM {
             finalTabRZ_ti2_of_10_alpha_025[y] = sommeRZ_ti2_of_10_alpha_025 / (float) tabsRZ_ti2_of_10_alpha_025.size();
             finalTabRZ_ti3_of_15_alpha_01[y] = sommeRZ_ti3_of_15_alpha_01 / (float) tabsRZ_ti3_of_15_alpha_01.size();
             finalTabRZ_ti4_of_20_alpha_005[y] = sommeRZ_ti4_of_20_alpha_005 / (float) tabsRZ_ti4_of_20_alpha_005.size();
-            finalTabRZ_ti5_of_30_alpha_01[y] = sommeRZ_ti5_of_30_alpha_01 / (float) tabsRZ_ti5_of_30_alpha_01.size();
+//            finalTabRZ_ti5_of_30_alpha_01[y] = sommeRZ_ti5_of_30_alpha_01 / (float) tabsRZ_ti5_of_30_alpha_01.size();
 
             // POUR NRZ
             finalTabNRZ_1ti_nbEch_div_10_alpha_075[y] = sommeNRZ_1ti_nbEch_div_10_alpha_075 / (float) tabsNRZ_1ti_nbEch_div_10_alpha_075.size();
@@ -533,7 +533,7 @@ public class tebEnFctSNRetTM {
             finalTabNRZ_ti2_of_10_alpha_025[y] = sommeNRZ_ti2_of_10_alpha_025 / (float) tabsNRZ_ti2_of_10_alpha_025.size();
             finalTabNRZ_ti3_of_15_alpha_01[y] = sommeNRZ_ti3_of_15_alpha_01 / (float) tabsNRZ_ti3_of_15_alpha_01.size();
             finalTabNRZ_ti4_of_20_alpha_005[y] = sommeNRZ_ti4_of_20_alpha_005 / (float) tabsNRZ_ti4_of_20_alpha_005.size();
-            finalTabNRZ_ti5_of_30_alpha_01[y] = sommeNRZ_ti5_of_30_alpha_01 / (float) tabsNRZ_ti5_of_30_alpha_01.size();
+//            finalTabNRZ_ti5_of_30_alpha_01[y] = sommeNRZ_ti5_of_30_alpha_01 / (float) tabsNRZ_ti5_of_30_alpha_01.size();
 
             // POUR NRZT
             finalTabNRZT_1ti_nbEch_div_10_alpha_075[y] = sommeNRZT_1ti_nbEch_div_10_alpha_075 / (float) tabsNRZT_1ti_nbEch_div_10_alpha_075.size();
@@ -544,7 +544,7 @@ public class tebEnFctSNRetTM {
             finalTabNRZT_ti2_of_10_alpha_025[y] = sommeNRZT_ti2_of_10_alpha_025 / (float) tabsNRZT_ti2_of_10_alpha_025.size();
             finalTabNRZT_ti3_of_15_alpha_01[y] = sommeNRZT_ti3_of_15_alpha_01 / (float) tabsNRZT_ti3_of_15_alpha_01.size();
             finalTabNRZT_ti4_of_20_alpha_005[y] = sommeNRZT_ti4_of_20_alpha_005 / (float) tabsNRZT_ti4_of_20_alpha_005.size();
-            finalTabNRZT_ti5_of_30_alpha_01[y] = sommeNRZT_ti5_of_30_alpha_01 / (float) tabsNRZT_ti5_of_30_alpha_01.size();
+//            finalTabNRZT_ti5_of_30_alpha_01[y] = sommeNRZT_ti5_of_30_alpha_01 / (float) tabsNRZT_ti5_of_30_alpha_01.size();
 
 
 
@@ -567,7 +567,7 @@ public class tebEnFctSNRetTM {
         String[] finalTabRZ_ti2_of_10_alpha_025String = new String[size];
         String[] finalTabRZ_ti3_of_15_alpha_01String = new String[size];
         String[] finalTabRZ_ti4_of_20_alpha_005String = new String[size];
-        String[] finalTabRZ_ti5_of_30_alpha_01String = new String[size];
+//        String[] finalTabRZ_ti5_of_30_alpha_01String = new String[size];
 
         // POUR NRZ
         String[] finalTabNRZ_1ti_nbEch_div_10_alpha_075String = new String[size];
@@ -578,7 +578,7 @@ public class tebEnFctSNRetTM {
         String[] finalTabNRZ_ti2_of_10_alpha_025String = new String[size];
         String[] finalTabNRZ_ti3_of_15_alpha_01String = new String[size];
         String[] finalTabNRZ_ti4_of_20_alpha_005String = new String[size];
-        String[] finalTabNRZ_ti5_of_30_alpha_01String = new String[size];
+//        String[] finalTabNRZ_ti5_of_30_alpha_01String = new String[size];
 
         // POUR NRZT
         String[] finalTabNRZT_1ti_nbEch_div_10_alpha_075String = new String[size];
@@ -589,7 +589,7 @@ public class tebEnFctSNRetTM {
         String[] finalTabNRZT_ti2_of_10_alpha_025String = new String[size];
         String[] finalTabNRZT_ti3_of_15_alpha_01String = new String[size];
         String[] finalTabNRZT_ti4_of_20_alpha_005String = new String[size];
-        String[] finalTabNRZT_ti5_of_30_alpha_01String = new String[size];
+//        String[] finalTabNRZT_ti5_of_30_alpha_01String = new String[size];
 
 
 //        String[] finalTabNRZString = new String[size];
@@ -607,7 +607,7 @@ public class tebEnFctSNRetTM {
             finalTabRZ_ti2_of_10_alpha_025String[x] = String.valueOf(finalTabRZ_ti2_of_10_alpha_025[x]);
             finalTabRZ_ti3_of_15_alpha_01String[x] = String.valueOf(finalTabRZ_ti3_of_15_alpha_01[x]);
             finalTabRZ_ti4_of_20_alpha_005String[x] = String.valueOf(finalTabRZ_ti4_of_20_alpha_005[x]);
-            finalTabRZ_ti5_of_30_alpha_01String[x] = String.valueOf(finalTabRZ_ti5_of_30_alpha_01[x]);
+//            finalTabRZ_ti5_of_30_alpha_01String[x] = String.valueOf(finalTabRZ_ti5_of_30_alpha_01[x]);
 
             finalTabNRZ_1ti_nbEch_div_10_alpha_075String[x] = String.valueOf(finalTabNRZ_1ti_nbEch_div_10_alpha_075[x]);
             finalTabNRZ_1ti_nbEch_div_3_alpha_075String[x] = String.valueOf(finalTabNRZ_1ti_nbEch_div_3_alpha_075[x]);
@@ -617,7 +617,7 @@ public class tebEnFctSNRetTM {
             finalTabNRZ_ti2_of_10_alpha_025String[x] = String.valueOf(finalTabNRZ_ti2_of_10_alpha_025[x]);
             finalTabNRZ_ti3_of_15_alpha_01String[x] = String.valueOf(finalTabNRZ_ti3_of_15_alpha_01[x]);
             finalTabNRZ_ti4_of_20_alpha_005String[x] = String.valueOf(finalTabNRZ_ti4_of_20_alpha_005[x]);
-            finalTabNRZ_ti5_of_30_alpha_01String[x] = String.valueOf(finalTabNRZ_ti5_of_30_alpha_01[x]);
+//            finalTabNRZ_ti5_of_30_alpha_01String[x] = String.valueOf(finalTabNRZ_ti5_of_30_alpha_01[x]);
 
             finalTabNRZT_1ti_nbEch_div_10_alpha_075String[x] = String.valueOf(finalTabNRZT_1ti_nbEch_div_10_alpha_075[x]);
             finalTabNRZT_1ti_nbEch_div_3_alpha_075String[x] = String.valueOf(finalTabNRZT_1ti_nbEch_div_3_alpha_075[x]);
@@ -627,7 +627,7 @@ public class tebEnFctSNRetTM {
             finalTabNRZT_ti2_of_10_alpha_025String[x] = String.valueOf(finalTabNRZT_ti2_of_10_alpha_025[x]);
             finalTabNRZT_ti3_of_15_alpha_01String[x] = String.valueOf(finalTabNRZT_ti3_of_15_alpha_01[x]);
             finalTabNRZT_ti4_of_20_alpha_005String[x] = String.valueOf(finalTabNRZT_ti4_of_20_alpha_005[x]);
-            finalTabNRZT_ti5_of_30_alpha_01String[x] = String.valueOf(finalTabNRZT_ti5_of_30_alpha_01[x]);
+//            finalTabNRZT_ti5_of_30_alpha_01String[x] = String.valueOf(finalTabNRZT_ti5_of_30_alpha_01[x]);
 
 //            finalTabNRZString[x] = String.valueOf(finalTabNRZ[x]);
 //            finalTabRZString[x] = String.valueOf(finalTabRZ[x]);
@@ -648,7 +648,7 @@ public class tebEnFctSNRetTM {
         finalTabs.add(finalTabRZ_ti2_of_10_alpha_025String);
         finalTabs.add(finalTabRZ_ti3_of_15_alpha_01String);
         finalTabs.add(finalTabRZ_ti4_of_20_alpha_005String);
-        finalTabs.add(finalTabRZ_ti5_of_30_alpha_01String);
+//        finalTabs.add(finalTabRZ_ti5_of_30_alpha_01String);
 
         // POUR NRZ
         finalTabs.add(finalTabNRZ_1ti_nbEch_div_10_alpha_075String);
@@ -659,7 +659,7 @@ public class tebEnFctSNRetTM {
         finalTabs.add(finalTabNRZ_ti2_of_10_alpha_025String);
         finalTabs.add(finalTabNRZ_ti3_of_15_alpha_01String);
         finalTabs.add(finalTabNRZ_ti4_of_20_alpha_005String);
-        finalTabs.add(finalTabNRZ_ti5_of_30_alpha_01String);
+//        finalTabs.add(finalTabNRZ_ti5_of_30_alpha_01String);
 
         // POUR NRZT
         finalTabs.add(finalTabNRZT_1ti_nbEch_div_10_alpha_075String);
@@ -670,7 +670,7 @@ public class tebEnFctSNRetTM {
         finalTabs.add(finalTabNRZT_ti2_of_10_alpha_025String);
         finalTabs.add(finalTabNRZT_ti3_of_15_alpha_01String);
         finalTabs.add(finalTabNRZT_ti4_of_20_alpha_005String);
-        finalTabs.add(finalTabNRZT_ti5_of_30_alpha_01String);
+//        finalTabs.add(finalTabNRZT_ti5_of_30_alpha_01String);
 
 
 //        finalTabs.add(finalTabNRZString);
@@ -680,7 +680,8 @@ public class tebEnFctSNRetTM {
         // Créer un fichier CSV avec le nom de chaque tableau et les valeurs associées
         File csvFile = new File("tebEnFctSNRetTM.csv");
         FileWriter writer = new FileWriter(csvFile);
-        writer.write("SNR par bit,TEB theorique,TEB RZ 1ti nbEch div 10 alpha 075, TEB RZ 1ti nbEch div 3 alpha 075, TEB RZ 1ti nbEch div 2 alpha 05, TEB RZ 1ti nbEch div 2 alpha 025, TEB RZ ti1 5 alpha 05, TEB RZ ti2 10 alpha 025, TEB RZ ti3 15 alpha 01, TEB RZ ti4 20 alpha 005, TEB RZ ti5 30 alpha 01,TEB NRZ 1ti nbEch div 10 alpha 075, TEB NRZ 1ti nbEch div 3 alpha 075, TEB NRZ 1ti nbEch div 2 alpha 05, TEB NRZ 1ti nbEch div 2 alpha 025, TEB NRZ ti1 5 alpha 05, TEB NRZ ti2 10 alpha 025, TEB NRZ ti3 15 alpha 01, TEB NRZ ti4 20 alpha 005, TEB NRZ ti5 30 alpha 01, TEB NRZT 1ti nbEch div 10 alpha 075, TEB NRZT 1ti nbEch div 3 alpha 075, TEB NRZT 1ti nbEch div 2 alpha 05, TEB NRZT 1ti nbEch div 2 alpha 025, TEB NRZT ti1 5 alpha 05, TEB NRZT ti2 10 alpha 025, TEB NRZT ti3 15 alpha 01, TEB NRZT ti4 20 alpha 005, TEB NRZT ti5 30 alpha 01\n");
+//        writer.write("SNR par bit,TEB theorique,TEB RZ 1ti nbEch div 10 alpha 075, TEB RZ 1ti nbEch div 3 alpha 075, TEB RZ 1ti nbEch div 2 alpha 05, TEB RZ 1ti nbEch div 2 alpha 025, TEB RZ ti1 5 alpha 05, TEB RZ ti2 10 alpha 025, TEB RZ ti3 15 alpha 01, TEB RZ ti4 20 alpha 005, TEB RZ ti5 30 alpha 01,TEB NRZ 1ti nbEch div 10 alpha 075, TEB NRZ 1ti nbEch div 3 alpha 075, TEB NRZ 1ti nbEch div 2 alpha 05, TEB NRZ 1ti nbEch div 2 alpha 025, TEB NRZ ti1 5 alpha 05, TEB NRZ ti2 10 alpha 025, TEB NRZ ti3 15 alpha 01, TEB NRZ ti4 20 alpha 005, TEB NRZ ti5 30 alpha 01, TEB NRZT 1ti nbEch div 10 alpha 075, TEB NRZT 1ti nbEch div 3 alpha 075, TEB NRZT 1ti nbEch div 2 alpha 05, TEB NRZT 1ti nbEch div 2 alpha 025, TEB NRZT ti1 5 alpha 05, TEB NRZT ti2 10 alpha 025, TEB NRZT ti3 15 alpha 01, TEB NRZT ti4 20 alpha 005, TEB NRZT ti5 30 alpha 01\n");
+        writer.write("SNR par bit,TEB theorique,TEB RZ 1ti nbEch div 10 alpha 075, TEB RZ 1ti nbEch div 3 alpha 075, TEB RZ 1ti nbEch div 2 alpha 05, TEB RZ 1ti nbEch div 2 alpha 025, TEB RZ ti1 5 alpha 05, TEB RZ ti2 10 alpha 025, TEB RZ ti3 15 alpha 01, TEB RZ ti4 20 alpha 005, TEB NRZ 1ti nbEch div 10 alpha 075, TEB NRZ 1ti nbEch div 3 alpha 075, TEB NRZ 1ti nbEch div 2 alpha 05, TEB NRZ 1ti nbEch div 2 alpha 025, TEB NRZ ti1 5 alpha 05, TEB NRZ ti2 10 alpha 025, TEB NRZ ti3 15 alpha 01, TEB NRZ ti4 20 alpha 005, TEB NRZT 1ti nbEch div 10 alpha 075, TEB NRZT 1ti nbEch div 3 alpha 075, TEB NRZT 1ti nbEch div 2 alpha 05, TEB NRZT 1ti nbEch div 2 alpha 025, TEB NRZT ti1 5 alpha 05, TEB NRZT ti2 10 alpha 025, TEB NRZT ti3 15 alpha 01, TEB NRZT ti4 20 alpha 005\n");
         for (int x = 0; x < size; x++) {
             StringBuilder sb = new StringBuilder();
             i = 0;
