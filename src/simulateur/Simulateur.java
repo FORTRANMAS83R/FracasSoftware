@@ -127,7 +127,9 @@ public class Simulateur {
                 source.connecter(new SondeLogique("Sonde en sortie de la source", 720));
                 transmetteurAnalogique.connecter(new SondeAnalogique("Sonde en sortie du transmetteur"));
                 transmetteurAnalogique.connecter(new SondeDiagrammeDeLoeil("Diagramme de l'oeil"));
-                egaliseur.connecter(new SondeAnalogique("Sonde en sortie de l'égaliseur"));
+                if (!config.getMultiTrajets().isEmpty() && Egaliseur.tauMax(config.getMultiTrajets()) > 0) {
+                    egaliseur.connecter(new SondeAnalogique("Sonde en sortie de l'égaliseur"));
+                }
             }
         } else {
             // Logique
