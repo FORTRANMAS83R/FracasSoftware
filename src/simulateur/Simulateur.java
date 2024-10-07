@@ -106,6 +106,7 @@ public class Simulateur {
 
             // Instanciation CAN et connexion du transmetteur au CAN
             convertisseurAnalogiqueNumerique = new ConvertisseurAnalogiqueNumerique<>(config.getNbEch(), config.getNbBitsMess(), (config.getAmplMin() + config.getAmplMax()) / 2, config.getFormatSignal());
+
             if (!config.getMultiTrajets().isEmpty() && Egaliseur.tauMax(config.getMultiTrajets()) > 0) {
                 egaliseur = new Egaliseur(config.getMultiTrajets(), convertisseurNumeriqueAnalogique);
                 transmetteurAnalogique.connecter(egaliseur);
@@ -113,7 +114,7 @@ public class Simulateur {
             } else {
                 transmetteurAnalogique.connecter(convertisseurAnalogiqueNumerique);
             }
-
+            transmetteurAnalogique.connecter(convertisseurAnalogiqueNumerique);
             // Connexion du CAN à la destination
             if (config.getCodeur()) {
                 decodeur = new Decodeur<>();
