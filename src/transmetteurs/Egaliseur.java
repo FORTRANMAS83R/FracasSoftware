@@ -30,7 +30,8 @@ public class Egaliseur extends Transmetteur<Float, Float> {
         int longueurSignal = signalRef.size();
         Float[] sortie = new Float[longueurSignal];
 //        this.mu = 1/(ordre+ Operations.calculPuissanceSignal(signalRef));
-        this.mu = 0.01f;
+        this.mu = 0.0f;
+     //   this.mu = 2/(ordre+ Operations.calculPuissanceSignal(signalRef))-0.01f;
         // Vecteur d'entrée pour le filtre
         Float[] vecteurEntree = new Float[ordre];
         Arrays.fill(vecteurEntree, 0f);
@@ -57,6 +58,7 @@ public class Egaliseur extends Transmetteur<Float, Float> {
             for (int i = 0; i < ordre; i++) {
                 coefficients[i] +=  mu * erreur * vecteurEntree[i];
             }
+
         }
 
         return sortie;
