@@ -9,3 +9,6 @@ report.xml
 *.docx
 /tebEnFctSNR_codeur.csv
 /tebEnFctSNR_Theo.csv
+/tebEnFctSNRetTM_egaliseur.csv
+/tebEnFctSNRetTM_ss_egaliseur.csv
+/tebEnFctSNR_nbEch.csv

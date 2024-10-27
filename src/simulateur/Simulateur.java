@@ -106,14 +106,17 @@ public class Simulateur {
 
             // Instanciation CAN et connexion du transmetteur au CAN
             convertisseurAnalogiqueNumerique = new ConvertisseurAnalogiqueNumerique<>(config.getNbEch(), config.getNbBitsMess(), (config.getAmplMin() + config.getAmplMax()) / 2, config.getFormatSignal());
-            if (!config.getMultiTrajets().isEmpty() && Egaliseur.tauMax(config.getMultiTrajets()) > 0) {
-                egaliseur = new Egaliseur(config.getMultiTrajets(), convertisseurNumeriqueAnalogique);
-                transmetteurAnalogique.connecter(egaliseur);
-                egaliseur.connecter(convertisseurAnalogiqueNumerique);
-            } else {
-                transmetteurAnalogique.connecter(convertisseurAnalogiqueNumerique);
-            }
 
+            transmetteurAnalogique.connecter(convertisseurAnalogiqueNumerique);
+//            if (!config.getMultiTrajets().isEmpty() && Egaliseur.tauMax(config.getMultiTrajets()) > 0) {
+//                egaliseur = new Egaliseur(config.getMultiTrajets(), convertisseurNumeriqueAnalogique);
+//                transmetteurAnalogique.connecter(egaliseur);
+//                egaliseur.connecter(convertisseurAnalogiqueNumerique);
+//                transmetteurAnalogique.connecter(convertisseurAnalogiqueNumerique);
+//            } else {
+//            transmetteurAnalogique.connecter(convertisseurAnalogiqueNumerique);
+//            }
+            transmetteurAnalogique.connecter(convertisseurAnalogiqueNumerique);
             // Connexion du CAN à la destination
             if (config.getCodeur()) {
                 decodeur = new Decodeur<>();
@@ -127,9 +130,9 @@ public class Simulateur {
                 source.connecter(new SondeLogique("Sonde en sortie de la source", 720));
                 transmetteurAnalogique.connecter(new SondeAnalogique("Sonde en sortie du transmetteur"));
                 transmetteurAnalogique.connecter(new SondeDiagrammeDeLoeil("Diagramme de l'oeil"));
-                if (!config.getMultiTrajets().isEmpty() && Egaliseur.tauMax(config.getMultiTrajets()) > 0) {
-                    egaliseur.connecter(new SondeAnalogique("Sonde en sortie de l'égaliseur"));
-                }
+//                if (!config.getMultiTrajets().isEmpty() && Egaliseur.tauMax(config.getMultiTrajets()) > 0) {
+//                    egaliseur.connecter(new SondeAnalogique("Sonde en sortie de l'égaliseur"));
+//                }
             }
         } else {
             // Logique

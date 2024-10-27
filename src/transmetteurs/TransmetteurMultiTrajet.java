@@ -131,7 +131,6 @@ public class TransmetteurMultiTrajet extends Transmetteur<Float, Float> {
         for (int i = 0; i < trajets.size(); i++) {
             sum += (float) Math.pow(trajets.get(i).getValue(), 2);
         }
-        System.out.println("AmpTrajetDirect: " + sum);
         return (float) Math.sqrt(1 - sum);
     }
 
